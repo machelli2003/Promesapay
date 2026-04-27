@@ -61,7 +61,7 @@ export default function ProfilePage() {
   return (
     <div className="max-w-xl mx-auto px-4 py-10 animate-fade-in">
       <div className="space-y-4">
-        <ProfileCard profile={profile} />
+        <ProfileCard user={profile} />
 
         {profile.goal_amount > 0 && (
           <ProgressBar

@@ -20,11 +20,17 @@ def initialize_payment(email, amount_ghc, reference, metadata=None):
         "metadata": metadata or {},
         "callback_url": f"{Config.FRONTEND_URL}/payment/verify",
     }
-    res = requests.post(f"{PAYSTACK_BASE}/transaction/initialize", json=payload, headers=headers)
-    return res.json()
+    try:
+        res = requests.post(f"{PAYSTACK_BASE}/transaction/initialize", json=payload, headers=headers)
+        return res.json()
+    except requests.exceptions.RequestException as e:
+        return {"status": False, "message": f"Failed to connect to Paystack: {str(e)}"}
 
 
 def verify_payment(reference):
     """Verify a Paystack transaction by reference."""
-    res = requests.get(f"{PAYSTACK_BASE}/transaction/verify/{reference}", headers=headers)
-    return res.json()
+    try:
+        res = requests.get(f"{PAYSTACK_BASE}/transaction/verify/{reference}", headers=headers)
+        return res.json()
+    except requests.exceptions.RequestException as e:
+        return {"status": False, "message": f"Failed to connect to Paystack: {str(e)}"}
