@@ -18,21 +18,21 @@ export default function SupportersList({ supporters = [] }) {
 
   return (
     <div className="card card-body space-y-1">
-      <h3 className="text-sm font-semibold text-gray-900 mb-3">
+      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-3">
         Recent supporters
       </h3>
 
-      <div className="space-y-0 divide-y divide-gray-50">
+      <div className="space-y-0 divide-y divide-slate-100 dark:divide-slate-800">
         {supporters.map((s) => (
           <div key={s.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
             <Avatar name={s.donor_name} size="sm" className="mt-0.5 shrink-0" />
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                   {s.donor_name}
                 </p>
-                <p className="text-xs text-gray-400 shrink-0">
+                <p className="text-xs text-slate-400 dark:text-slate-500 shrink-0">
                   {formatDate(s.created_at)}
                 </p>
               </div>
@@ -43,7 +43,7 @@ export default function SupportersList({ supporters = [] }) {
                 ) : (
                   <Heart className="h-3 w-3 text-rose-400 shrink-0" strokeWidth={2} />
                 )}
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {s.type === "coffee"
                     ? `Sent ${s.cups} coffee${s.cups > 1 ? "s" : ""} · ${formatCurrency(s.amount)}`
                     : `Donated ${formatCurrency(s.amount)}`
@@ -52,9 +52,9 @@ export default function SupportersList({ supporters = [] }) {
               </div>
 
               {s.message && (
-                <div className="flex items-start gap-1.5 mt-1.5 bg-gray-50 rounded-lg px-3 py-2">
-                  <MessageSquare className="h-3 w-3 text-gray-300 mt-0.5 shrink-0" />
-                  <p className="text-xs text-gray-500 italic leading-relaxed">
+                <div className="flex items-start gap-1.5 mt-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg px-3 py-2">
+                  <MessageSquare className="h-3 w-3 text-slate-300 dark:text-slate-500 mt-0.5 shrink-0" />
+                  <p className="text-xs text-slate-500 dark:text-slate-400 italic leading-relaxed">
                     "{s.message}"
                   </p>
                 </div>

@@ -15,7 +15,7 @@ function Section({ icon: Icon, title, subtitle, children }) {
       <CardHeader
         title={
           <span className="flex items-center gap-2 text-sm">
-            <Icon className="h-4 w-4 text-gray-400" strokeWidth={1.75} />
+            <Icon className="h-4 w-4 text-slate-400 dark:text-slate-500" strokeWidth={1.75} />
             {title}
           </span>
         }
@@ -76,8 +76,8 @@ export default function EditProfile() {
 
         {/* Page header */}
         <div className="section-header">
-          <h1 className="text-xl font-bold text-gray-900">Edit profile</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-50">Edit profile</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
             Customize your public support page
           </p>
         </div>
@@ -96,7 +96,7 @@ export default function EditProfile() {
             <div className="space-y-1.5">
               <label className="field-label">
                 Bio
-                <span className="text-gray-400 font-normal ml-1">(optional)</span>
+                <span className="text-slate-400 dark:text-slate-500 font-normal ml-1">(optional)</span>
               </label>
               <textarea
                 name="bio"
@@ -121,7 +121,7 @@ export default function EditProfile() {
               <img
                 src={form.profile_picture}
                 alt="Preview"
-                className="w-16 h-16 rounded-xl object-cover border border-gray-200"
+                className="w-16 h-16 rounded-xl object-cover border border-slate-200 dark:border-slate-700"
               />
             )}
           </Section>

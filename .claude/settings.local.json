@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python run.py)",
+      "Bash(python *)",
+      "Bash(curl -s http://127.0.0.1:5000/api/auth/register -X POST -H \"Content-Type: application/json\" -d '{\"username\":\"test\",\"email\":\"test@example.com\",\"password\":\"123456\",\"full_name\":\"Test User\"}')",
+      "Bash(curl *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

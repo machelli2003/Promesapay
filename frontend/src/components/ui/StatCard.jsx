@@ -2,6 +2,14 @@ import clsx from "clsx";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 const iconColorMap = {
+  violet: {
+    bg: "bg-violet-100 dark:bg-violet-900/30",
+    icon: "text-violet-600 dark:text-violet-400",
+  },
+  purple: {
+    bg: "bg-purple-100 dark:bg-purple-900/30",
+    icon: "text-purple-600 dark:text-purple-400",
+  },
   indigo: {
     bg: "bg-indigo-100 dark:bg-indigo-900",
     icon: "text-indigo-600 dark:text-indigo-400",
@@ -18,10 +26,6 @@ const iconColorMap = {
     bg: "bg-rose-100 dark:bg-rose-900",
     icon: "text-rose-600 dark:text-rose-400",
   },
-  purple: {
-    bg: "bg-purple-100 dark:bg-purple-900",
-    icon: "text-purple-600 dark:text-purple-400",
-  },
 };
 
 export default function StatCard({
@@ -31,10 +35,10 @@ export default function StatCard({
   icon: Icon,
   trend,
   trendLabel,
-  iconColor = "indigo",
+  iconColor = "violet",
   className = "",
 }) {
-  const iconTheme = iconColorMap[iconColor] || iconColorMap.indigo;
+  const iconTheme = iconColorMap[iconColor] || iconColorMap.violet;
 
   const TrendIcon = trend === "up" ? TrendingUp : TrendingDown;
   const trendColor =

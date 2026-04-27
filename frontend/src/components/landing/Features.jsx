@@ -9,88 +9,65 @@ import {
 
 const features = [
   {
-    icon: Heart,
-    title: "Donation Goals",
-    desc: "Set a funding target, track progress, and let supporters rally around your mission.",
-    iconBg: "bg-rose-100 dark:bg-rose-900",
-    iconColor: "text-rose-600 dark:text-rose-400",
-  },
-  {
     icon: Coffee,
     title: "Coffee Tips",
-    desc: "Quick GH₵5 tips in 1, 3, or 5 cup amounts — casual support made effortless.",
-    iconBg: "bg-amber-100 dark:bg-amber-900",
-    iconColor: "text-amber-600 dark:text-amber-400",
+    desc: "Receive quick GH₵5 coffee tips from supporters. Perfect for casual support.",
+  },
+  {
+    icon: Heart,
+    title: "Donations",
+    desc: "Set funding goals and receive one-time donations for your projects.",
   },
   {
     icon: BarChart3,
-    title: "Live Dashboard",
-    desc: "Track every transaction, supporter, and milestone in real time.",
-    iconBg: "bg-indigo-100 dark:bg-indigo-900",
-    iconColor: "text-indigo-600 dark:text-indigo-400",
+    title: "Analytics Dashboard",
+    desc: "Track your earnings, supporters, and growth in real-time.",
   },
   {
     icon: Share2,
-    title: "Shareable Page",
-    desc: "Your own link at fundme.app/u/you — drop it anywhere your audience finds you.",
-    iconBg: "bg-purple-100 dark:bg-purple-900",
-    iconColor: "text-purple-600 dark:text-purple-400",
+    title: "Shareable Profile",
+    desc: "Get a custom link to share with your audience anywhere.",
   },
   {
     icon: Shield,
-    title: "Paystack Secured",
-    desc: "Every payment handled by Africa's most trusted payment infrastructure.",
-    iconBg: "bg-emerald-100 dark:bg-emerald-900",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
+    title: "Secure Payments",
+    desc: "All payments processed securely through Paystack.",
   },
   {
     icon: Zap,
-    title: "Quick Setup",
-    desc: "Sign up, fill your profile, and start receiving support in minutes.",
-    iconBg: "bg-orange-100 dark:bg-orange-900",
-    iconColor: "text-orange-600 dark:text-orange-400",
+    title: "Instant Setup",
+    desc: "Create your account and start receiving support in minutes.",
   },
 ];
 
 export default function Features() {
   return (
-    <section
-      id="features"
-      className="border-b border-slate-200 bg-slate-50 py-20 dark:border-slate-800 dark:bg-slate-900"
-    >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section id="features" className="py-20 bg-white dark:bg-slate-950">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-16">
-          <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-            Features
-          </span>
-          <h2 className="mb-4 mt-2 text-4xl font-bold text-slate-900 dark:text-slate-50">
-            Built for creators, by creators
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+            Everything you need to receive support
           </h2>
-          <p className="max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-            Simple tools designed to get out of your way so you can focus on what you do best.
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            Simple, powerful tools designed for creators
           </p>
         </div>
 
         {/* Features grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="group rounded-xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:border-slate-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-800 dark:hover:border-slate-700"
+              className="p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-violet-300 dark:hover:border-violet-700 transition-colors"
             >
-              <div
-                className={`mb-4 inline-flex rounded-lg p-3 ${feature.iconBg}`}
-              >
-                <feature.icon
-                  className={`h-6 w-6 ${feature.iconColor}`}
-                  strokeWidth={1.5}
-                />
+              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+                <feature.icon className="w-6 h-6 text-violet-600 dark:text-violet-400" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 {feature.title}
               </h3>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
                 {feature.desc}
               </p>
             </div>

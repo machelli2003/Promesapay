@@ -1,42 +1,54 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Coffee, Heart } from "lucide-react";
 import AppButton from "../ui/AppButton";
 
 export default function CTASection() {
   return (
-    <section className="bg-slate-50 py-20 dark:bg-slate-900">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-600 px-8 py-16 sm:px-12 sm:py-20">
-          {/* Decorative gradient blur */}
-          <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
-
-          {/* Content */}
-          <div className="relative z-10 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-white sm:text-5xl">
-              Ready to receive support?
+    <section className="py-20 bg-slate-50 dark:bg-slate-900">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 dark:border-slate-700">
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Ready to start receiving support?
             </h2>
-            <p className="mb-10 text-lg text-indigo-100">
-              Join thousands of creators across Africa turning their passion into income with FundMe.
+            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
+              Join thousands of creators who are already building sustainable income with Promesapay.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link to="/register">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/register" className="group">
                 <AppButton
                   size="lg"
-                  className="bg-white text-indigo-600 hover:bg-slate-50"
+                  className="w-full sm:w-auto"
                   iconRight={ArrowRight}
                 >
-                  Create your page
+                  Create Your Page
                 </AppButton>
               </Link>
-              <Link
-                to="/login"
-                className="text-indigo-100 transition-colors hover:text-white"
-              >
-                Already have an account? Sign in
+              <Link to="/login">
+                <AppButton
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
+                  Sign In
+                </AppButton>
               </Link>
+            </div>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-2">
+                <Coffee className="w-4 h-4" />
+                <span>Free to start</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                <span>No hidden fees</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>⚡</span>
+                <span>Instant payouts</span>
+              </div>
             </div>
           </div>
         </div>

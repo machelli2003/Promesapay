@@ -100,12 +100,12 @@ export default function Dashboard() {
       </div>
 
       {/* Profile link banner */}
-      <div className="mb-8 rounded-xl border border-indigo-200 bg-indigo-50 p-6 dark:border-indigo-900 dark:bg-indigo-900/20">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+      <div className="mb-8 rounded-xl border border-violet-200 bg-violet-50 p-6 dark:border-violet-900 dark:bg-violet-900/20">
+        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-violet-600 dark:text-violet-400">
           Your support page
         </p>
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <p className="truncate font-mono text-sm font-medium text-indigo-900 dark:text-indigo-100">
+          <p className="truncate font-mono text-sm font-medium text-violet-900 dark:text-violet-100">
             {profileUrl}
           </p>
           <AppButton
@@ -131,7 +131,7 @@ export default function Dashboard() {
             value={formatCurrency(stats?.total_raised || 0)}
             sub="All time"
             icon={TrendingUp}
-            iconColor="indigo"
+            iconColor="violet"
             trend="up"
             trendLabel="Lifetime earnings"
           />
@@ -167,7 +167,7 @@ export default function Dashboard() {
               title={user.goal_title || "Funding goal"}
               subtitle={`${formatCurrency(stats?.total_raised || 0)} raised of ${formatCurrency(user.goal_amount)}`}
               action={
-                <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                <span className="text-2xl font-bold text-violet-600 dark:text-violet-400">
                   {goalPct}%
                 </span>
               }
@@ -230,7 +230,7 @@ export default function Dashboard() {
                         className={`mt-1 badge ${
                           txn.type === "coffee"
                             ? "badge-amber"
-                            : "badge-indigo"
+                            : "badge-violet"
                         }`}
                       >
                         {txn.type}

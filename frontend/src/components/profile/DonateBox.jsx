@@ -33,18 +33,18 @@ export default function DonateBox({ onDonate }) {
     <div className="card card-body space-y-5">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-900/30 flex items-center justify-center">
           <Heart className="h-4 w-4 text-rose-500" strokeWidth={1.75} />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">Make a donation</h3>
-          <p className="text-xs text-gray-400">Support this creator's goal</p>
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">Make a donation</h3>
+          <p className="text-xs text-slate-400 dark:text-slate-500">Support this creator's goal</p>
         </div>
       </div>
 
       {/* Quick amounts */}
       <div className="space-y-2">
-        <p className="text-xs font-medium text-gray-500">Select amount</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Select amount</p>
         <div className="grid grid-cols-4 gap-2">
           {QUICK_AMOUNTS.map((val) => (
             <button
@@ -52,8 +52,8 @@ export default function DonateBox({ onDonate }) {
               onClick={() => handleQuick(val)}
               className={`py-2 rounded-lg text-sm font-semibold border transition-all duration-150
                 ${quick === val
-                  ? "bg-sky-500 text-white border-sky-500 shadow-sm"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-sky-300 hover:text-sky-600"
+                  ? "bg-rose-500 text-white border-rose-500 shadow-sm"
+                  : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-700 hover:text-rose-600"
                 }`}
             >
               {formatCurrency(val)}
@@ -64,9 +64,9 @@ export default function DonateBox({ onDonate }) {
 
       {/* Custom amount */}
       <div className="space-y-1.5">
-        <p className="text-xs font-medium text-gray-500">Or enter custom amount</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Or enter custom amount</p>
         <div className="relative">
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-gray-400 select-none">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-slate-400 dark:text-slate-500 select-none">
             GH₵
           </span>
           <input
@@ -95,7 +95,7 @@ export default function DonateBox({ onDonate }) {
       <div className="space-y-1.5">
         <label className="field-label">
           Message
-          <span className="text-gray-400 font-normal ml-1">(optional)</span>
+          <span className="text-slate-400 dark:text-slate-500 font-normal ml-1">(optional)</span>
         </label>
         <textarea
           value={message}

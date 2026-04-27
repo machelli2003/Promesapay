@@ -1,97 +1,134 @@
-import { Coffee, Heart, ArrowLeft } from "lucide-react";
+import { Coffee, ArrowRight, CheckCircle, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppButton from "../components/ui/AppButton";
 
+const coffeeTiers = [
+  { cups: 1, price: "GH₵5", label: "A quick coffee", popular: false },
+  { cups: 3, price: "GH₵15", label: "Coffee break", popular: true },
+  { cups: 5, price: "GH₵25", label: "Afternoon treat", popular: false },
+];
+
 export default function BuyCoffee() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-      {/* Back Button */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8">
-        <Link to="/">
-          <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium transition-colors">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
+      {/* Navigation */}
+      <div className="border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+          <Link to="/" className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
             <ArrowLeft className="h-4 w-4" />
-            Back to home
-          </button>
-        </Link>
+            <span className="font-medium">Back to home</span>
+          </Link>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left side */}
-          <div>
-            <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 text-amber-800 text-xs font-medium px-3 py-1 rounded-full mb-6">
-              <Coffee className="h-3.5 w-3.5" />
-              Buy Me a Coffee
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              Support with a Coffee
-            </h1>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Show your appreciation with a quick coffee tip. It's a simple, direct way to support creators you love.
-            </p>
-            <ul className="space-y-4 mb-8">
-              {[
-                "Quick and easy payment",
-                "Secure transactions via Paystack",
-                "Support creators instantly",
-                "Perfect for any occasion"
-              ].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-amber-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Coffee className="h-3 w-3 text-amber-700" />
-                  </div>
-                  <span className="text-gray-700">{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="flex gap-3">
-              <Link to="/register">
-                <AppButton size="lg">
-                  Get Started
-                </AppButton>
-              </Link>
-              <Link to="/u/demo">
-                <AppButton variant="secondary" size="lg">
-                  See Example
-                </AppButton>
-              </Link>
-            </div>
+      {/* Hero Section */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
+            <Coffee className="h-4 w-4" />
+            Buy Me a Coffee
           </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+            Show your appreciation with a coffee
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-400">
+            A simple way to support creators. Quick, secure, and makes their day better.
+          </p>
+        </div>
 
-          {/* Right side - Visual */}
-          <div className="grid grid-cols-2 gap-4">
+        {/* Coffee Tiers */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+          {coffeeTiers.map((tier) => (
+            <div
+              key={tier.cups}
+              className={`relative p-6 rounded-2xl border-2 transition-all ${
+                tier.popular
+                  ? "border-violet-500 bg-violet-50 dark:bg-violet-950/30 shadow-lg scale-105"
+                  : "border-slate-200 dark:border-slate-800 hover:border-violet-300 dark:hover:border-violet-700"
+              }`}
+            >
+              {tier.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="bg-violet-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    Most Popular
+                  </span>
+                </div>
+              )}
+
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  <div className="bg-amber-100 dark:bg-amber-900/30 p-4 rounded-xl">
+                    <Coffee className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                  {tier.cups} {tier.cups === 1 ? 'Cup' : 'Cups'}
+                </h3>
+                <p className="text-3xl font-bold text-violet-600 dark:text-violet-400 mb-2">
+                  {tier.price}
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                  {tier.label}
+                </p>
+                <Link to="/register">
+                  <AppButton
+                    className={`w-full ${tier.popular ? 'bg-violet-600 hover:bg-violet-700' : ''}`}
+                    variant={tier.popular ? 'primary' : 'secondary'}
+                  >
+                    Buy {tier.cups} Coffee{tier.cups > 1 ? 's' : ''}
+                  </AppButton>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* How it works */}
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">
+            How it works
+          </h2>
+          <div className="space-y-6">
             {[
-              { amount: "GH₵5", label: "Espresso" },
-              { amount: "GH₵10", label: "Latte" },
-              { amount: "GH₵25", label: "Cold Brew" },
-              { amount: "GH₵50", label: "Premium Blend" }
-            ].map((tier) => (
-              <div key={tier.label} className="card p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
-                <Coffee className="h-8 w-8 text-amber-600 mx-auto mb-3" />
-                <p className="text-2xl font-bold text-gray-900 mb-1">{tier.amount}</p>
-                <p className="text-sm text-gray-600">{tier.label}</p>
-                <button className="btn btn-sm btn-primary justify-center w-full mt-3">
-                  Buy
-                </button>
+              { icon: Coffee, title: "Choose a creator", desc: "Find someone whose work you appreciate" },
+              { icon: Users, title: "Select coffee amount", desc: "Pick how many cups you'd like to buy" },
+              { icon: CheckCircle, title: "Make their day", desc: "They'll receive your support instantly" }
+            ].map((step, index) => (
+              <div key={index} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center">
+                  <step.icon className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-1">
+                    {step.title}
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Stats */}
-        <div className="grid sm:grid-cols-3 gap-6 mt-16 pt-16 border-t border-amber-200">
-          {[
-            { emoji: "☕", value: "50,000+", label: "Coffees Bought" },
-            { emoji: "👥", value: "10,000+", label: "Support Creators" },
-            { emoji: "🌍", value: "Across Africa", label: "Available Now" }
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-4xl mb-2">{stat.emoji}</div>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-              <p className="text-sm text-gray-600">{stat.label}</p>
+      {/* Stats */}
+      <div className="bg-slate-50 dark:bg-slate-900 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-3 gap-8 text-center">
+            <div>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white mb-1">100K+</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Coffees bought</p>
             </div>
-          ))}
+            <div>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white mb-1">GH₵500K+</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Support given</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white mb-1">50K+</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Happy creators</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

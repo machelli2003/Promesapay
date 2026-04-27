@@ -43,13 +43,13 @@ export default function ProfilePage() {
 
   if (notFound) return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 px-4 text-center animate-fade-in">
-      <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
-        <AlertCircle className="h-6 w-6 text-gray-400" strokeWidth={1.75} />
+      <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+        <AlertCircle className="h-6 w-6 text-slate-400 dark:text-slate-500" strokeWidth={1.75} />
       </div>
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Profile not found</h2>
-        <p className="text-sm text-gray-500">
-          <span className="font-medium">@{username}</span> doesn't exist on FundMe.
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-1">Profile not found</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          <span className="font-medium">@{username}</span> doesn't exist on Promesapay.
         </p>
       </div>
       <Link to="/">

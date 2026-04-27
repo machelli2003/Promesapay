@@ -34,7 +34,7 @@ export default function HowItWorks() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-16">
-          <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+          <span className="text-xs font-semibold uppercase tracking-widest text-violet-600 dark:text-violet-400">
             How it works
           </span>
           <h2 className="mb-4 mt-2 text-4xl font-bold text-slate-900 dark:text-slate-50">
@@ -57,12 +57,12 @@ export default function HowItWorks() {
               {/* Card */}
               <div className="space-y-4">
                 {/* Number */}
-                <div className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                <div className="text-sm font-bold text-violet-600 dark:text-violet-400">
                   {step.num}
                 </div>
 
                 {/* Icon */}
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-100 text-xl dark:bg-slate-800">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-violet-100 dark:bg-violet-900/30 text-xl">
                   {step.icon}
                 </div>
 

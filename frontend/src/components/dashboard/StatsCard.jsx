@@ -2,10 +2,10 @@ import { TrendingUp } from "lucide-react";
 
 export default function StatsCard({ title, value, subtitle, icon: Icon, color = "primary", trend }) {
   const colors = {
-    primary: "from-primary-500 to-purple-600",
-    coffee:  "from-amber-400 to-coffee-dark",
+    primary: "from-violet-500 to-purple-600",
+    coffee:  "from-amber-400 to-amber-600",
     green:   "from-emerald-400 to-teal-600",
-    blue:    "from-blue-400 to-indigo-600",
+    blue:    "from-blue-400 to-violet-600",
   };
 
   return (
@@ -15,9 +15,9 @@ export default function StatsCard({ title, value, subtitle, icon: Icon, color = 
 
       <div className="flex items-start justify-between">
         <div className="space-y-1">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{title}</p>
-          <p className="text-2xl font-bold">{value}</p>
-          {subtitle && <p className="text-xs text-gray-400">{subtitle}</p>}
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">{title}</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{value}</p>
+          {subtitle && <p className="text-xs text-slate-400 dark:text-slate-500">{subtitle}</p>}
           {trend !== undefined && (
             <div className="flex items-center gap-1 text-xs text-emerald-500 font-medium">
               <TrendingUp className="h-3 w-3" />
