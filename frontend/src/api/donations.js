@@ -1,4 +1,4 @@
-import api from "./auth";
+import client from "./client";
 
-export const initiateDonation = (data) => api.post("/donations/initiate", data);
-export const verifyDonation = (reference) => api.post("/donations/verify", { reference });
+export const initiateDonation = (data) => client.post("/donations/initiate", data);
+export const verifyDonation = (reference) => client.post("/donations/verify", { reference });

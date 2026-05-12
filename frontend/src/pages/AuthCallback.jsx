@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getMe } from "../api/auth";
+import { getMe, getOAuthToken, getCsrfToken } from "../api/auth";
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -9,26 +9,43 @@ export default function AuthCallback() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    const status = params.get("status");
     const error = params.get("error");
 
-    if (error || !token) {
+    if (error) {
       navigate("/login?error=auth_failed");
       return;
     }
 
-    // Store token first, then fetch user info
-    localStorage.setItem("token", token);
+    if (status === "success") {
+      // Retrieve CSRF token and auth token from secure session cookie
+      getCsrfToken()
+        .then((csrfRes) => {
+          localStorage.setItem("csrf_token", csrfRes.data.csrf_token);
+          return getOAuthToken();
+        })
+        .then((res) => {
+          const token = res.data.token;
+          localStorage.setItem("token", token);
 
-    getMe()
-      .then((res) => {
-        login(token, res.data.user);
-        navigate("/dashboard");
-      })
-      .catch(() => {
-        localStorage.removeItem("token");
-        navigate("/login?error=auth_failed");
-      });
+          // Fetch user info
+          return getMe().then((userRes) => ({
+            token,
+            user: userRes.data.user
+          }));
+        })
+        .then(({ token, user }) => {
+          login(token, user);
+          navigate("/dashboard");
+        })
+        .catch((err) => {
+          console.error("OAuth callback error:", err);
+          localStorage.removeItem("token");
+          navigate("/login?error=auth_failed");
+        });
+    } else {
+      navigate("/login?error=auth_failed");
+    }
   }, []);
 
   return (

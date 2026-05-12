@@ -27,6 +27,8 @@ cp .env.example .env            # Fill in your keys
 python run.py
 ```
 
+> Do not commit `.env` to source control. Use a separate `.env.example` file for local setup and environment variables for production.
+
 ### 2. Setup frontend
 ```bash
 cd frontend
@@ -44,6 +46,8 @@ Or use MongoDB Atlas — paste your connection string in `backend/.env`
 
 ### 4. Environment variables
 
+Use `backend/.env.example` as a template for local development.
+
 **backend/.env**
 ```
 FLASK_ENV=development
@@ -53,6 +57,8 @@ MONGO_URI=mongodb://localhost:27017/fundme
 PAYSTACK_SECRET_KEY=sk_test_...
 FRONTEND_URL=http://localhost:5173
 ```
+
+In production, set these values directly in your environment rather than relying on `.env` files.
 
 **frontend/.env**
 ```

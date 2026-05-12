@@ -1,11 +1,11 @@
 import requests
 import os
-from ..config import Config
+from ..config import settings
 
 PAYSTACK_BASE = "https://api.paystack.co"
 
 headers = {
-    "Authorization": f"Bearer {Config.PAYSTACK_SECRET_KEY}",
+    "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
     "Content-Type": "application/json",
 }
 
@@ -18,7 +18,7 @@ def initialize_payment(email, amount_ghc, reference, metadata=None):
         "currency": "GHS",
         "reference": reference,
         "metadata": metadata or {},
-        "callback_url": f"{Config.FRONTEND_URL}/payment/verify",
+        "callback_url": f"{settings.FRONTEND_URL}/payment/verify",
     }
     try:
         res = requests.post(f"{PAYSTACK_BASE}/transaction/initialize", json=payload, headers=headers)

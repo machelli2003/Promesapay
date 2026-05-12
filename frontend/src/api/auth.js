@@ -1,26 +1,12 @@
-import axios from "axios";
-import { API_BASE } from "../utils/constants";
+import client from "./client";
 
-const api = axios.create({
-  baseURL: API_BASE,
-  withCredentials: true,
-});
+export const registerUser = (data) => client.post("/auth/register", data);
+export const loginUser = (data) => client.post("/auth/login", data);
+export const getMe = () => client.get("/auth/me");
+export const changePassword = (data) => client.put("/auth/change-password", data);
+export const getCsrfToken = () => client.get("/auth/csrf-token");
+export const getOAuthToken = () => client.post("/auth/get-oauth-token");
 
-// Add request interceptor to include token in headers
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-export default api;
-
-export const registerUser = (data) => api.post("/auth/register", data);
-export const loginUser = (data) => api.post("/auth/login", data);
-export const getMe = () => api.get("/auth/me");
-export const changePassword = (data) => api.put("/auth/change-password", data);
-
-// New
-export const googleLogin = () => window.location.href = "/api/auth/google/login";
+export const googleLogin = () => {
+  window.location.href = "/api/auth/google/login";
+};

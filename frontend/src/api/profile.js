@@ -1,5 +1,5 @@
-import api from "./auth";
+import client from "./client";
 
-export const getProfile = (username) => api.get(`/profile/${username}`);
-export const updateProfile = (data) => api.put("/profile/update", data);
-export const getMyStats = () => api.get("/profile/stats");
+export const getProfile = (username) => client.get(`/profile/${username}`);
+export const updateProfile = (data) => client.put("/profile/update", data);
+export const getMyStats = () => client.get("/profile/stats");

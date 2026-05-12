@@ -1,4 +1,4 @@
-import api from "./auth";
+import client from "./client";
 
 export const getTransactions = (page = 1, limit = 20) =>
-  api.get(`/transactions/?page=${page}&limit=${limit}`);
+  client.get(`/transactions/?page=${page}&limit=${limit}`);

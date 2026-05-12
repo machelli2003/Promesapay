@@ -1,0 +1,12 @@
+
+
+@auth_bp.route("/get-oauth-token", methods=["GET"])
+def get_oauth_token():
+    """Retrieve OAuth token from secure session (called after OAuth callback)."""
+    from flask import session
+    
+    token = session.pop("auth_token", None)
+    if not token:
+        return jsonify({"error": "No OAuth token found"}), 400
+    
+    return jsonify({"token": token}), 200

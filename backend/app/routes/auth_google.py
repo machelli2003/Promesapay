@@ -1,10 +1,11 @@
-from flask import Blueprint, redirect, jsonify
+from flask import Blueprint, redirect, jsonify, session
 from flask_jwt_extended import create_access_token
 from ..db import users_col
+from ..errors import AuthenticationError
 from ..utils.auth_helpers import serialize_doc
 from .. import oauth
+from ..config import settings
 from datetime import datetime
-import os
 
 google_bp = Blueprint("google_auth", __name__)
 
@@ -57,14 +58,14 @@ def get_or_create_google_user(google_id, email, name, picture):
 
 @google_bp.route("/google/login")
 def google_login():
-    backend_url = os.getenv("BACKEND_URL", "http://localhost:5000")
-    redirect_uri = f"{backend_url}/api/auth/google/callback"
+    redirect_uri = f"{settings.BACKEND_URL}/api/auth/google/callback"
     return oauth.google.authorize_redirect(redirect_uri)
 
 
 @google_bp.route("/google/callback")
 def google_callback():
-    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    """OAuth callback - store token in secure session, redirect to frontend."""
+    frontend_url = settings.FRONTEND_URL
 
     try:
         token = oauth.google.authorize_access_token()
@@ -78,9 +79,23 @@ def google_callback():
         )
 
         jwt_token = create_access_token(identity=str(user["_id"]))
-
-        # Redirect to frontend with token in URL
-        return redirect(f"{frontend_url}/auth/callback?token={jwt_token}")
+        
+        # Store token in secure httpOnly session cookie
+        session["auth_token"] = jwt_token
+        session.permanent = True
+        
+        # Redirect to frontend success page without token in URL
+        return redirect(f"{frontend_url}/auth/callback?status=success")
 
     except Exception as e:
+        import logging
+        logging.error(f"Google OAuth error: {str(e)}")
         return redirect(f"{frontend_url}/login?error=google_auth_failed")
+
+
+@google_bp.route("/get-oauth-token")
+def get_oauth_token():
+    token = session.get("auth_token")
+    if not token:
+        raise AuthenticationError("OAuth token not available")
+    return jsonify({"token": token}), 200

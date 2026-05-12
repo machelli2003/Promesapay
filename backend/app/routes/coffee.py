@@ -6,6 +6,7 @@ from ..db import users_col, coffee_col
 from ..models.coffee import create_coffee_doc
 from ..services.paystack import initialize_payment, verify_payment
 from ..utils.auth_helpers import serialize_doc
+from ..errors import ValidationError, NotFoundError, ExternalServiceError
 
 coffee_bp = Blueprint("coffee", __name__)
 
@@ -19,18 +20,22 @@ def initiate_coffee():
     required = ["recipient_username", "cups", "donor_name", "donor_email"]
     for field in required:
         if not data.get(field):
-            return jsonify({"error": f"{field} is required"}), 400
+            raise ValidationError(f"{field} is required")
 
-    cups = int(data["cups"])
+    try:
+        cups = int(data["cups"])
+    except (TypeError, ValueError):
+        raise ValidationError("Cups must be a valid number")
+
     if cups < 1 or cups > 10:
-        return jsonify({"error": "Cups must be between 1 and 10"}), 400
+        raise ValidationError("Cups must be between 1 and 10")
 
     amount = cups * COFFEE_PRICE_GHC
 
     # Find recipient
     recipient = users_col.find_one({"username": data["recipient_username"].lower()})
     if not recipient:
-        return jsonify({"error": "Recipient not found"}), 404
+        raise NotFoundError("Recipient not found")
 
     recipient_id = str(recipient["_id"])
     reference = f"cof_{uuid.uuid4().hex[:16]}"
@@ -51,7 +56,7 @@ def initiate_coffee():
     )
 
     if not paystack_res.get("status"):
-        return jsonify({"error": "Payment initialization failed"}), 502
+        raise ExternalServiceError("Paystack", paystack_res.get("message", "Payment initialization failed"))
 
     # Save pending coffee
     doc = create_coffee_doc(
@@ -78,11 +83,11 @@ def verify_coffee():
     reference = data.get("reference")
 
     if not reference:
-        return jsonify({"error": "Reference is required"}), 400
+        raise ValidationError("Reference is required")
 
     coffee = coffee_col.find_one({"reference": reference})
     if not coffee:
-        return jsonify({"error": "Coffee transaction not found"}), 404
+        raise NotFoundError("Coffee transaction not found")
 
     if coffee["status"] == "success":
         return jsonify({"message": "Already verified", "status": "success"}), 200
@@ -90,7 +95,7 @@ def verify_coffee():
     result = verify_payment(reference)
 
     if not result.get("status"):
-        return jsonify({"error": "Verification failed"}), 502
+        raise ExternalServiceError("Paystack", result.get("message", "Verification failed"))
 
     paystack_status = result["data"]["status"]
 

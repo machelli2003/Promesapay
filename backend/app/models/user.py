@@ -18,6 +18,9 @@ def create_user_doc(username, email, hashed_password, full_name=""):
             "website": ""
         },
         "total_received": 0,
+        "wallet_balance": 0.0,  # Available balance for withdrawals
+        "total_earned": 0.0,    # Total lifetime earnings
+        "total_donations": 0,   # Number of donations received
         "created_at": datetime.utcnow(),
         "updated_at": datetime.utcnow()
     }

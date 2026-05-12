@@ -7,6 +7,7 @@ from ..db import users_col, donations_col
 from ..models.donation import create_donation_doc
 from ..services.paystack import initialize_payment, verify_payment
 from ..utils.auth_helpers import serialize_doc
+from ..errors import ValidationError, NotFoundError, ExternalServiceError
 
 donations_bp = Blueprint("donations", __name__)
 
@@ -18,16 +19,20 @@ def initiate_donation():
     required = ["recipient_username", "amount", "donor_name", "donor_email"]
     for field in required:
         if not data.get(field):
-            return jsonify({"error": f"{field} is required"}), 400
+            raise ValidationError(f"{field} is required")
 
-    amount = float(data["amount"])
+    try:
+        amount = float(data["amount"])
+    except (TypeError, ValueError):
+        raise ValidationError("Amount must be a valid number")
+
     if amount < 1:
-        return jsonify({"error": "Minimum donation is GH₵1"}), 400
+        raise ValidationError("Minimum donation is GH₵1")
 
     # Find recipient
     recipient = users_col.find_one({"username": data["recipient_username"].lower()})
     if not recipient:
-        return jsonify({"error": "Recipient not found"}), 404
+        raise NotFoundError("Recipient not found")
 
     recipient_id = str(recipient["_id"])
     reference = f"don_{uuid.uuid4().hex[:16]}"
@@ -48,7 +53,7 @@ def initiate_donation():
     )
 
     if not paystack_res.get("status"):
-        return jsonify({"error": "Payment initialization failed"}), 502
+        raise ExternalServiceError("Paystack", paystack_res.get("message", "Payment initialization failed"))
 
     # Save pending donation
     doc = create_donation_doc(
@@ -74,12 +79,12 @@ def verify_donation():
     reference = data.get("reference")
 
     if not reference:
-        return jsonify({"error": "Reference is required"}), 400
+        raise ValidationError("Reference is required")
 
     # Find pending donation
     donation = donations_col.find_one({"reference": reference})
     if not donation:
-        return jsonify({"error": "Donation not found"}), 404
+        raise NotFoundError("Donation not found")
 
     if donation["status"] == "success":
         return jsonify({"message": "Already verified", "status": "success"}), 200
@@ -88,7 +93,7 @@ def verify_donation():
     result = verify_payment(reference)
 
     if not result.get("status"):
-        return jsonify({"error": "Verification failed"}), 502
+        raise ExternalServiceError("Paystack", result.get("message", "Verification failed"))
 
     paystack_status = result["data"]["status"]
 
