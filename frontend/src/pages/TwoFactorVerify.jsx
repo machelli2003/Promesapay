@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FiShield, FiAlertCircle } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
+import { API_ORIGIN } from "../utils/constants";
 
 export default function TwoFactorVerify() {
   const location = useLocation();
@@ -39,7 +40,7 @@ export default function TwoFactorVerify() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/2fa/verify-login`,
+        `${API_ORIGIN}/api/auth/2fa/verify-login`,
         { code },
         {
           headers: { Authorization: `Bearer ${preAuthToken}` },

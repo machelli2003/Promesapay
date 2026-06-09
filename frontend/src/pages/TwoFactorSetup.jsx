@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FiCopy, FiCheckCircle, FiAlertCircle, FiShield } from "react-icons/fi";
+import { API_ORIGIN } from "../utils/constants";
 
 export default function TwoFactorSetup() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function TwoFactorSetup() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/2fa/setup`,
+        `${API_ORIGIN}/api/auth/2fa/setup`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -48,7 +49,7 @@ export default function TwoFactorSetup() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/2fa/enable`,
+        `${API_ORIGIN}/api/auth/2fa/enable`,
         { code: verificationCode },
         {
           headers: { Authorization: `Bearer ${token}` },

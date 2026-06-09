@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FiEye, FiEyeOff, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import { API_ORIGIN } from "../utils/constants";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -74,7 +75,7 @@ export default function ResetPassword() {
     setLoading(true);
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/reset-password`,
+        `${API_ORIGIN}/api/auth/reset-password`,
         {
           token,
           new_password: password,

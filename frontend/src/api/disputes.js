@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_ORIGIN } from '../utils/constants';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = API_ORIGIN ? `${API_ORIGIN}/api` : '/api';
 
 const createAxiosInstance = () => {
   const instance = axios.create({

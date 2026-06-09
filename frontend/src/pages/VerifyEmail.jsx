@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FiCheckCircle, FiAlertCircle, FiMail, FiLoader } from "react-icons/fi";
+import { API_ORIGIN } from "../utils/constants";
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
@@ -36,7 +37,7 @@ export default function VerifyEmail() {
     try {
       setStatus("verifying");
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/verify-email`,
+        `${API_ORIGIN}/api/auth/verify-email`,
         { token },
         { withCredentials: true }
       );
@@ -62,7 +63,7 @@ export default function VerifyEmail() {
     try {
       const token = localStorage.getItem("auth_token");
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/send-verification-email`,
+        `${API_ORIGIN}/api/auth/send-verification-email`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

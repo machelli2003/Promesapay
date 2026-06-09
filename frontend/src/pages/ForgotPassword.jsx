@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
+import { API_ORIGIN } from "../utils/constants";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
+        `${API_ORIGIN}/api/auth/forgot-password`,
         { email: email.trim().toLowerCase() },
         { withCredentials: true }
       );
