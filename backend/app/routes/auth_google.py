@@ -1,5 +1,9 @@
-from flask import Blueprint, redirect, jsonify, session
-from flask_jwt_extended import create_access_token
+import logging
+from flask import Blueprint, redirect, jsonify, request, session
+from urllib.parse import quote_plus
+from authlib.integrations.base_client import OAuthError
+from ..security.jwt_tokens import create_access_token_for_user
+from ..security.fraud_detection import register_successful_login
 from ..db import users_col
 from ..errors import AuthenticationError
 from ..utils.auth_helpers import serialize_doc
@@ -50,7 +54,8 @@ def get_or_create_google_user(google_id, email, name, picture):
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow(),
         }
-        users_col.insert_one(user_doc)
+        result = users_col.insert_one(user_doc)
+        user_doc["_id"] = result.inserted_id
         return user_doc
 
     return user
@@ -58,16 +63,15 @@ def get_or_create_google_user(google_id, email, name, picture):
 
 @google_bp.route("/google/login")
 def google_login():
-    redirect_uri = f"{settings.BACKEND_URL}/api/auth/google/callback"
-    return oauth.google.authorize_redirect(redirect_uri)
+    return oauth.google.authorize_redirect()
 
 
 @google_bp.route("/google/callback")
 def google_callback():
     """OAuth callback - store token in secure session, redirect to frontend."""
-    frontend_url = settings.FRONTEND_URL
-
     try:
+        logging_url = request.url
+        logging.info("Google callback request URL: %s", logging_url)
         token = oauth.google.authorize_access_token()
         user_info = token.get("userinfo")
 
@@ -78,19 +82,32 @@ def google_callback():
             picture=user_info.get("picture", ""),
         )
 
-        jwt_token = create_access_token(identity=str(user["_id"]))
+        register_successful_login(str(user["_id"]))
+        jwt_token = create_access_token_for_user(str(user["_id"]))
         
         # Store token in secure httpOnly session cookie
         session["auth_token"] = jwt_token
         session.permanent = True
         
         # Redirect to frontend success page without token in URL
-        return redirect(f"{frontend_url}/auth/callback?status=success")
+        return redirect(f"{settings.frontend_url('auth/callback')}?status=success")
+
+    except OAuthError as e:
+        callback_args = request.args.to_dict(flat=False)
+        logging.error("Google OAuth callback args: %s", callback_args)
+        logging.error("Google OAuthError: %s", repr(e))
+        logging.error("Google OAuth error details: error=%s description=%s", getattr(e, 'error', None), getattr(e, 'description', None))
+        error_message = str(e)
+        safe_message = quote_plus(error_message)
+        return redirect(f"{settings.frontend_url('login')}?error=google_auth_failed&reason={safe_message}")
 
     except Exception as e:
-        import logging
-        logging.error(f"Google OAuth error: {str(e)}")
-        return redirect(f"{frontend_url}/login?error=google_auth_failed")
+        logging.error("Google OAuth callback args: %s", request.args.to_dict(flat=False))
+        logging.error("Google OAuth request URL: %s", request.url)
+        error_message = str(e)
+        logging.error(f"Google OAuth error: {error_message}")
+        safe_message = quote_plus(error_message)
+        return redirect(f"{settings.frontend_url('login')}?error=google_auth_failed&reason={safe_message}")
 
 
 @google_bp.route("/get-oauth-token")

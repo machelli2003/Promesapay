@@ -10,6 +10,18 @@ EXEMPT_PATHS = [
     "/api/auth/google/login",
     "/api/auth/google/callback",
     "/api/auth/csrf-token",
+    "/api/auth/forgot-password",
+    "/api/auth/reset-password",
+    "/api/auth/recovery/request",
+    "/api/auth/recovery/verify",
+    "/api/auth/2fa/verify-login",
+    # Public Paystack checkout (donors may not have a CSRF session)
+    "/api/donations/initiate",
+    "/api/donations/verify",
+    "/api/coffee/initiate",
+    "/api/coffee/verify",
+    # Server-to-server webhooks
+    "/api/webhook",
 ]
 
 

@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Coffee, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
+import BrandLogo from "../components/common/BrandLogo";
 import { loginUser, googleLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../hooks/useToast";
@@ -11,17 +12,39 @@ export default function Login() {
   const { login } = useAuth();
   const { success, error } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading]   = useState(false);
   const [form, setForm] = useState({ identifier: "", password: "" });
 
   const set = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const errorCode = params.get("error");
+    const reason = params.get("reason");
+    const decodedReason = reason ? decodeURIComponent(reason.replace(/\+/g, " ")) : "";
+
+    if (errorCode) {
+      error(decodedReason ? `${errorCode}: ${decodedReason}` : errorCode);
+    }
+  }, [location.search]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const res = await loginUser(form);
+      
+      // Check if 2FA is required
+      if (res.data.requires_2fa) {
+        // Navigate to 2FA verification with pre-auth token
+        navigate("/2fa-verify", {
+          state: { preAuthToken: res.data.pre_auth_token }
+        });
+        return;
+      }
+      
       login(res.data.token, res.data.user);
       success("Welcome back!");
       navigate("/dashboard");
@@ -36,12 +59,7 @@ export default function Login() {
     <div className="min-h-screen grid lg:grid-cols-[1fr_480px]">
       {/* Left — testimonials */}
       <div className="hidden lg:flex flex-col justify-between bg-slate-900 px-12 py-10">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
-            <Coffee className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-          </div>
-          <span className="text-white font-semibold text-sm">Promesapay</span>
-        </Link>
+        <BrandLogo size="sm" />
 
         <div className="space-y-3 max-w-sm">
           <p className="text-slate-400 text-xs uppercase tracking-widest font-medium mb-5">
@@ -59,24 +77,24 @@ export default function Login() {
                   <p className="text-white text-xs font-medium">{t.name}</p>
                   <p className="text-slate-500 text-xs">{t.role}</p>
                 </div>
-                <span className="text-violet-400 text-xs font-semibold">{t.raised}</span>
+                <span className="text-sky-400 text-xs font-semibold">{t.raised}</span>
               </div>
             </div>
           ))}
         </div>
 
-        <p className="text-slate-600 text-xs">© {new Date().getFullYear()} Promesapay</p>
+        <p className="text-slate-600 text-xs flex items-center gap-2">
+          <span>© {new Date().getFullYear()}</span>
+          <BrandLogo to="/" size="xs" asLink />
+        </p>
       </div>
 
       {/* Right — form */}
       <div className="flex items-center justify-center bg-white px-6 py-12">
         <div className="w-full max-w-sm animate-slide-up">
-          <Link to="/" className="flex items-center gap-2 mb-10 lg:hidden">
-            <div className="w-7 h-7 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <Coffee className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="font-semibold text-sm">Promesapay</span>
-          </Link>
+          <div className="mb-10 lg:hidden">
+            <BrandLogo size="sm" />
+          </div>
 
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Sign in</h1>
@@ -133,11 +151,16 @@ export default function Login() {
               suffix={
                 <button type="button" onClick={() => setShowPass(s => !s)}
                   className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
-                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPass ? <FiEyeOff className="h-4 w-4" /> : <FiEye className="h-4 w-4" />}
                 </button>
               }
             />
-            <AppButton type="submit" size="lg" loading={loading} iconRight={ArrowRight} className="w-full mt-2">
+            <div className="text-right">
+              <Link to="/forgot-password" className="text-xs text-sky-600 hover:text-sky-700 font-medium">
+                Forgot password?
+              </Link>
+            </div>
+            <AppButton type="submit" size="lg" loading={loading} iconRight={FiArrowRight} className="w-full mt-2">
               Sign in
             </AppButton>
           </form>

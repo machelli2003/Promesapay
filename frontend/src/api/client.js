@@ -66,7 +66,11 @@ api.interceptors.response.use(
       window.location.href = "/login";
       toast.error("Session expired. Please login again.");
     } else if (status === 403) {
-      toast.error("You don't have permission to perform this action.");
+      const msg =
+        data?.message === "Invalid or missing CSRF token"
+          ? "Session security token expired. Please refresh the page."
+          : data?.message || "You don't have permission to perform this action.";
+      toast.error(msg);
     } else if (status === 429) {
       toast.error("Too many requests. Please try again later.");
     } else if (status >= 500) {

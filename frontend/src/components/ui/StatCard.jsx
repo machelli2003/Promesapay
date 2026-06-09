@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
 
 const iconColorMap = {
-  violet: {
-    bg: "bg-violet-100 dark:bg-violet-900/30",
-    icon: "text-violet-600 dark:text-violet-400",
+  sky: {
+    bg: "bg-sky-100 dark:bg-sky-900/30",
+    icon: "text-sky-600 dark:text-sky-400",
   },
   purple: {
     bg: "bg-purple-100 dark:bg-purple-900/30",
@@ -35,10 +35,10 @@ export default function StatCard({
   icon: Icon,
   trend,
   trendLabel,
-  iconColor = "violet",
+  iconColor = "sky",
   className = "",
 }) {
-  const iconTheme = iconColorMap[iconColor] || iconColorMap.violet;
+  const iconTheme = iconColorMap[iconColor] || iconColorMap.sky;
 
   const TrendIcon = trend === "up" ? TrendingUp : TrendingDown;
   const trendColor =

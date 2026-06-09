@@ -1,4 +1,4 @@
-import { Coffee } from "lucide-react";
+import { FiCoffee } from "react-icons/fi";
 import { useState } from "react";
 import { COFFEE_OPTIONS, COFFEE_PRICE } from "../../utils/constants";
 import { formatCurrency } from "../../utils/formatters";
@@ -17,7 +17,7 @@ export default function CoffeeBox({ onBuy }) {
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
-          <Coffee className="h-4 w-4 text-amber-500" strokeWidth={1.75} />
+          <FiCoffee className="h-4 w-4 text-amber-500" strokeWidth={1.75} />
         </div>
         <div>
           <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">Buy me a coffee</h3>
@@ -83,7 +83,7 @@ export default function CoffeeBox({ onBuy }) {
         onClick={() => isValid && onBuy({ cups: selected, amount: total, donor_name: name, message })}
         disabled={!isValid}
         size="lg"
-        icon={Coffee}
+        icon={FiCoffee}
         className="w-full bg-amber-500 hover:bg-amber-600 border-amber-500"
       >
         Send {selected} coffee{selected > 1 ? "s" : ""} · {formatCurrency(total)}

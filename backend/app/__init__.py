@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from authlib.integrations.flask_client import OAuth
@@ -83,6 +83,16 @@ def create_app(test_config=None):
     Talisman(app, content_security_policy=None, force_https=force_https)
     register_error_handlers(app)
 
+    from flask_limiter.errors import RateLimitExceeded
+
+    @app.errorhandler(RateLimitExceeded)
+    def handle_flask_limiter(e):
+        return jsonify({
+            "error": "RATE_LIMIT_EXCEEDED",
+            "message": "Too many requests. Please try again later.",
+            "status_code": 429,
+        }), 429
+
     from .routes.auth import auth_bp
     from .routes.profile import profile_bp
     from .routes.donations import donations_bp
@@ -91,8 +101,21 @@ def create_app(test_config=None):
     from .routes.webhook import webhook_bp
     from .routes.wallet import wallet_bp
     from .routes.analytics import analytics_bp
+    from .routes.campaigns import campaigns_bp
+    from .routes.payouts import bp as payouts_bp
+    from .routes.payment_methods import bp as payment_methods_bp
+    from .routes.refunds import bp as refunds_bp
+    from .routes.receipts import bp as receipts_bp
+    from .routes.admin_finance import bp as admin_finance_bp
+    from .routes.admin_payouts import bp as admin_payouts_bp
+    from .routes.auth_security import security_bp
+    from .routes.admin import admin_bp
+    from .routes.disputes import disputes_bp, admin_disputes_bp
+    from .routes.monitoring import monitoring_bp
+    from .routes.notifications import notifications_bp
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(security_bp, url_prefix="/api/auth")
 
     if not app.config.get("TESTING", False) and settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET:
         oauth.register(
@@ -101,6 +124,7 @@ def create_app(test_config=None):
             client_secret=settings.GOOGLE_CLIENT_SECRET,
             server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
             client_kwargs={"scope": "openid email profile"},
+            redirect_uri=settings.GOOGLE_CALLBACK_URL,
         )
         from .routes.auth_google import google_bp
         app.register_blueprint(google_bp, url_prefix="/api/auth")
@@ -112,5 +136,17 @@ def create_app(test_config=None):
     app.register_blueprint(webhook_bp, url_prefix="/api/webhook")
     app.register_blueprint(wallet_bp, url_prefix="/api/wallet")
     app.register_blueprint(analytics_bp, url_prefix="/api/analytics")
+    app.register_blueprint(campaigns_bp, url_prefix="/api/campaigns")
+    app.register_blueprint(payouts_bp)
+    app.register_blueprint(payment_methods_bp)
+    app.register_blueprint(refunds_bp)
+    app.register_blueprint(receipts_bp)
+    app.register_blueprint(admin_finance_bp)
+    app.register_blueprint(admin_payouts_bp)
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(disputes_bp)
+    app.register_blueprint(admin_disputes_bp)
+    app.register_blueprint(monitoring_bp)
+    app.register_blueprint(notifications_bp)
 
     return app

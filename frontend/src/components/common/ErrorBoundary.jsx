@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle } from "lucide-react";
+import { FiAlertCircle } from "react-icons/fi";
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export class ErrorBoundary extends React.Component {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
           <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900 mx-auto mb-4">
-              <AlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
+              <FiAlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
             </div>
             <h2 className="text-lg font-medium text-gray-900 dark:text-white text-center mb-2">
               Something went wrong
@@ -31,7 +31,7 @@ export class ErrorBoundary extends React.Component {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="w-full bg-violet-600 hover:bg-violet-700 text-white py-2 rounded-lg text-sm font-medium transition"
+              className="w-full bg-sky-600 hover:bg-sky-700 text-white py-2 rounded-lg text-sm font-medium transition"
             >
               Refresh Page
             </button>

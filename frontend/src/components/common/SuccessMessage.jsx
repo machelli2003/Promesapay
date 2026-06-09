@@ -1,4 +1,4 @@
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { FiCheckCircle, FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import AppButton from "../ui/AppButton";
 
@@ -13,7 +13,7 @@ export default function SuccessMessage({
     <div className="flex flex-col items-center justify-center p-8 text-center max-w-md mx-auto">
       {showIcon && (
         <div className="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mb-6 animate-scale-in">
-          <CheckCircle className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
+          <FiCheckCircle className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
         </div>
       )}
       <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
@@ -23,7 +23,7 @@ export default function SuccessMessage({
         {message}
       </p>
       <Link to={actionTo}>
-        <AppButton iconRight={ArrowRight}>
+        <AppButton iconRight={FiArrowRight}>
           {actionText}
         </AppButton>
       </Link>

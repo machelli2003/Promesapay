@@ -1,4 +1,4 @@
-import { Star, Quote } from "lucide-react";
+import { FaStar, FaQuoteLeft } from "react-icons/fa";
 
 const testimonials = [
   {
@@ -69,7 +69,7 @@ export default function Testimonials() {
               {/* Rating Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star
+                  <FaStar
                     key={i}
                     className="h-4 w-4 text-yellow-400 fill-current"
                   />
@@ -83,8 +83,8 @@ export default function Testimonials() {
 
               {/* Author Info */}
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-violet-600 dark:text-violet-400 font-semibold text-sm">
+                <div className="w-10 h-10 bg-sky-100 dark:bg-sky-900/30 rounded-full flex items-center justify-center">
+                  <span className="text-sky-600 dark:text-sky-400 font-semibold text-sm">
                     {testimonial.name.split(' ').map(n => n[0]).join('')}
                   </span>
                 </div>

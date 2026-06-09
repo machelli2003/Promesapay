@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { FiHeart } from "react-icons/fi";
 import { useState } from "react";
 import { formatCurrency } from "../../utils/formatters";
 import AppButton from "../ui/AppButton";
@@ -34,7 +34,7 @@ export default function DonateBox({ onDonate }) {
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-900/30 flex items-center justify-center">
-          <Heart className="h-4 w-4 text-rose-500" strokeWidth={1.75} />
+          <FiHeart className="h-4 w-4 text-rose-500" strokeWidth={1.75} />
         </div>
         <div>
           <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">Make a donation</h3>
@@ -110,7 +110,7 @@ export default function DonateBox({ onDonate }) {
         onClick={handleSubmit}
         disabled={!isValid}
         size="lg"
-        icon={Heart}
+        icon={FiHeart}
         className="w-full"
       >
         Donate {selected >= 1 ? formatCurrency(selected) : ""}

@@ -1,23 +1,26 @@
 import { useState } from "react";
-import { X, CreditCard, Coffee, Heart, Lock, AlertCircle } from "lucide-react";
+import { FiX, FiCreditCard, FiCoffee, FiHeart, FiLock, FiAlertCircle } from "react-icons/fi";
 import { usePaystack } from "../../hooks/usePaystack";
 import { useToast } from "../../hooks/useToast";
 import { formatCurrency } from "../../utils/formatters";
 import { COFFEE_PRICE } from "../../utils/constants";
-import AppButton from "../ui/AppButton";
 
-export default function PaymentModal({ type, payload, recipient, onClose, onSuccess }) {
+export default function PaymentModal({ type, payload, recipient, campaignSlug, onClose, onSuccess }) {
   const { pay, loading } = usePaystack();
-  const { success }      = useToast();
+  const { success } = useToast();
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
   const isCoffee = type === "coffee";
-  const amount   = isCoffee ? payload.cups * COFFEE_PRICE : payload.amount;
+  const amount = payload.amount || 0;
 
   const validate = () => {
+    if (!name.trim()) { setNameError("Name is required"); return false; }
     if (!email.trim()) { setEmailError("Email is required"); return false; }
     if (!email.includes("@")) { setEmailError("Enter a valid email"); return false; }
+    setNameError("");
     setEmailError("");
     return true;
   };
@@ -26,130 +29,357 @@ export default function PaymentModal({ type, payload, recipient, onClose, onSucc
     if (!validate()) return;
     await pay({
       type,
-      payload: { ...payload, donor_email: email },
+      payload: { ...payload, donor_name: name, email },
       recipient,
-      onSuccess: (updatedUser) => {
-        success(isCoffee
-          ? `☕ ${payload.cups} coffee${payload.cups > 1 ? "s" : ""} sent!`
-          : "💝 Donation successful!"
-        );
-        onSuccess(updatedUser);
+      campaignSlug,
+      onSuccess: () => {
+        success(isCoffee ? `☕ Coffee sent!` : "💝 Donation successful!");
+        onSuccess();
       },
     });
   };
 
+  // Styles
+  const S = {
+    backdrop: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 50,
+      backgroundColor: "rgba(15, 23, 42, 0.5)",
+      backdropFilter: "blur(4px)",
+      cursor: "pointer"
+    },
+    modal: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 51,
+      display: "flex",
+      alignItems: "flex-end",
+      justifyContent: "center",
+      padding: "0",
+      "@media (min-width: 640px)": {
+        alignItems: "center",
+        padding: "16px"
+      }
+    },
+    container: {
+      position: "relative",
+      width: "100%",
+      maxWidth: "448px",
+      backgroundColor: "#ffffff",
+      borderRadius: "24px 24px 0 0",
+      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+      border: "1px solid #e2e8f0",
+      overflow: "hidden",
+      "@media (min-width: 640px)": {
+        borderRadius: "16px"
+      }
+    },
+    header: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "16px 20px",
+      borderBottom: "1px solid #e2e8f0",
+      backgroundColor: "#ffffff",
+      gap: "12px"
+    },
+    headerContent: {
+      display: "flex",
+      alignItems: "center",
+      gap: "12px"
+    },
+    iconBox: {
+      width: "32px",
+      height: "32px",
+      borderRadius: "8px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: isCoffee ? "rgba(180, 83, 9, 0.1)" : "rgba(190, 24, 93, 0.1)"
+    },
+    headerText: {
+      display: "flex",
+      flexDirection: "column"
+    },
+    headerTitle: {
+      fontSize: "14px",
+      fontWeight: "600",
+      color: "#0f172a",
+      fontFamily: "DM Sans, -apple-system, sans-serif",
+      margin: 0
+    },
+    headerSubtitle: {
+      fontSize: "12px",
+      color: "#64748b",
+      margin: 0,
+      marginTop: "2px"
+    },
+    closeBtn: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: "32px",
+      height: "32px",
+      background: "none",
+      border: "none",
+      borderRadius: "8px",
+      color: "var(--color-text-tertiary)",
+      cursor: "pointer",
+      transition: "background-color 0.2s",
+      ":hover": {
+        backgroundColor: "var(--color-background-secondary)"
+      }
+    },
+    body: {
+      padding: "20px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "20px",
+      backgroundColor: "#ffffff",
+    },
+    summary: {
+      backgroundColor: "#f8fafc",
+      borderRadius: "12px",
+      overflow: "hidden",
+      border: "1px solid #e2e8f0"
+    },
+    summaryRow: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "12px 16px",
+      borderBottom: "1px solid var(--color-border-tertiary)",
+      ":last-child": {
+        borderBottom: "none"
+      }
+    },
+    summaryLabel: {
+      fontSize: "12px",
+      color: "var(--color-text-tertiary)",
+      fontFamily: "DM Sans, -apple-system, sans-serif"
+    },
+    summaryValue: {
+      fontSize: "14px",
+      fontWeight: "500",
+      color: "var(--color-text-primary)",
+      fontFamily: "DM Sans, -apple-system, sans-serif"
+    },
+    totalRow: {
+      backgroundColor: "#ffffff",
+    },
+    totalLabel: {
+      fontSize: "14px",
+      fontWeight: "600",
+      color: "var(--color-text-primary)",
+      fontFamily: "DM Sans, -apple-system, sans-serif"
+    },
+    totalValue: {
+      fontSize: "18px",
+      fontWeight: "700",
+      color: "var(--color-text-primary)",
+      fontFamily: "DM Sans, -apple-system, sans-serif"
+    },
+    fieldGroup: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px"
+    },
+    label: {
+      fontSize: "13px",
+      fontWeight: "500",
+      color: "#0f172a",
+      fontFamily: "DM Sans, -apple-system, sans-serif",
+      display: "flex",
+      alignItems: "center",
+      gap: "4px"
+    },
+    required: {
+      color: "#dc2626"
+    },
+    input: {
+      fontSize: "14px",
+      fontFamily: "DM Sans, -apple-system, sans-serif",
+      padding: "10px 12px",
+      border: "1px solid #cbd5e1",
+      borderRadius: "8px",
+      backgroundColor: "#ffffff",
+      color: "#0f172a",
+      transition: "border-color 0.2s"
+    },
+    inputError: {
+      borderColor: "#dc2626",
+      backgroundColor: "rgba(220, 38, 38, 0.05)"
+    },
+    hint: {
+      fontSize: "12px",
+      color: "var(--color-text-tertiary)",
+      fontFamily: "DM Sans, -apple-system, sans-serif"
+    },
+    errorMsg: {
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+      fontSize: "12px",
+      color: "#dc2626",
+      fontFamily: "DM Sans, -apple-system, sans-serif",
+      margin: "6px 0 0 0"
+    },
+    button: {
+      width: "100%",
+      padding: "12px 16px",
+      fontSize: "14px",
+      fontWeight: "600",
+      fontFamily: "DM Sans, -apple-system, sans-serif",
+      border: "1px solid",
+      borderRadius: "8px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+      transition: "all 0.2s",
+      backgroundColor: isCoffee ? "#b45309" : "#be185d",
+      borderColor: isCoffee ? "#b45309" : "#be185d",
+      color: "#ffffff",
+      ":hover": {
+        backgroundColor: isCoffee ? "#92400e" : "#9d174d",
+        borderColor: isCoffee ? "#92400e" : "#9d174d"
+      },
+      ":disabled": {
+        opacity: 0.6,
+        cursor: "not-allowed"
+      }
+    },
+    security: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "6px",
+      fontSize: "12px",
+      color: "var(--color-text-tertiary)",
+      fontFamily: "DM Sans, -apple-system, sans-serif"
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-slate-900/50 dark:bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className="relative w-full sm:max-w-md bg-white dark:bg-slate-900 rounded-t-2xl sm:rounded-2xl
-                      shadow-xl animate-slide-up overflow-hidden">
-
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-              isCoffee ? "bg-amber-50 dark:bg-amber-900/30" : "bg-rose-50 dark:bg-rose-900/30"
-            }`}>
-              {isCoffee
-                ? <Coffee className="h-4 w-4 text-amber-500" strokeWidth={1.75} />
-                : <Heart className="h-4 w-4 text-rose-500" strokeWidth={1.75} />
-              }
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                {isCoffee
-                  ? `Send ${payload.cups} coffee${payload.cups > 1 ? "s" : ""}`
-                  : "Make a donation"
-                }
-              </h2>
-              <p className="text-xs text-slate-400 dark:text-slate-500">to @{recipient.username}</p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="btn-ghost btn-sm p-2 text-slate-400 dark:text-slate-500"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        {/* Body */}
-        <div className="px-5 py-5 space-y-5">
-
-          {/* Summary */}
-          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl divide-y divide-slate-200 dark:divide-slate-700 overflow-hidden">
-            <div className="flex justify-between items-center px-4 py-3">
-              <span className="text-xs text-slate-500 dark:text-slate-400">Supporter</span>
-              <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{payload.donor_name}</span>
-            </div>
-            {isCoffee && (
-              <div className="flex justify-between items-center px-4 py-3">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Coffees</span>
-                <span className="text-sm font-medium text-slate-900 dark:text-slate-100">☕ × {payload.cups}</span>
+    <div style={S.backdrop} onClick={onClose}>
+      <div style={S.modal} onClick={(e) => e.stopPropagation()}>
+        <div style={S.container}>
+          {/* Header */}
+          <div style={S.header}>
+            <div style={S.headerContent}>
+              <div style={S.iconBox}>
+                {isCoffee ? (
+                  <FiCoffee size={16} color={isCoffee ? "#b45309" : "#be185d"} />
+                ) : (
+                  <FiHeart size={16} color={isCoffee ? "#b45309" : "#be185d"} />
+                )}
               </div>
-            )}
-            {payload.message && (
-              <div className="flex justify-between items-start gap-4 px-4 py-3">
-                <span className="text-xs text-slate-500 dark:text-slate-400 shrink-0">Message</span>
-                <span className="text-xs text-slate-600 dark:text-slate-400 text-right italic">
-                  "{payload.message}"
-                </span>
+              <div style={S.headerText}>
+                <h2 style={S.headerTitle}>
+                  {isCoffee ? "Send Coffee" : "Make Donation"}
+                </h2>
+                <p style={S.headerSubtitle}>to @{recipient.username}</p>
               </div>
-            )}
-            <div className="flex justify-between items-center px-4 py-3 bg-white dark:bg-slate-900">
-              <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">Total</span>
-              <span className="text-lg font-bold text-slate-900 dark:text-slate-50">
-                {formatCurrency(amount)}
-              </span>
             </div>
+            <button
+              onClick={onClose}
+              style={S.closeBtn}
+              type="button"
+              aria-label="Close"
+            >
+              <FiX size={18} />
+            </button>
           </div>
 
-          {/* Email */}
-          <div className="space-y-1.5">
-            <label className="field-label">
-              Your email
-              <span className="text-red-400 ml-0.5">*</span>
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
-              placeholder="you@example.com"
-              className={`input ${emailError ? "input-error" : ""}`}
-            />
-            {emailError && (
-              <p className="flex items-center gap-1 text-xs text-red-500">
-                <AlertCircle className="h-3 w-3" /> {emailError}
-              </p>
-            )}
-            <p className="field-hint">Used for your payment receipt only</p>
-          </div>
+          {/* Body */}
+          <div style={S.body}>
+            {/* Summary */}
+            <div style={S.summary}>
+              <div style={{...S.summaryRow}}>
+                <span style={S.summaryLabel}>Amount</span>
+                <span style={S.summaryValue}>{formatCurrency(amount)}</span>
+              </div>
+              {payload.note && (
+                <div style={{...S.summaryRow}}>
+                  <span style={S.summaryLabel}>Message</span>
+                  <span style={{...S.summaryValue, fontStyle: "italic", textAlign: "right"}}>
+                    "{payload.note}"
+                  </span>
+                </div>
+              )}
+              <div style={{...S.summaryRow, ...S.totalRow}}>
+                <span style={S.totalLabel}>Total</span>
+                <span style={S.totalValue}>{formatCurrency(amount)}</span>
+              </div>
+            </div>
 
-          {/* Pay button */}
-          <AppButton
-            onClick={handlePay}
-            loading={loading}
-            size="lg"
-            icon={CreditCard}
-            className={`w-full ${
-              isCoffee
-                ? "bg-amber-500 hover:bg-amber-600 border-amber-500"
-                : "bg-rose-500 hover:bg-rose-600 border-rose-500"
-            }`}
-          >
-            Pay {formatCurrency(amount)} via Paystack
-          </AppButton>
+            {/* Name */}
+            <div style={S.fieldGroup}>
+              <label style={S.label}>
+                Your name
+                <span style={S.required}>*</span>
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setNameError(""); }}
+                placeholder="e.g., Jane Smith"
+                style={{
+                  ...S.input,
+                  ...(nameError ? S.inputError : {})
+                }}
+              />
+              {nameError && (
+                <div style={S.errorMsg}>
+                  <FiAlertCircle size={14} />
+                  {nameError}
+                </div>
+              )}
+            </div>
 
-          {/* Security note */}
-          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
-            <Lock className="h-3 w-3" strokeWidth={2} />
-            Secured by Paystack · 256-bit SSL
+            {/* Email */}
+            <div style={S.fieldGroup}>
+              <label style={S.label}>
+                Your email
+                <span style={S.required}>*</span>
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
+                placeholder="you@example.com"
+                style={{
+                  ...S.input,
+                  ...(emailError ? S.inputError : {})
+                }}
+              />
+              {emailError && (
+                <div style={S.errorMsg}>
+                  <FiAlertCircle size={14} />
+                  {emailError}
+                </div>
+              )}
+              <p style={S.hint}>Used for your payment receipt only</p>
+            </div>
+
+            {/* Pay button */}
+            <button
+              onClick={handlePay}
+              disabled={loading}
+              style={S.button}
+              type="button"
+            >
+              <FiCreditCard size={16} />
+              Pay {formatCurrency(amount)} via Paystack
+            </button>
+
+            {/* Security note */}
+            <div style={S.security}>
+              <FiLock size={14} />
+              Secured by Paystack · 256-bit SSL
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Target } from "lucide-react";
+import { FiTarget } from "react-icons/fi";
 import { formatCurrency, calcProgress } from "../../utils/formatters";
 
 export default function ProgressBar({ raised = 0, goal = 0, title = "" }) {
@@ -9,8 +9,8 @@ export default function ProgressBar({ raised = 0, goal = 0, title = "" }) {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center shrink-0">
-            <Target className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" strokeWidth={1.75} />
+          <div className="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center shrink-0">
+            <FiTarget className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" strokeWidth={1.75} />
           </div>
           <div>
             <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
@@ -22,7 +22,7 @@ export default function ProgressBar({ raised = 0, goal = 0, title = "" }) {
           </div>
         </div>
         <div className="text-right shrink-0">
-          <span className="text-2xl font-bold text-violet-600 dark:text-violet-400">{pct}%</span>
+          <span className="text-2xl font-bold text-sky-600 dark:text-sky-400">{pct}%</span>
           <p className="text-xs text-slate-400 dark:text-slate-500">funded</p>
         </div>
       </div>
@@ -31,7 +31,7 @@ export default function ProgressBar({ raised = 0, goal = 0, title = "" }) {
       <div className="space-y-2">
         <div className="h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-violet-600 dark:bg-violet-500 rounded-full transition-all duration-700 ease-out"
+            className="h-full bg-sky-600 dark:bg-sky-500 rounded-full transition-all duration-700 ease-out"
             style={{ width: `${pct}%` }}
           />
         </div>

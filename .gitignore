@@ -15,6 +15,7 @@ build/
 
 # VS Code
 .vscode/
+*.code-workspace
 
 # Node
 node_modules/
@@ -25,15 +26,48 @@ pnpm-lock.yaml
 
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Environment files
 .env
 .env.*
+!.env.example
+!.env.production.example
 
-# Coverage
+# Coverage & Testing
 .pytest_cache/
 coverage.xml
 .coverage
+.tox/
+.hypothesis/
+htmlcov/
 
 # Logs
 *.log
+logs/
+flask_session/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+dump.rdb
+
+# Temporary files
+*.tmp
+*.temp
+

@@ -121,11 +121,11 @@ def register_error_handlers(app):
         return jsonify(response), 500
 
 
-class RateLimitError(APIError):
-    """Raised when rate limit exceeded."""
-    
-    def __init__(self):
-        super().__init__("Rate limit exceeded", status_code=429, error_code="RATE_LIMIT_EXCEEDED")
+class RateLimitExceededError(APIError):
+    """Raised when rate limit exceeded (application-level)."""
+
+    def __init__(self, message="Rate limit exceeded"):
+        super().__init__(message, status_code=429, error_code="RATE_LIMIT_EXCEEDED")
 
 
 class ExternalServiceError(APIError):

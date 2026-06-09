@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Coffee, ArrowRight, Check } from "lucide-react";
+import { FiEye, FiEyeOff, FiArrowRight, FiCheck } from "react-icons/fi";
+import BrandLogo from "../components/common/BrandLogo";
 import { registerUser, googleLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../hooks/useToast";
@@ -42,45 +43,40 @@ export default function Register() {
   return (
     <div className="min-h-screen grid lg:grid-cols-[1fr_480px]">
       {/* Left */}
-      <div className="hidden lg:flex flex-col justify-between bg-violet-600 px-12 py-10">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
-            <Coffee className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-          </div>
-          <span className="text-white font-semibold text-sm">Promesapay</span>
-        </Link>
+      <div className="hidden lg:flex flex-col justify-between bg-sky-600 px-12 py-10">
+        <BrandLogo size="sm" />
 
         <div className="max-w-sm">
           <h2 className="text-3xl font-bold text-white leading-tight mb-4">
             Start receiving support from your audience today
           </h2>
-          <p className="text-violet-100 text-sm leading-relaxed mb-8">
+          <p className="text-sky-100 text-sm leading-relaxed mb-8">
             Thousands of African creators use Promesapay to turn passion into income — music, art, podcasts, and more.
           </p>
           <ul className="space-y-3">
             {perks.map((p) => (
               <li key={p} className="flex items-center gap-3">
                 <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-white" strokeWidth={2.5} />
+                  <FiCheck className="h-3 w-3 text-white" strokeWidth={2.5} />
                 </div>
-                <span className="text-violet-50 text-sm">{p}</span>
+                <span className="text-sky-50 text-sm">{p}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <p className="text-violet-200 text-xs">© {new Date().getFullYear()} Promesapay</p>
+        <p className="text-sky-200 text-xs flex items-center gap-2">
+          <span>© {new Date().getFullYear()}</span>
+          <BrandLogo to="/" size="xs" asLink />
+        </p>
       </div>
 
       {/* Right */}
       <div className="flex items-center justify-center bg-white dark:bg-slate-950 px-6 py-12">
         <div className="w-full max-w-sm animate-slide-up">
-          <Link to="/" className="flex items-center gap-2 mb-10 lg:hidden">
-            <div className="w-7 h-7 bg-violet-600 rounded-lg flex items-center justify-center">
-              <Coffee className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">Promesapay</span>
-          </Link>
+          <div className="mb-10 lg:hidden">
+            <BrandLogo size="sm" />
+          </div>
 
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Create your account</h1>
@@ -132,12 +128,12 @@ export default function Register() {
               suffix={
                 <button type="button" onClick={() => setShowPass(s => !s)}
                   className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
-                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPass ? <FiEyeOff className="h-4 w-4" /> : <FiEye className="h-4 w-4" />}
                 </button>
               }
             />
 
-            <AppButton type="submit" size="lg" loading={loading} iconRight={ArrowRight} className="w-full mt-1">
+            <AppButton type="submit" size="lg" loading={loading} iconRight={FiArrowRight} className="w-full mt-1">
               Create account
             </AppButton>
 

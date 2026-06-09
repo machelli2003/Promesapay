@@ -1,8 +1,17 @@
 from datetime import datetime
 from bson import ObjectId
 
-def create_donation_doc(recipient_id, amount, donor_name, donor_email, message="", reference="", status="pending"):
-    return {
+def create_donation_doc(
+    recipient_id,
+    amount,
+    donor_name,
+    donor_email,
+    message="",
+    reference="",
+    status="pending",
+    campaign_id=None,
+):
+    doc = {
         "_id": ObjectId(),
         "recipient_id": recipient_id,
         "amount": amount,
@@ -12,5 +21,8 @@ def create_donation_doc(recipient_id, amount, donor_name, donor_email, message="
         "reference": reference,
         "status": status,  # pending | success | failed
         "type": "donation",
-        "created_at": datetime.utcnow()
+        "created_at": datetime.utcnow(),
     }
+    if campaign_id:
+        doc["campaign_id"] = campaign_id
+    return doc

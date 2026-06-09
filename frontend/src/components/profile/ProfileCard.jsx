@@ -1,4 +1,4 @@
-import { Coffee, Heart, Share2, ExternalLink, Calendar } from "lucide-react";
+import { FiCoffee, FiHeart, FiShare2, FiExternalLink, FiCalendar } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import AppButton from "../ui/AppButton";
 import Avatar from "../ui/Avatar";
@@ -7,7 +7,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
       {/* Cover Image */}
-      <div className="h-32 bg-gradient-to-r from-violet-600 to-purple-600" />
+      <div className="h-32 bg-gradient-to-r from-sky-600 to-blue-600" />
 
       {/* Profile Info */}
       <div className="px-6 pb-6">
@@ -59,18 +59,18 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
 
         {/* Goal Progress */}
         {user.goal_amount > 0 && (
-          <div className="mb-6 p-4 bg-violet-50 dark:bg-violet-950/30 rounded-lg">
+          <div className="mb-6 p-4 bg-sky-50 dark:bg-sky-950/30 rounded-lg">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 {user.goal_title || "Funding Goal"}
               </span>
-              <span className="text-sm font-bold text-violet-600 dark:text-violet-400">
+              <span className="text-sm font-bold text-sky-600 dark:text-sky-400">
                 {Math.round((user.total_received / user.goal_amount) * 100)}%
               </span>
             </div>
             <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-violet-600 transition-all duration-500"
+                className="h-full bg-sky-600 transition-all duration-500"
                 style={{
                   width: `${Math.min((user.total_received / user.goal_amount) * 100, 100)}%`
                 }}
@@ -88,7 +88,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
             <AppButton
               variant="secondary"
               className="w-full"
-              icon={Coffee}
+              icon={FiCoffee}
             >
               Buy Coffee
             </AppButton>
@@ -96,7 +96,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
           <Link to={`/donate/${user.username}`} className="flex-1">
             <AppButton
               className="w-full"
-              icon={Heart}
+              icon={FiHeart}
             >
               Donate
             </AppButton>
@@ -117,7 +117,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
           }}
           className="w-full mt-3 flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors py-2"
         >
-          <Share2 className="h-4 w-4" />
+          <FiShare2 className="h-4 w-4" />
           Share Profile
         </button>
 
@@ -129,9 +129,9 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
                 href={user.social_links.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                className="text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
               >
-                <ExternalLink className="h-5 w-5" />
+                <FiExternalLink className="h-5 w-5" />
               </a>
             )}
             {user.social_links.twitter && (
@@ -139,7 +139,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
                 href={`https://twitter.com/${user.social_links.twitter}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                className="text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
               >
                 <span className="text-sm">@{user.social_links.twitter}</span>
               </a>
@@ -149,7 +149,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
 
         {/* Member Since */}
         <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400">
-          <Calendar className="h-4 w-4" />
+          <FiCalendar className="h-4 w-4" />
           <span>
             Member since {new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </span>

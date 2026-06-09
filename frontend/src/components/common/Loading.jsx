@@ -1,4 +1,4 @@
-import { Coffee } from "lucide-react";
+import { FiCoffee } from "react-icons/fi";
 
 export default function Loading({ size = "md", text = "Loading..." }) {
   const sizes = {
@@ -17,8 +17,8 @@ export default function Loading({ size = "md", text = "Loading..." }) {
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <div className={`${sizes[size]} rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center animate-pulse`}>
-        <Coffee className={`${iconSizes[size]} text-violet-600 dark:text-violet-400 animate-spin`} />
+      <div className={`${sizes[size]} rounded-full bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center animate-pulse`}>
+        <FiCoffee className={`${iconSizes[size]} text-sky-600 dark:text-sky-400 animate-spin`} />
       </div>
       {text && (
         <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">{text}</p>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Coffee, Heart } from "lucide-react";
+import { FiArrowRight, FiCoffee, FiHeart } from "react-icons/fi";
 import AppButton from "../ui/AppButton";
 
 export default function CTASection() {
@@ -20,7 +20,7 @@ export default function CTASection() {
                 <AppButton
                   size="lg"
                   className="w-full sm:w-auto"
-                  iconRight={ArrowRight}
+                  iconRight={FiArrowRight}
                 >
                   Create Your Page
                 </AppButton>
@@ -38,11 +38,11 @@ export default function CTASection() {
 
             <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-slate-500 dark:text-slate-400">
               <div className="flex items-center gap-2">
-                <Coffee className="w-4 h-4" />
+                <FiCoffee className="w-4 h-4" />
                 <span>Free to start</span>
               </div>
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4" />
+                <FiHeart className="w-4 h-4" />
                 <span>No hidden fees</span>
               </div>
               <div className="flex items-center gap-2">

@@ -1,4 +1,4 @@
-import { Heart, Coffee, MessageSquare } from "lucide-react";
+import { FiHeart, FiCoffee, FiMessageSquare } from "react-icons/fi";
 import { formatCurrency, formatDate } from "../../utils/formatters";
 import Avatar from "../ui/Avatar";
 import EmptyState from "../ui/EmptyState";
@@ -8,7 +8,7 @@ export default function SupportersList({ supporters = [] }) {
     return (
       <div className="card">
         <EmptyState
-          icon={Heart}
+          icon={FiHeart}
           title="No supporters yet"
           description="Be the first to show your support!"
         />
@@ -39,9 +39,9 @@ export default function SupportersList({ supporters = [] }) {
 
               <div className="flex items-center gap-1.5 mt-0.5">
                 {s.type === "coffee" ? (
-                  <Coffee className="h-3 w-3 text-amber-500 shrink-0" strokeWidth={2} />
+                  <FiCoffee className="h-3 w-3 text-amber-500 shrink-0" strokeWidth={2} />
                 ) : (
-                  <Heart className="h-3 w-3 text-rose-400 shrink-0" strokeWidth={2} />
+                  <FiHeart className="h-3 w-3 text-rose-400 shrink-0" strokeWidth={2} />
                 )}
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {s.type === "coffee"
@@ -53,7 +53,7 @@ export default function SupportersList({ supporters = [] }) {
 
               {s.message && (
                 <div className="flex items-start gap-1.5 mt-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg px-3 py-2">
-                  <MessageSquare className="h-3 w-3 text-slate-300 dark:text-slate-500 mt-0.5 shrink-0" />
+                  <FiMessageSquare className="h-3 w-3 text-slate-300 dark:text-slate-500 mt-0.5 shrink-0" />
                   <p className="text-xs text-slate-500 dark:text-slate-400 italic leading-relaxed">
                     "{s.message}"
                   </p>

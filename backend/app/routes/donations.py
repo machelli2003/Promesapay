@@ -3,9 +3,10 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_req
 from bson import ObjectId
 import uuid
 from datetime import datetime
-from ..db import users_col, donations_col
+from ..db import users_col, donations_col, campaigns_col
 from ..models.donation import create_donation_doc
 from ..services.paystack import initialize_payment, verify_payment
+from ..services.payment_settlement import settle_successful_transaction
 from ..utils.auth_helpers import serialize_doc
 from ..errors import ValidationError, NotFoundError, ExternalServiceError
 
@@ -16,7 +17,9 @@ donations_bp = Blueprint("donations", __name__)
 def initiate_donation():
     data = request.get_json()
 
-    required = ["recipient_username", "amount", "donor_name", "donor_email"]
+    required = ["amount", "donor_name", "donor_email"]
+    if not data.get("campaign_slug"):
+        required.append("recipient_username")
     for field in required:
         if not data.get(field):
             raise ValidationError(f"{field} is required")
@@ -29,8 +32,20 @@ def initiate_donation():
     if amount < 1:
         raise ValidationError("Minimum donation is GH₵1")
 
-    # Find recipient
-    recipient = users_col.find_one({"username": data["recipient_username"].lower()})
+    campaign_id = None
+    campaign = None
+
+    if data.get("campaign_slug"):
+        campaign = campaigns_col.find_one({"slug": data["campaign_slug"].lower()})
+        if not campaign:
+            raise NotFoundError("Campaign not found")
+        if campaign.get("status") != "active":
+            raise ValidationError("This campaign is not accepting donations")
+        recipient = users_col.find_one({"_id": ObjectId(campaign["owner_id"])})
+        campaign_id = str(campaign["_id"])
+    else:
+        recipient = users_col.find_one({"username": data["recipient_username"].lower()})
+
     if not recipient:
         raise NotFoundError("Recipient not found")
 
@@ -44,6 +59,8 @@ def initiate_donation():
         "donor_name": data["donor_name"],
         "message": data.get("message", ""),
     }
+    if campaign_id:
+        metadata["campaign_id"] = campaign_id
 
     paystack_res = initialize_payment(
         email=data["donor_email"],
@@ -64,6 +81,7 @@ def initiate_donation():
         message=data.get("message", ""),
         reference=reference,
         status="pending",
+        campaign_id=campaign_id,
     )
     donations_col.insert_one(doc)
 
@@ -86,8 +104,23 @@ def verify_donation():
     if not donation:
         raise NotFoundError("Donation not found")
 
-    if donation["status"] == "success":
-        return jsonify({"message": "Already verified", "status": "success"}), 200
+    if donation.get("status") == "success" and donation.get("settled_at"):
+        recipient_id = donation["recipient_id"]
+        updated_user = users_col.find_one({"_id": ObjectId(recipient_id)})
+        user_data = serialize_doc(updated_user) if updated_user else None
+        if user_data:
+            user_data.pop("password", None)
+        updated_campaign = None
+        if donation.get("campaign_id"):
+            camp = campaigns_col.find_one({"_id": ObjectId(donation["campaign_id"])})
+            if camp:
+                updated_campaign = serialize_doc(camp)
+        return jsonify({
+            "message": "Already verified",
+            "status": "success",
+            "user": user_data,
+            "campaign": updated_campaign,
+        }), 200
 
     # Verify with Paystack
     result = verify_payment(reference)
@@ -98,27 +131,32 @@ def verify_donation():
     paystack_status = result["data"]["status"]
 
     if paystack_status == "success":
-        amount = donation["amount"]
-        recipient_id = donation["recipient_id"]
+        settlement = settle_successful_transaction(donation, "donation")
+        recipient_id = settlement.get("recipient_id") or donation["recipient_id"]
 
-        # Update donation status
-        donations_col.update_one(
-            {"reference": reference},
-            {"$set": {"status": "success", "verified_at": datetime.utcnow()}}
-        )
+        campaign_id = donation.get("campaign_id")
+        updated_campaign = None
+        if campaign_id:
+            camp = campaigns_col.find_one({"_id": ObjectId(campaign_id)})
+            if camp:
+                updated_campaign = serialize_doc(camp)
+                if camp.get("goal_amount", 0) > 0:
+                    updated_campaign["percent_funded"] = min(
+                        100,
+                        round((camp["amount_raised"] / camp["goal_amount"]) * 100),
+                    )
 
-        # Update user total_received
-        users_col.update_one(
-            {"_id": ObjectId(recipient_id)},
-            {"$inc": {"total_received": amount}}
-        )
-
-        # Fetch updated profile
         updated_user = users_col.find_one({"_id": ObjectId(recipient_id)})
         user_data = serialize_doc(updated_user)
         user_data.pop("password", None)
 
-        return jsonify({"message": "Donation verified!", "status": "success", "user": user_data}), 200
+        return jsonify({
+            "message": "Donation verified!",
+            "status": "success",
+            "settlement": settlement,
+            "user": user_data,
+            "campaign": updated_campaign,
+        }), 200
 
     else:
         donations_col.update_one(

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Coffee, Heart, ArrowRight } from "lucide-react";
+import { FiCoffee, FiHeart, FiArrowRight } from "react-icons/fi";
 import Hero from "../components/landing/Hero";
+import CircularShowcase from "../components/landing/CircularShowcase";
 import Features from "../components/landing/Features";
 import HowItWorks from "../components/landing/HowItWorks";
 import Testimonials from "../components/landing/Testimonials";
@@ -11,8 +12,8 @@ export default function Landing() {
   return (
     <div className="animate-fade-in">
       <Hero />
+      <CircularShowcase />
 
-      {/* How it Works Section - Moved up for better flow */}
       <HowItWorks />
 
       {/* Features Section */}

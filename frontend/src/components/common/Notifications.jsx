@@ -1,4 +1,4 @@
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
+import { FiX, FiCheckCircle, FiAlertCircle, FiInfo, FiAlertTriangle } from "react-icons/fi";
 import { useEffect, useState } from "react";
 
 export function Notification({
@@ -42,10 +42,10 @@ export function Notification({
     },
     info: {
       icon: Info,
-      bgColor: "bg-violet-50 dark:bg-violet-900/30",
-      borderColor: "border-violet-200 dark:border-violet-800",
-      iconColor: "text-violet-600 dark:text-violet-400",
-      textColor: "text-violet-800 dark:text-violet-200"
+      bgColor: "bg-sky-50 dark:bg-sky-900/30",
+      borderColor: "border-sky-200 dark:border-sky-800",
+      iconColor: "text-sky-600 dark:text-sky-400",
+      textColor: "text-sky-800 dark:text-sky-200"
     }
   };
 
@@ -72,7 +72,7 @@ export function Notification({
           }}
           className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
         >
-          <X className="h-4 w-4" />
+          <FiX className="h-4 w-4" />
         </button>
       </div>
     </div>

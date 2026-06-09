@@ -104,7 +104,7 @@ class EmailService:
     def send_password_reset_email(self, email: str, reset_token: str, full_name: str = None) -> bool:
         """Send password reset email."""
         subject = "Reset Your PromesaPay Password"
-        reset_link = f"{settings.FRONTEND_URL}/reset-password?token={reset_token}"
+        reset_link = f"{settings.frontend_url('reset-password')}?token={reset_token}"
         
         html_content = f"""
         <html>
@@ -199,6 +199,33 @@ class EmailService:
         Thank you for your generosity!
         """
         
+        return self.send_email(email, subject, html_content, text_content)
+
+    def send_recovery_code_email(
+        self, email: str, code: str, full_name: str = None, purpose: str = "password_reset"
+    ) -> bool:
+        """Send numeric recovery code for account recovery or unlock."""
+        if purpose == "unlock_account":
+            subject = "PromesaPay account unlock code"
+            intro = "Use this code to unlock your account:"
+        else:
+            subject = "PromesaPay password recovery code"
+            intro = "Use this code to verify your identity and reset your password:"
+
+        html_content = f"""
+        <html>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2>Account recovery</h2>
+                    <p>Hi {full_name or 'there'},</p>
+                    <p>{intro}</p>
+                    <p style="font-size: 28px; font-weight: bold; letter-spacing: 4px;">{code}</p>
+                    <p style="color: #666;">This code expires in 10 minutes. If you did not request this, ignore this email.</p>
+                </div>
+            </body>
+        </html>
+        """
+        text_content = f"{intro}\n\nCode: {code}\n\nExpires in 10 minutes."
         return self.send_email(email, subject, html_content, text_content)
 
 

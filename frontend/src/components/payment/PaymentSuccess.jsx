@@ -1,4 +1,4 @@
-import { CheckCircle, Coffee, Heart, Home, ExternalLink } from "lucide-react";
+import { FiCheckCircle, FiCoffee, FiHeart, FiHome, FiExternalLink } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../utils/formatters";
 import AppButton from "../ui/AppButton";
@@ -13,22 +13,22 @@ export default function PaymentSuccess({ type, amount, cups, recipientUsername, 
                       animate-scale-in overflow-hidden">
 
         {/* Top accent */}
-        <div className={`h-1.5 w-full ${isCoffee ? "bg-amber-400" : "bg-violet-500"}`} />
+        <div className={`h-1.5 w-full ${isCoffee ? "bg-amber-400" : "bg-sky-500"}`} />
 
         <div className="px-6 py-8 text-center space-y-4">
           {/* Icon */}
           <div className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center ${
-            isCoffee ? "bg-amber-50 dark:bg-amber-900/20" : "bg-violet-50 dark:bg-violet-900/20"
+            isCoffee ? "bg-amber-50 dark:bg-amber-900/20" : "bg-sky-50 dark:bg-sky-900/20"
           }`}>
             {isCoffee
-              ? <Coffee className="h-7 w-7 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
-              : <Heart className="h-7 w-7 text-violet-600 dark:text-violet-400" strokeWidth={1.75} />
+              ? <FiCoffee className="h-7 w-7 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
+              : <FiHeart className="h-7 w-7 text-sky-600 dark:text-sky-400" strokeWidth={1.75} />
             }
           </div>
 
           {/* Check */}
           <div className="flex items-center justify-center gap-1.5">
-            <CheckCircle className="h-4 w-4 text-green-500" strokeWidth={2} />
+            <FiCheckCircle className="h-4 w-4 text-green-500" strokeWidth={2} />
             <span className="text-xs font-medium text-green-600">Payment confirmed</span>
           </div>
 
@@ -51,12 +51,12 @@ export default function PaymentSuccess({ type, amount, cups, recipientUsername, 
           {/* Actions */}
           <div className="grid grid-cols-2 gap-2 pt-2">
             <Link to="/" onClick={onClose}>
-              <AppButton variant="secondary" size="sm" icon={Home} className="w-full">
+              <AppButton variant="secondary" size="sm" icon={FiHome} className="w-full">
                 Home
               </AppButton>
             </Link>
             <Link to={`/u/${recipientUsername}`} onClick={onClose}>
-              <AppButton size="sm" icon={ExternalLink} className="w-full">
+              <AppButton size="sm" icon={FiExternalLink} className="w-full">
                 View page
               </AppButton>
             </Link>

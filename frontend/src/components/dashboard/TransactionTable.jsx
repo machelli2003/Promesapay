@@ -1,5 +1,5 @@
-import { Coffee, Heart, Download, ChevronLeft,
-         ChevronRight, ArrowUpDown } from "lucide-react";
+import { FiCoffee, FiHeart, FiDownload, FiChevronLeft,
+         FiChevronRight, FiArrowUpDown } from "react-icons/fi";
 import { formatCurrency, formatDate } from "../../utils/formatters";
 import Avatar from "../ui/Avatar";
 import EmptyState from "../ui/EmptyState";
@@ -30,7 +30,7 @@ export default function TransactionTable({
     return (
       <div className="card">
         <EmptyState
-          icon={ArrowUpDown}
+          icon={FiArrowUpDown}
           title="No transactions yet"
           description="Donations and coffee tips will appear here once you start receiving support."
         />
@@ -49,7 +49,7 @@ export default function TransactionTable({
         <AppButton
           variant="ghost"
           size="sm"
-          icon={Download}
+          icon={FiDownload}
           onClick={exportCSV}
         >
           Export CSV
@@ -85,10 +85,10 @@ export default function TransactionTable({
                 </td>
                 {/* Type */}
                 <td className="px-5 py-3.5">
-                  <span className={txn.type === "coffee" ? "badge-amber" : "badge-violet"}>
+                  <span className={txn.type === "coffee" ? "badge-amber" : "badge-sky"}>
                     {txn.type === "coffee"
-                      ? <><Coffee className="h-3 w-3" /> Coffee</>
-                      : <><Heart className="h-3 w-3" /> Donation</>
+                      ? <><FiCoffee className="h-3 w-3" /> Coffee</>
+                      : <><FiHeart className="h-3 w-3" /> Donation</>
                     }
                   </span>
                 </td>
@@ -126,7 +126,7 @@ export default function TransactionTable({
             </div>
             <div className="text-right shrink-0">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{formatCurrency(txn.amount)}</p>
-              <span className={txn.type === "coffee" ? "badge-amber" : "badge-violet"}>
+              <span className={txn.type === "coffee" ? "badge-amber" : "badge-sky"}>
                 {txn.type}
               </span>
             </div>
@@ -144,14 +144,14 @@ export default function TransactionTable({
             <AppButton
               variant="secondary"
               size="xs"
-              icon={ChevronLeft}
+              icon={FiChevronLeft}
               onClick={() => onPageChange(page - 1)}
               disabled={page <= 1}
             />
             <AppButton
               variant="secondary"
               size="xs"
-              icon={ChevronRight}
+              icon={FiChevronRight}
               onClick={() => onPageChange(page + 1)}
               disabled={page >= totalPages}
             />

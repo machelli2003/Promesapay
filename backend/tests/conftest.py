@@ -52,3 +52,46 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def registered_user(app, client):
+    """Register a test user and return their data."""
+    user_data = {
+        "username": "testuser",
+        "email": "test@example.com",
+        "password": "SecurePass123!",
+        "full_name": "Test User"
+    }
+    # In a real test, this would actually call the register endpoint
+    # For now, we're using the mocked database
+    return user_data
+
+
+@pytest.fixture
+def auth_token(app):
+    """Generate a valid JWT token for testing."""
+    from app.security.jwt_tokens import create_access_token_for_user
+    from bson import ObjectId
+    
+    user_id = str(ObjectId())
+    token = create_access_token_for_user(user_id)
+    return token
+
+
+@pytest.fixture
+def admin_token(app):
+    """Generate a valid JWT token for admin testing."""
+    from app.security.jwt_tokens import create_access_token_for_user
+    from bson import ObjectId
+    
+    admin_id = str(ObjectId())
+    token = create_access_token_for_user(admin_id, scope="full")
+    return token
+
+
+@pytest.fixture
+def users_col():
+    """Mock users collection."""
+    from unittest.mock import MagicMock
+    return MagicMock()

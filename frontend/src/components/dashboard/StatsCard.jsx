@@ -1,11 +1,11 @@
-import { TrendingUp } from "lucide-react";
+import { FiTrendingUp } from "react-icons/fi";
 
 export default function StatsCard({ title, value, subtitle, icon: Icon, color = "primary", trend }) {
   const colors = {
-    primary: "from-violet-500 to-purple-600",
+    primary: "from-sky-500 to-blue-600",
     coffee:  "from-amber-400 to-amber-600",
     green:   "from-emerald-400 to-teal-600",
-    blue:    "from-blue-400 to-violet-600",
+    blue:    "from-blue-400 to-sky-600",
   };
 
   return (
@@ -20,7 +20,7 @@ export default function StatsCard({ title, value, subtitle, icon: Icon, color = 
           {subtitle && <p className="text-xs text-slate-400 dark:text-slate-500">{subtitle}</p>}
           {trend !== undefined && (
             <div className="flex items-center gap-1 text-xs text-emerald-500 font-medium">
-              <TrendingUp className="h-3 w-3" />
+              <FiTrendingUp className="h-3 w-3" />
               <span>{trend}</span>
             </div>
           )}
