@@ -14,14 +14,26 @@ export default function CreateCampaign() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
+  const [coverImageFile, setCoverImageFile] = useState(null);
+  const [coverImagePreview, setCoverImagePreview] = useState("");
   const [form, setForm] = useState({
     title: "",
     category: "Other",
     goal_amount: "",
     story: "",
-    cover_image: "",
     payment_type: "donation",
   });
+
+  useEffect(() => {
+    if (!coverImageFile) {
+      setCoverImagePreview("");
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(coverImageFile);
+    setCoverImagePreview(previewUrl);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [coverImageFile]);
 
   useEffect(() => {
     getCategories()
@@ -40,6 +52,10 @@ export default function CreateCampaign() {
   }, []);
 
   const set = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const setCoverImage = (e) => {
+    const file = e.target.files?.[0] || null;
+    setCoverImageFile(file);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,14 +65,17 @@ export default function CreateCampaign() {
     }
     setLoading(true);
     try {
-      const res = await createCampaign({
-        title: form.title,
-        category: form.category,
-        goal_amount: parseFloat(form.goal_amount) || 0,
-        story: form.story,
-        cover_image: form.cover_image,
-        payment_type: form.payment_type,
-      });
+      const payload = new FormData();
+      payload.append("title", form.title);
+      payload.append("category", form.category);
+      payload.append("goal_amount", String(parseFloat(form.goal_amount) || 0));
+      payload.append("story", form.story);
+      payload.append("payment_type", form.payment_type);
+      if (coverImageFile) {
+        payload.append("cover_image", coverImageFile);
+      }
+
+      const res = await createCampaign(payload);
       success("Campaign created!");
       navigate(`/c/${res.data.campaign.slug}`);
     } catch (err) {
@@ -172,13 +191,25 @@ export default function CreateCampaign() {
                 className="input resize-none w-full"
               />
             </div>
-            <InputField
-              label="Cover image URL (optional)"
-              name="cover_image"
-              value={form.cover_image}
-              onChange={set}
-              placeholder="https://..."
-            />
+            <div className="space-y-1.5">
+              <label className="field-label">Campaign picture</label>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/gif,image/webp"
+                onChange={setCoverImage}
+                className="input w-full file:mr-4 file:rounded-lg file:border-0 file:bg-sky-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-sky-600"
+              />
+              <p className="field-hint">Upload a JPEG, PNG, GIF, or WebP image up to 5MB.</p>
+              {coverImagePreview && (
+                <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                  <img
+                    src={coverImagePreview}
+                    alt="Campaign preview"
+                    className="h-48 w-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
             <div className={`flex gap-2 ${isMobile ? 'flex-col' : ''}`}>
               <AppButton type="button" variant="secondary" onClick={() => setStep(1)} className={isMobile ? 'w-full' : ''}>
                 Back

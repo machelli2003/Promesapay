@@ -1,4 +1,5 @@
 import re
+import base64
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from bson import ObjectId
@@ -52,6 +53,34 @@ def _attach_owner(campaign):
     else:
         data["percent_funded"] = 0
     return data
+
+
+def _extract_cover_image():
+    if request.is_json:
+        data = request.get_json() or {}
+        return (data.get("cover_image") or "").strip()
+
+    if "cover_image" in request.files:
+        file = request.files["cover_image"]
+        if not file or file.filename == "":
+            raise ValidationError("No image file provided")
+
+        allowed_types = {"image/jpeg", "image/png", "image/gif", "image/webp"}
+        if file.content_type not in allowed_types:
+            raise ValidationError("Invalid image format. Use JPEG, PNG, GIF, or WebP")
+
+        file_data = file.read()
+        if len(file_data) > 5000000:
+            raise ValidationError("Image too large (max 5MB)")
+
+        mime_type = file.content_type or "image/jpeg"
+        encoded = base64.b64encode(file_data).decode("utf-8")
+        return f"data:{mime_type};base64,{encoded}"
+
+    if request.form:
+        return (request.form.get("cover_image") or "").strip()
+
+    return ""
 
 
 @campaigns_bp.route("/categories", methods=["GET"])
@@ -141,7 +170,9 @@ def my_campaigns():
 @jwt_required()
 def create_campaign():
     user_id = get_jwt_identity()
-    data = request.get_json() or {}
+    data = request.get_json(silent=True) if request.is_json else {}
+    if data is None:
+        data = {}
 
     title = (data.get("title") or "").strip()
     if not title:
@@ -180,7 +211,7 @@ def create_campaign():
         story=story,
         category=category,
         goal_amount=goal_amount,
-        cover_image=data.get("cover_image", ""),
+        cover_image=_extract_cover_image(),
         payment_type=payment_type,
     )
     campaigns_col.insert_one(doc)
