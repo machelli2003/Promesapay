@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getMe, getOAuthToken, getCsrfToken } from "../api/auth";
+import { getMe, getCsrfToken } from "../api/auth";
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function AuthCallback() {
     const params = new URLSearchParams(window.location.search);
     const status = params.get("status");
     const error = params.get("error");
+    const tokenFromUrl = params.get("token");
 
     if (error) {
       navigate("/login?error=auth_failed");
@@ -18,31 +19,22 @@ export default function AuthCallback() {
     }
 
     if (status === "success") {
-      // Retrieve CSRF token and auth token from secure session cookie
-      getCsrfToken()
-        .then((csrfRes) => {
-          localStorage.setItem("csrf_token", csrfRes.data.csrf_token);
-          return getOAuthToken();
-        })
-        .then((res) => {
-          const token = res.data.token;
-          localStorage.setItem("token", token);
+      if (!tokenFromUrl) {
+        navigate("/login?error=auth_failed");
+        return;
+      }
 
-          // Fetch user info
-          return getMe().then((userRes) => ({
-            token,
-            user: userRes.data.user
-          }));
+      localStorage.setItem("token", tokenFromUrl);
+      getCsrfToken()
+        .then((res) => {
+          localStorage.setItem("csrf_token", res.data.csrf_token);
+          return getMe();
         })
-        .then(({ token, user }) => {
-          login(token, user);
+        .then((userRes) => {
+          login(tokenFromUrl, userRes.data.user);
           navigate("/dashboard");
         })
-        .catch((err) => {
-          console.error("OAuth callback error:", err);
-          localStorage.removeItem("token");
-          navigate("/login?error=auth_failed");
-        });
+        .catch(() => navigate("/login?error=auth_failed"));
     } else {
       navigate("/login?error=auth_failed");
     }

@@ -85,12 +85,8 @@ def google_callback():
         register_successful_login(str(user["_id"]))
         jwt_token = create_access_token_for_user(str(user["_id"]))
         
-        # Store token in secure httpOnly session cookie
-        session["auth_token"] = jwt_token
-        session.permanent = True
-        
-        # Redirect to frontend success page without token in URL
-        return redirect(f"{settings.frontend_url('auth/callback')}?status=success")
+        # Redirect to frontend success page with token in URL for immediate client login
+        return redirect(f"{settings.frontend_url('auth/callback')}?status=success&token={jwt_token}")
 
     except OAuthError as e:
         callback_args = request.args.to_dict(flat=False)
