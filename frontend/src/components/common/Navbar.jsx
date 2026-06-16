@@ -11,212 +11,13 @@ import {
   FiSearch,
   FiPlus,
   FiDollarSign,
+  FiShield,
 } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { useState, useRef, useEffect } from "react";
 import BrandLogo from "./BrandLogo";
 import NotificationBell from "./NotificationBell";
-
-/* ─── Fonts (add to index.html instead if preferred) ───────── */
-if (!document.querySelector("#promesa-fonts")) {
-  const l = document.createElement("link");
-  l.id = "promesa-fonts";
-  l.rel = "stylesheet";
-  l.href =
-    "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap";
-  document.head.appendChild(l);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   SMALL PRIMITIVES
-═══════════════════════════════════════════════════════════════ */
-
-function IconBtn({ children, onClick, label }) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={label}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 34,
-        height: 34,
-        borderRadius: 8,
-        border: "none",
-        background: "transparent",
-        color: "var(--color-text-secondary)",
-        cursor: "pointer",
-        transition: "background .15s",
-        flexShrink: 0,
-      }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.background = "var(--color-background-secondary)")
-      }
-      onMouseLeave={(e) =>
-        (e.currentTarget.style.background = "transparent")
-      }
-    >
-      {children}
-    </button>
-  );
-}
-
-function NavLink({ to, href, children }) {
-  const base = {
-    display: "inline-flex",
-    alignItems: "center",
-    padding: "6px 10px",
-    borderRadius: 8,
-    fontSize: 14,
-    fontWeight: 500,
-    fontFamily: "'DM Sans', sans-serif",
-    color: "var(--color-text-secondary)",
-    textDecoration: "none",
-    background: "transparent",
-    border: "none",
-    cursor: "pointer",
-    transition: "background .15s, color .15s",
-    whiteSpace: "nowrap",
-  };
-  const hover = {
-    onMouseEnter: (e) => {
-      e.currentTarget.style.background = "var(--color-background-secondary)";
-      e.currentTarget.style.color = "var(--color-text-primary)";
-    },
-    onMouseLeave: (e) => {
-      e.currentTarget.style.background = "transparent";
-      e.currentTarget.style.color = "var(--color-text-secondary)";
-    },
-  };
-  if (href)
-    return (
-      <a href={href} style={base} {...hover}>
-        {children}
-      </a>
-    );
-  return (
-    <Link to={to} style={base} {...hover}>
-      {children}
-    </Link>
-  );
-}
-
-function MobileNavLink({ to, href, children, onClick }) {
-  const base = {
-    display: "block",
-    padding: "10px 14px",
-    borderRadius: 8,
-    fontSize: 14,
-    fontWeight: 500,
-    fontFamily: "'DM Sans', sans-serif",
-    color: "var(--color-text-secondary)",
-    textDecoration: "none",
-    transition: "background .15s, color .15s",
-  };
-  const hover = {
-    onMouseEnter: (e) => {
-      e.currentTarget.style.background = "var(--color-background-secondary)";
-      e.currentTarget.style.color = "var(--color-text-primary)";
-    },
-    onMouseLeave: (e) => {
-      e.currentTarget.style.background = "transparent";
-      e.currentTarget.style.color = "var(--color-text-secondary)";
-    },
-  };
-  if (href)
-    return (
-      <a href={href} style={base} {...hover} onClick={onClick}>
-        {children}
-      </a>
-    );
-  return (
-    <Link to={to} style={base} {...hover} onClick={onClick}>
-      {children}
-    </Link>
-  );
-}
-
-function DropItem({ to, icon: Icon, children, onClick, danger }) {
-  return (
-    <Link
-      to={to}
-      onClick={onClick}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        padding: "8px 12px",
-        margin: "0 4px",
-        borderRadius: 7,
-        fontSize: 13.5,
-        fontFamily: "'DM Sans', sans-serif",
-        color: danger ? "#E53E3E" : "var(--color-text-secondary)",
-        textDecoration: "none",
-        transition: "background .12s, color .12s",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = danger
-          ? "rgba(229,62,62,.08)"
-          : "var(--color-background-secondary)";
-        e.currentTarget.style.color = danger ? "#E53E3E" : "var(--color-text-primary)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = "transparent";
-        e.currentTarget.style.color = danger ? "#E53E3E" : "var(--color-text-secondary)";
-      }}
-    >
-      {Icon && <Icon size={15} strokeWidth={1.75} />}
-      {children}
-    </Link>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   AVATAR
-═══════════════════════════════════════════════════════════════ */
-
-function Avatar({ name = "", src, size = 28 }) {
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-  if (src)
-    return (
-      <img
-        src={src}
-        alt={name}
-        style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover" }}
-      />
-    );
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        background: "var(--color-avatar-bg)",
-        color: "var(--color-avatar-text)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: size * 0.38,
-        fontWeight: 600,
-        fontFamily: "'DM Sans', sans-serif",
-        flexShrink: 0,
-      }}
-    >
-      {initials || "?"}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   NAVBAR
-═══════════════════════════════════════════════════════════════ */
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -241,7 +42,7 @@ export default function Navbar() {
   /* Close mobile menu on route change */
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
-  /* Scroll shadow */
+  /* Scroll detection for glass effect */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
@@ -249,407 +50,326 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const isActive = (path) => location.pathname.startsWith(path);
+
   const navLinks = user
     ? [
-        { to: "/campaigns", label: "Browse" },
+        { to: "/campaigns", label: "Discover" },
         { to: "/dashboard", label: "Dashboard" },
-        { to: "/campaigns/new", label: "Start fundraiser" },
+        { to: "/campaigns/new", label: "Start Campaign" },
       ]
     : [
-        { to: "/campaigns", label: "Browse" },
-        { href: "#features", label: "Features" },
-        { href: "#how-it-works", label: "How it works" },
+        { to: "/campaigns", label: "Discover" },
+        { to: "/", label: "How It Works", hash: "#how" },
+        { to: "/", label: "About", hash: "#trust" },
       ];
 
-  /* ─── Styles ────────────────────────────────────────────── */
-  const headerStyle = {
-    position: "sticky",
-    top: 0,
-    zIndex: 50,
-    fontFamily: "'DM Sans', sans-serif",
-    background: "var(--color-nav-bg)",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
-    borderBottom: scrolled
-      ? `0.5px solid ${dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)"}`
-      : "0.5px solid transparent",
-    boxShadow: scrolled
-      ? dark
-        ? "0 4px 24px rgba(0,0,0,0.4)"
-        : "0 4px 24px rgba(0,0,0,0.06)"
-      : "none",
-    transition: "box-shadow .25s, border-color .25s",
-  };
-
-  const innerStyle = {
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: "0 1.25rem",
-    height: 60,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-    position: "relative",
-  };
-
-  const dropdownStyle = {
-    position: "absolute",
-    right: 0,
-    top: "calc(100% + 8px)",
-    width: 210,
-    background: "var(--color-dropdown-bg)",
-    border: `0.5px solid ${dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.09)"}`,
-    borderRadius: 12,
-    boxShadow: dark
-      ? "0 8px 32px rgba(0,0,0,0.5)"
-      : "0 8px 32px rgba(0,0,0,0.12)",
-    padding: "6px 0",
-    zIndex: 100,
-    animation: "scaleIn .12s ease",
-  };
-
-  const dividerStyle = {
-    height: "0.5px",
-    background: dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)",
-    margin: "5px 0",
-  };
-
-  const mobileMenuStyle = {
-    borderTop: `0.5px solid ${dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)"}`,
-    padding: "10px 12px 14px",
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-  };
-
-  /* ─── Render ─────────────────────────────────────────────── */
   return (
     <>
-      <style>{`@keyframes scaleIn{from{opacity:0;transform:scale(.96) translateY(-4px)}to{opacity:1;transform:scale(1) translateY(0)}}`}</style>
-
-      <header style={headerStyle}>
-        <div style={innerStyle}>
-
-          {/* ── Logo (centered on mobile, left on desktop) ── */}
-          <Link
-            to="/"
-            style={{
-              textDecoration: "none",
-              flexShrink: 0,
-              /* On mobile the logo sits naturally in flow; on md+ it's centered via margin auto trick */
-            }}
-          >
-            <BrandLogo size="md" />
-          </Link>
-
-          {/* ── Desktop nav links (left of center) ── */}
-          <nav
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-              flex: 1,
-              paddingLeft: 16,
-            }}
-            className="hide-mobile"
-          >
-            {navLinks.map((link) => (
-              <NavLink key={link.to || link.href} to={link.to} href={link.href}>
-                {link.label}
-              </NavLink>
-            ))}
-          </nav>
-
-          {/* ── Right cluster ── */}
-          <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
-
-            {/* Search */}
-            <Link
-              to="/campaigns"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 34,
-                height: 34,
-                borderRadius: 8,
-                color: "var(--color-text-secondary)",
-                textDecoration: "none",
-                transition: "background .15s",
-              }}
-              aria-label="Search campaigns"
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "var(--color-background-secondary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "transparent")
-              }
-              className="hide-mobile"
-            >
-              <FiSearch size={16} strokeWidth={2} />
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/88 dark:bg-navy-950/88 backdrop-blur-xl shadow-nav dark:shadow-nav-dark border-b border-transparent"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 md:h-18">
+            {/* Logo */}
+            <Link to="/" className="flex-shrink-0">
+              <BrandLogo size="md" />
             </Link>
 
-            {/* Notification Bell (authenticated users only) */}
-            {user && (
-              <div className="hide-mobile">
-                <NotificationBell />
-              </div>
-            )}
+            {/* Desktop Nav Links */}
+            <nav className="hidden md:flex items-center gap-1">
+              {navLinks.map((link) =>
+                link.hash ? (
+                  <a
+                    key={link.label}
+                    href={link.hash}
+                    className="px-3 py-2 text-sm font-medium text-muted hover:text-navy-700 dark:hover:text-navy-200 rounded-lg hover:bg-navy-50 dark:hover:bg-navy-800/50 transition-colors font-body"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors font-body ${
+                      isActive(link.to)
+                        ? "text-gold-500 bg-gold-50 dark:bg-gold-900/20"
+                        : "text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800/50"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
+            </nav>
 
-            {/* Theme toggle */}
-            <IconBtn onClick={toggle} label="Toggle theme">
-              {dark ? <FiSun size={16} strokeWidth={2} /> : <FiMoon size={16} strokeWidth={2} />}
-            </IconBtn>
-
-            {/* Authenticated user dropdown */}
-            {user ? (
-              <div style={{ position: "relative" }} ref={dropRef}>
-                <button
-                  onClick={() => setDropOpen((o) => !o)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "4px 8px 4px 4px",
-                    borderRadius: 10,
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    transition: "background .15s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background =
-                      "var(--color-background-secondary)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  <Avatar name={user.full_name} src={user.profile_picture} size={28} />
-                  <FiChevronDown
-                    size={14}
-                    strokeWidth={2}
-                    color="var(--color-text-tertiary)"
-                    style={{
-                      transition: "transform .2s",
-                      transform: dropOpen ? "rotate(180deg)" : "rotate(0deg)",
-                    }}
-                  />
-                </button>
-
-                {dropOpen && (
-                  <div style={dropdownStyle}>
-                    {/* User info */}
-                    <div style={{ padding: "8px 14px 10px" }}>
-                      <p
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 600,
-                          color: "var(--color-text-primary)",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          margin: 0,
-                        }}
-                      >
-                        {user.full_name}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: 12,
-                          color: "var(--color-text-tertiary)",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          margin: "2px 0 0",
-                        }}
-                      >
-                        @{user.username}
-                      </p>
-                    </div>
-
-                    <div style={dividerStyle} />
-
-                    <DropItem to="/dashboard" icon={FiLayout} onClick={() => setDropOpen(false)}>
-                      Dashboard
-                    </DropItem>
-                    <DropItem to="/campaigns/new" icon={FiPlus} onClick={() => setDropOpen(false)}>
-                      New fundraiser
-                    </DropItem>
-                    <DropItem to={`/u/${user.username}`} icon={FiUser} onClick={() => setDropOpen(false)}>
-                      My page
-                    </DropItem>
-                    <DropItem to="/financial" icon={FiDollarSign} onClick={() => setDropOpen(false)}>
-                      Financial Center
-                    </DropItem>
-                    {user?.role === "admin" && (
-                        <DropItem to="/admin/finance" icon={FiDollarSign} onClick={() => setDropOpen(false)}>
-                        Admin Finance
-                      </DropItem>
-                    )}
-
-                    <div style={dividerStyle} />
-
-                    <button
-                      onClick={() => { logout(); navigate("/"); }}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        padding: "8px 12px",
-                        margin: "0 4px",
-                        width: "calc(100% - 8px)",
-                        borderRadius: 7,
-                        border: "none",
-                        background: "transparent",
-                        fontSize: 13.5,
-                        fontFamily: "'DM Sans', sans-serif",
-                        color: "#E53E3E",
-                        cursor: "pointer",
-                        textAlign: "left",
-                        transition: "background .12s",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "rgba(229,62,62,.08)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "transparent")
-                      }
-                    >
-                      <FiLogOut size={15} strokeWidth={1.75} />
-                      Sign out
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              /* Guest auth buttons — desktop only */
-              <div
-                style={{ display: "flex", alignItems: "center", gap: 8 }}
-                className="hide-mobile"
+            {/* Right side */}
+            <div className="flex items-center gap-2">
+              {/* Search */}
+              <Link
+                to="/campaigns"
+                className="hidden md:flex items-center justify-center w-9 h-9 rounded-lg text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800/50 transition-colors"
+                aria-label="Search campaigns"
               >
-                <Link
-                  to="/login"
-                  style={{
-                    padding: "7px 14px",
-                    borderRadius: 8,
-                    fontSize: 13.5,
-                    fontWeight: 500,
-                    fontFamily: "'DM Sans', sans-serif",
-                    color: "var(--color-text-primary)",
-                    background: "var(--color-background-secondary)",
-                    border: "0.5px solid var(--color-border-secondary)",
-                    textDecoration: "none",
-                    transition: "background .15s",
-                  }}
-                >
-                  Sign in
-                </Link>
-                <Link
-                  to="/register"
-                  style={{
-                    padding: "7px 16px",
-                    borderRadius: 8,
-                    fontSize: 13.5,
-                    fontWeight: 600,
-                    fontFamily: "'DM Sans', sans-serif",
-                    color: "#fff",
-                    background: "#2BAAE1",
-                    border: "none",
-                    textDecoration: "none",
-                    transition: "background .15s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#1A8FC2")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "#2BAAE1")}
-                >
-                  Get started
-                </Link>
-              </div>
-            )}
+                <FiSearch className="w-4 h-4" />
+              </Link>
 
-            {/* Mobile hamburger */}
-            <IconBtn
-              onClick={() => setMobileOpen((o) => !o)}
-              label="Menu"
-            >
-              <span className="show-mobile">
-                {mobileOpen ? <FiX size={18} strokeWidth={2} /> : <FiMenu size={18} strokeWidth={2} />}
-              </span>
-            </IconBtn>
+              {/* Notification Bell (authenticated) */}
+              {user && (
+                <div className="hidden md:block">
+                  <NotificationBell />
+                </div>
+              )}
+
+              {/* Theme Toggle */}
+              <button
+                onClick={toggle}
+                aria-label="Toggle theme"
+                className="flex items-center justify-center w-9 h-9 rounded-lg text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800/50 transition-colors"
+              >
+                {dark ? <FiSun className="w-4 h-4" /> : <FiMoon className="w-4 h-4" />}
+              </button>
+
+              {/* Authenticated User Dropdown */}
+              {user ? (
+                <div className="relative hidden md:block" ref={dropRef}>
+                  <button
+                    onClick={() => setDropOpen((o) => !o)}
+                    className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl hover:bg-navy-50 dark:hover:bg-navy-800/50 transition-colors"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-navy-700 dark:bg-navy-600 flex items-center justify-center text-gold-500 font-bold text-xs font-heading">
+                      {(user.full_name || user.username || "U")
+                        .split(" ")
+                        .map((w) => w[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()}
+                    </div>
+                    <FiChevronDown
+                      className={`w-3.5 h-3.5 text-muted transition-transform duration-200 ${
+                        dropOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {dropOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-navy-800 rounded-2xl shadow-xl border border-slate-200 dark:border-navy-700 py-2 animate-scale-in">
+                      {/* User info */}
+                      <div className="px-4 py-2 border-b border-slate-100 dark:border-navy-700">
+                        <p className="text-sm font-semibold text-navy-900 dark:text-navy-50 truncate">
+                          {user.full_name || user.username}
+                        </p>
+                        <p className="text-xs text-muted truncate">@{user.username}</p>
+                      </div>
+
+                      <div className="pt-1">
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setDropOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
+                        >
+                          <FiLayout className="w-4 h-4" />
+                          Dashboard
+                        </Link>
+                        <Link
+                          to="/campaigns/new"
+                          onClick={() => setDropOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
+                        >
+                          <FiPlus className="w-4 h-4" />
+                          New Campaign
+                        </Link>
+                        <Link
+                          to={`/u/${user.username}`}
+                          onClick={() => setDropOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
+                        >
+                          <FiUser className="w-4 h-4" />
+                          My Profile
+                        </Link>
+                        <Link
+                          to="/financial"
+                          onClick={() => setDropOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
+                        >
+                          <FiDollarSign className="w-4 h-4" />
+                          Financial Center
+                        </Link>
+                        {user?.role === "admin" && (
+                          <Link
+                            to="/admin/finance"
+                            onClick={() => setDropOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
+                          >
+                            <FiShield className="w-4 h-4" />
+                            Admin Panel
+                          </Link>
+                        )}
+                      </div>
+
+                      <div className="border-t border-slate-100 dark:border-navy-700 pt-1 mt-1">
+                        <button
+                          onClick={() => {
+                            logout();
+                            navigate("/");
+                          }}
+                          className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        >
+                          <FiLogOut className="w-4 h-4" />
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* Guest buttons */
+                <div className="hidden md:flex items-center gap-2">
+                  <Link
+                    to="/login"
+                    className="btn-ghost text-sm px-4 py-2"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-5 py-2 bg-gold-500 text-navy-950 font-semibold text-sm rounded-full hover:bg-gold-400 transition-all duration-200 hover:-translate-y-0.5"
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
+
+              {/* Mobile Hamburger */}
+              <button
+                onClick={() => setMobileOpen((o) => !o)}
+                aria-label="Menu"
+                className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800/50 transition-colors"
+              >
+                {mobileOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* ── Mobile menu ── */}
+        {/* Mobile Drawer */}
         {mobileOpen && (
-          <div style={mobileMenuStyle}>
-            {navLinks.map((link) => (
-              <MobileNavLink
-                key={link.to || link.href}
-                to={link.to}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </MobileNavLink>
-            ))}
+          <div className="md:hidden border-t border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 shadow-xl animate-slide-down">
+            <div className="px-4 py-4 space-y-1">
+              {navLinks.map((link) =>
+                link.hash ? (
+                  <a
+                    key={link.label}
+                    href={link.hash}
+                    onClick={() => setMobileOpen(false)}
+                    className="block px-4 py-3 text-sm font-medium text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800 rounded-xl transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
+                      isActive(link.to)
+                        ? "text-gold-500 bg-gold-50 dark:bg-gold-900/20"
+                        : "text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
 
-            {!user && (
-              <div style={{ display: "flex", gap: 8, padding: "8px 2px 2px" }}>
-                <Link
-                  to="/login"
-                  onClick={() => setMobileOpen(false)}
-                  style={{
-                    flex: 1,
-                    textAlign: "center",
-                    padding: "9px 0",
-                    borderRadius: 8,
-                    fontSize: 13.5,
-                    fontWeight: 500,
-                    fontFamily: "'DM Sans', sans-serif",
-                    color: "var(--color-text-primary)",
-                    background: "var(--color-background-secondary)",
-                    border: "0.5px solid var(--color-border-secondary)",
-                    textDecoration: "none",
-                  }}
-                >
-                  Sign in
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMobileOpen(false)}
-                  style={{
-                    flex: 1,
-                    textAlign: "center",
-                    padding: "9px 0",
-                    borderRadius: 8,
-                    fontSize: 13.5,
-                    fontWeight: 600,
-                    fontFamily: "'DM Sans', sans-serif",
-                    color: "#fff",
-                    background: "#2BAAE1",
-                    textDecoration: "none",
-                  }}
-                >
-                  Get started
-                </Link>
-              </div>
-            )}
+              {/* Divider */}
+              <div className="border-t border-slate-100 dark:border-navy-700 my-2" />
+
+              {user ? (
+                <>
+                  <div className="px-4 py-2 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-navy-700 dark:bg-navy-600 flex items-center justify-center text-gold-500 font-bold text-sm font-heading">
+                      {(user.full_name || user.username || "U")
+                        .split(" ")
+                        .map((w) => w[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-navy-900 dark:text-navy-50">
+                        {user.full_name || user.username}
+                      </p>
+                      <p className="text-xs text-muted">@{user.username}</p>
+                    </div>
+                  </div>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800 rounded-xl transition-colors"
+                  >
+                    <FiLayout className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/financial"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800 rounded-xl transition-colors"
+                  >
+                    <FiDollarSign className="w-4 h-4" />
+                    Financial Center
+                  </Link>
+                  {user?.role === "admin" && (
+                    <Link
+                      to="/admin/finance"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800 rounded-xl transition-colors"
+                    >
+                      <FiShield className="w-4 h-4" />
+                      Admin Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      logout();
+                      navigate("/");
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                  >
+                    <FiLogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <div className="flex gap-3 px-4 pt-2">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center px-4 py-2.5 text-sm font-medium text-navy-700 dark:text-navy-200 border-2 border-navy-700/20 dark:border-navy-300/30 rounded-full hover:border-navy-700 transition-colors"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center px-4 py-2.5 text-sm font-semibold text-navy-950 bg-gold-500 rounded-full hover:bg-gold-400 transition-colors"
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </header>
 
-      {/* Responsive helpers — scoped so they don't leak */}
-      <style>{`
-        @media (min-width: 768px) {
-          .hide-mobile { display: flex !important; }
-          .show-mobile { display: none !important; }
-        }
-        @media (max-width: 767px) {
-          .hide-mobile { display: none !important; }
-          .show-mobile { display: flex !important; }
-        }
-      `}</style>
+      {/* Spacer for fixed navbar */}
+      <div className="h-16 md:h-18" />
     </>
   );
 }

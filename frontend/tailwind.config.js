@@ -5,6 +5,31 @@ export default {
   theme: {
     extend: {
       colors: {
+        navy: {
+          50:  "#f0f4ff",
+          100: "#dbe4f5",
+          200: "#b7c9eb",
+          300: "#8aadde",
+          400: "#5d91d1",
+          500: "#3B82F6",
+          600: "#1D4ED8",
+          700: "#1E3A5F",
+          800: "#162d4a",
+          900: "#0e1f35",
+          950: "#0A1628",
+        },
+        gold: {
+          50:  "#FFF7ED",
+          100: "#FFEDD5",
+          200: "#FED7AA",
+          300: "#FDBA74",
+          400: "#FB923C",
+          500: "#F97316",
+          600: "#EA580C",
+          700: "#C2410C",
+          800: "#9A3412",
+          900: "#7C2D12",
+        },
         violet: {
           50:  "#f5f3ff",
           100: "#ede9fe",
@@ -43,6 +68,7 @@ export default {
           800: "#86198f",
           900: "#701a75",
         },
+        muted: "#6B7A99",
         gray: {
           0:   "#ffffff",
           25:  "#fcfcfd",
@@ -60,7 +86,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        heading: ["Syne", "sans-serif"],
+        body: ["DM Sans", "sans-serif"],
+        sans: ["DM Sans", "system-ui", "sans-serif"],
       },
       spacing: {
         "4.5": "1.125rem",
@@ -77,6 +105,9 @@ export default {
         "2xl": ["1.5rem",   { lineHeight: "2rem" }],
         "3xl": ["1.875rem", { lineHeight: "2.375rem" }],
         "4xl": ["2.25rem",  { lineHeight: "2.75rem" }],
+        "5xl": ["3rem",     { lineHeight: "1.05" }],
+        "6xl": ["3.75rem",  { lineHeight: "1.05" }],
+        "7xl": ["4.5rem",   { lineHeight: "1.05" }],
       },
       boxShadow: {
         "xs":     "0px 1px 2px rgba(16, 24, 40, 0.05)",
@@ -86,14 +117,18 @@ export default {
         "xl":     "0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)",
         "focus":  "0px 0px 0px 4px rgba(14, 165, 233, 0.15)",
         "focus-error": "0px 0px 0px 4px rgba(240, 68, 56, 0.15)",
+        "card":   "0 20px 60px rgba(30,58,95,0.1)",
+        "card-hover": "0 30px 80px rgba(30,58,95,0.18)",
+        "glow":   "0 12px 30px rgba(30,58,95,0.25)",
       },
       borderRadius: {
         "none": "0",
-        "sm":   "0.375rem",   // 6px
-        "md":   "0.5rem",     // 8px
-        "lg":   "0.75rem",    // 12px
-        "xl":   "1rem",       // 16px
-        "2xl":  "1.25rem",    // 20px
+        "sm":   "0.375rem",
+        "md":   "0.5rem",
+        "lg":   "0.75rem",
+        "xl":   "1rem",
+        "2xl":  "1.25rem",
+        "3xl":  "1.5rem",
         "full": "9999px",
       },
       animation: {
@@ -115,6 +150,27 @@ export default {
         slideDown: { "0%": { opacity: 0, transform: "translateY(-10px)" }, "100%": { opacity: 1, transform: "translateY(0)" } },
         scaleIn:   { "0%": { opacity: 0, transform: "scale(0.96)" }, "100%": { opacity: 1, transform: "scale(1)" } },
         shimmer:   { "0%": { backgroundPosition: "-400px 0" }, "100%": { backgroundPosition: "400px 0" } },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(249, 115, 22, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(249, 115, 22, 0.6)" },
+        },
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "bounce-subtle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        "scale-pulse": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.05)" },
+        },
       },
       transitionDuration: {
         "150": "150ms",

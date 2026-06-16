@@ -29,7 +29,7 @@ export default function CoffeeBox({ onBuy }) {
       <div className="space-y-2">
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400">How many coffees?</p>
         <div className="flex items-center gap-3">
-          <span className="text-2xl">☕</span>
+          <FiCoffee className="h-8 w-8 text-amber-500" />
           <span className="text-slate-300 dark:text-slate-600">×</span>
           <div className="flex gap-2">
             {COFFEE_OPTIONS.map((n) => (

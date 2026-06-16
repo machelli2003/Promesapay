@@ -1,11 +1,13 @@
-import { FiHeart, FiCoffee } from "react-icons/fi";
+import { FiHeart, FiCoffee, FiGift } from "react-icons/fi";
 import { formatCurrency, formatDate, getInitials } from "../../utils/formatters";
 
 export default function RecentSupporters({ transactions = [] }) {
   if (!transactions.length) {
     return (
       <div className="card text-center py-12">
-        <p className="text-4xl mb-3">💝</p>
+        <div className="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-900/20 flex items-center justify-center mx-auto mb-3">
+          <FiGift className="w-6 h-6 text-rose-500" />
+        </div>
         <p className="font-semibold text-slate-700 dark:text-slate-300">No supporters yet</p>
         <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Share your profile to start receiving support</p>
       </div>

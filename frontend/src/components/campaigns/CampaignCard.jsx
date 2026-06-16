@@ -1,19 +1,28 @@
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../utils/formatters";
+import {
+  FaHeartbeat,
+  FaAmbulance,
+  FaBookOpen,
+  FaHandshake,
+  FaPalette,
+  FaBriefcase,
+  FaStar,
+} from "react-icons/fa";
 
-const CATEGORY_EMOJI = {
-  Medical: "🏥",
-  Emergency: "🚨",
-  Education: "📚",
-  Community: "🤝",
-  Creative: "🎨",
-  Business: "💼",
-  Other: "✨",
+const CATEGORY_ICON = {
+  Medical: FaHeartbeat,
+  Emergency: FaAmbulance,
+  Education: FaBookOpen,
+  Community: FaHandshake,
+  Creative: FaPalette,
+  Business: FaBriefcase,
+  Other: FaStar,
 };
 
 export default function CampaignCard({ campaign }) {
   const pct = campaign.percent_funded ?? 0;
-  const emoji = CATEGORY_EMOJI[campaign.category] || "✨";
+  const IconComponent = CATEGORY_ICON[campaign.category] || FaStar;
 
   return (
     <Link
@@ -28,7 +37,7 @@ export default function CampaignCard({ campaign }) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <span>{emoji}</span>
+          <IconComponent className="text-sky-500 dark:text-sky-400" />
         )}
       </div>
       <div className="card-body flex flex-col flex-1 gap-3">

@@ -33,7 +33,7 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
       recipient,
       campaignSlug,
       onSuccess: () => {
-        success(isCoffee ? `☕ Coffee sent!` : "💝 Donation successful!");
+        success(isCoffee ? "Coffee sent!" : "Donation successful!");
         onSuccess();
       },
     });

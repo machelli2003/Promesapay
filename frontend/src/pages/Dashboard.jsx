@@ -13,64 +13,24 @@ import {
   FiPlus,
   FiChevronLeft,
   FiChevronRight,
+  FiDollarSign,
 } from "react-icons/fi";
+import { BsTrophy } from "react-icons/bs";
+import { FaBullseye } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { getMyStats } from "../api/profile";
 import { getTransactions } from "../api/transactions";
 import { getMyCampaigns } from "../api/campaigns";
-import CampaignCard from "../components/campaigns/CampaignCard";
 import { formatCurrency, formatDate } from "../utils/formatters";
-import { SkeletonLoader } from "../components/common/SkeletonLoader";
 import { useLoadingState } from "../hooks/useLoadingState";
 import { useToast } from "../hooks/useToast";
-
-/* ─── Fonts ─────────────────────────────────────────────────── */
-const fontLink = document.createElement("link");
-fontLink.rel = "stylesheet";
-fontLink.href =
-  "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap";
-document.head.appendChild(fontLink);
-
-/* ═══════════════════════════════════════════════════════════════
-   HELPERS
-═══════════════════════════════════════════════════════════════ */
-
-function Avatar({ name = "", size = 40 }) {
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-  const colors = [
-    { bg: "#E1F5EE", color: "#0F6E56" },
-    { bg: "#FAEEDA", color: "#854F0B" },
-    { bg: "#FBEAF0", color: "#993556" },
-    { bg: "#EAF3DE", color: "#3B6D11" },
-    { bg: "#EEEDFE", color: "#3C3489" },
-    { bg: "#E6F1FB", color: "#0C447C" },
-  ];
-  const idx = name.charCodeAt(0) % colors.length;
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        background: colors[idx].bg,
-        color: colors[idx].color,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: size * 0.35,
-        fontWeight: 500,
-        flexShrink: 0,
-      }}
-    >
-      {initials || "?"}
-    </div>
-  );
-}
+import StatsCard from "../components/ui/StatsCard";
+import PageHeader from "../components/ui/PageHeader";
+import Card from "../components/ui/Card";
+import ProgressBar from "../components/ui/ProgressBar";
+import Spinner from "../components/ui/Spinner";
+import Button from "../components/ui/Button";
+import Badge from "../components/ui/Badge";
 
 function timeAgo(dateStr) {
   if (!dateStr) return "";
@@ -80,216 +40,6 @@ function timeAgo(dateStr) {
   return `${Math.round(diff / 86400)}d ago`;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   UI PRIMITIVES
-═══════════════════════════════════════════════════════════════ */
-
-function Card({ children, style }) {
-  return <div style={{ ...S.card, ...style }}>{children}</div>;
-}
-
-function SectionHeading({ children }) {
-  return <h2 style={S.sectionHeading}>{children}</h2>;
-}
-
-function Btn({ children, onClick, disabled, variant = "primary", size = "md", icon: Icon, to, target }) {
-  const base = {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 6,
-    fontFamily: "'DM Sans', sans-serif",
-    fontWeight: 500,
-    cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.5 : 1,
-    border: "none",
-    borderRadius: 8,
-    transition: "background .15s, border-color .15s",
-    whiteSpace: "nowrap",
-    textDecoration: "none",
-    fontSize: size === "sm" ? 13 : 14,
-    padding: size === "sm" ? "7px 14px" : "10px 18px",
-    ...(variant === "primary"
-      ? { background: "#185FA5", color: "#fff" }
-      : {
-          background: "var(--color-background-secondary)",
-          color: "var(--color-text-primary)",
-          border: "0.5px solid var(--color-border-secondary)",
-        }),
-  };
-  const inner = (
-    <>
-      {Icon && <Icon size={size === "sm" ? 13 : 15} strokeWidth={2} />}
-      {children}
-    </>
-  );
-  if (to)
-    return (
-      <Link to={to} target={target} style={base}>
-        {inner}
-      </Link>
-    );
-  return (
-    <button style={base} onClick={onClick} disabled={disabled}>
-      {inner}
-    </button>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   STAT CARD
-═══════════════════════════════════════════════════════════════ */
-
-const iconThemes = {
-  sky:    { bg: "#E6F1FB", color: "#185FA5" },
-  purple: { bg: "#EEEDFE", color: "#3C3489" },
-  rose:   { bg: "#FBEAF0", color: "#993556" },
-  amber:  { bg: "#FAEEDA", color: "#854F0B" },
-};
-
-function StatCard({ label, value, sub, icon: Icon, iconColor = "sky" }) {
-  const theme = iconThemes[iconColor];
-  return (
-    <Card>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
-        <div style={{ ...S.iconBox, background: theme.bg }}>
-          <Icon size={16} color={theme.color} strokeWidth={2} />
-        </div>
-      </div>
-      <div style={S.statValue}>{value}</div>
-      <div style={S.statLabel}>{label}</div>
-      {sub && <div style={S.statSub}>{sub}</div>}
-    </Card>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PROFILE LINK BANNER
-═══════════════════════════════════════════════════════════════ */
-
-function ProfileBanner({ profileUrl, copied, onCopy }) {
-  return (
-    <div style={S.banner}>
-      <div style={S.bannerLabel}>Your support page</div>
-      <div style={S.bannerRow}>
-        <span style={S.bannerUrl}>{profileUrl}</span>
-        <Btn variant="secondary" size="sm" icon={copied ? FiCheck : FiCopy} onClick={onCopy}>
-          {copied ? "Copied!" : "Copy link"}
-        </Btn>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   GOAL PROGRESS
-═══════════════════════════════════════════════════════════════ */
-
-function GoalProgress({ title, raised, goal, pct }) {
-  return (
-    <Card>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
-        <div>
-          <div style={S.sectionLabel}>{title || "Funding goal"}</div>
-          <div style={{ fontSize: 14, color: "var(--color-text-secondary)", marginTop: 2 }}>
-            {formatCurrency(raised)} raised of {formatCurrency(goal)}
-          </div>
-        </div>
-        <span style={S.goalPct}>{pct}%</span>
-      </div>
-      <div style={S.progressTrack}>
-        <div style={{ ...S.progressFill, width: `${pct}%` }} />
-      </div>
-      {pct >= 100 && (
-        <div style={S.goalReached}>🎉 Congratulations! You've reached your goal!</div>
-      )}
-    </Card>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   TRANSACTIONS TABLE
-═══════════════════════════════════════════════════════════════ */
-
-function TxnBadge({ type }) {
-  const isCoffee = type === "coffee";
-  return (
-    <span
-      style={{
-        fontSize: 11,
-        fontWeight: 500,
-        padding: "2px 8px",
-        borderRadius: 100,
-        background: isCoffee ? "#FAEEDA" : "#E6F1FB",
-        color: isCoffee ? "#854F0B" : "#185FA5",
-      }}
-    >
-      {type}
-    </span>
-  );
-}
-
-function TransactionRow({ txn }) {
-  return (
-    <div style={S.txnRow}>
-      <Avatar name={txn.donor_name} size={38} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={S.txnName}>{txn.donor_name}</div>
-        <div style={S.txnMeta}>
-          {txn.type === "coffee"
-            ? `Bought ${txn.cups} coffee${txn.cups > 1 ? "s" : ""}`
-            : "Made a donation"}{" "}
-          · {formatDate(txn.created_at)}
-        </div>
-      </div>
-      <div style={{ textAlign: "right", flexShrink: 0 }}>
-        <div style={S.txnAmount}>{formatCurrency(txn.amount)}</div>
-        <div style={{ marginTop: 4 }}>
-          <TxnBadge type={txn.type} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function EmptyTransactions() {
-  return (
-    <div style={S.emptyState}>
-      <div style={S.emptyIcon}>
-        <FiClock size={22} color="var(--color-text-tertiary)" strokeWidth={1.5} />
-      </div>
-      <div style={S.emptyTitle}>No transactions yet</div>
-      <div style={S.emptyDesc}>
-        When someone donates or buys you a coffee, it'll show up here.
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   CAMPAIGNS EMPTY STATE
-═══════════════════════════════════════════════════════════════ */
-
-function EmptyCampaigns() {
-  return (
-    <Card style={{ textAlign: "center", padding: "2.5rem 1.5rem" }}>
-      <div style={S.emptyIcon}>
-        <FiHeart size={22} color="var(--color-text-tertiary)" strokeWidth={1.5} />
-      </div>
-      <div style={S.emptyTitle}>No fundraisers yet</div>
-      <div style={{ ...S.emptyDesc, marginBottom: 20 }}>
-        Start your first fundraiser and share it with your supporters.
-      </div>
-      <Btn to="/campaigns/new" icon={FiPlus}>
-        Start your first fundraiser
-      </Btn>
-    </Card>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PAGE
-═══════════════════════════════════════════════════════════════ */
-
 export default function Dashboard() {
   const { user } = useAuth();
   const { success } = useToast();
@@ -298,7 +48,6 @@ export default function Dashboard() {
 
   const profileUrl = `${window.location.origin}/u/${user?.username}`;
 
-  // Use the new loading state hook for initial data fetch
   const { isLoading, error, data, retry } = useLoadingState(
     async () => {
       const [s, t, c] = await Promise.all([
@@ -333,171 +82,280 @@ export default function Dashboard() {
       ? Math.min(Math.round(((stats?.total_raised || 0) / user.goal_amount) * 100), 100)
       : 0;
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div style={S.pageWrap}>
-        <SkeletonLoader variant="card" />
+      <div className="page-wrapper">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Spinner size="lg" />
+        </div>
       </div>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
-      <div style={S.pageWrap}>
-        <div style={S.errorState}>
-          <p style={{ color: "var(--color-text-secondary)" }}>Failed to load dashboard</p>
-          <button 
-            onClick={retry}
-            style={{
-              marginTop: 12,
-              padding: "8px 16px",
-              background: "#185FA5",
-              color: "white",
-              border: "none",
-              borderRadius: 6,
-              cursor: "pointer",
-              fontWeight: 500
-            }}
-          >
+      <div className="page-wrapper">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+          <p className="text-muted">Failed to load dashboard</p>
+          <Button variant="secondary" onClick={retry}>
             Try again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page-wrapper">
+      {/* Page Header */}
+      <PageHeader
+        title="Dashboard"
+        description={`Welcome back, ${user?.full_name?.split(" ")[0]}`}
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              icon={FiExternalLink}
+              onClick={() => window.open(`/u/${user?.username}`, "_blank")}
+            >
+              View page
+            </Button>
+            <Button variant="outline" size="sm" icon={FiEdit2} to="/edit-profile">
+              Edit profile
+            </Button>
+            <Button variant="primary" size="sm" icon={FiPlus} to="/campaigns/new">
+              New fundraiser
+            </Button>
+          </>
+        }
+      />
+
+      {/* Profile Link Banner */}
+      <div className="bg-gold-50 dark:bg-gold-900/10 border border-gold-200 dark:border-gold-800 rounded-xl p-5 mb-8">
+        <p className="text-xs font-semibold uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">
+          Your support page
+        </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <code className="text-sm font-mono font-medium text-navy-700 dark:text-navy-200 break-all">
+            {profileUrl}
+          </code>
+          <button
+            onClick={handleCopy}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-navy-700 dark:text-navy-200 bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 rounded-lg hover:bg-navy-50 dark:hover:bg-navy-700 transition-colors"
+          >
+            {copied ? <FiCheck className="w-4 h-4 text-green-500" /> : <FiCopy className="w-4 h-4" />}
+            {copied ? "Copied!" : "Copy link"}
           </button>
         </div>
       </div>
-    );
 
-  return (
-    <div style={S.pageWrap}>
-
-      {/* ── Page header ── */}
-      <div style={S.pageHeader}>
-        <div>
-          <h1 style={S.pageTitle}>Dashboard</h1>
-          <p style={S.pageSubtitle}>
-            Welcome back, {user?.full_name?.split(" ")[0]} 👋
-          </p>
-        </div>
-        <div style={S.headerActions}>
-          <Btn variant="secondary" size="sm" icon={FiExternalLink} to={`/u/${user?.username}`} target="_blank">
-            View page
-          </Btn>
-          <Btn size="sm" icon={FiPlus} to="/campaigns/new">
-            New fundraiser
-          </Btn>
-          <Btn variant="secondary" size="sm" icon={FiEdit2} to="/edit-profile">
-            Edit profile
-          </Btn>
-        </div>
-      </div>
-
-      {/* ── Profile link banner ── */}
-      <ProfileBanner profileUrl={profileUrl} copied={copied} onCopy={handleCopy} />
-
-      {/* ── Stats grid ── */}
-      <section style={{ marginBottom: 32 }}>
-        <SectionHeading>Performance</SectionHeading>
-        <div style={S.statsGrid}>
-          <StatCard
+      {/* Stats Grid */}
+      <section className="mb-8">
+        <h2 className="font-heading text-xl font-bold text-navy-900 dark:text-navy-50 mb-4">
+          Performance
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatsCard
             label="Total Raised"
             value={formatCurrency(stats?.total_raised || 0)}
             sub="All time"
             icon={FiTrendingUp}
-            iconColor="sky"
+            color="navy"
           />
-          <StatCard
+          <StatsCard
             label="Supporters"
             value={stats?.total_supporters || 0}
             sub={`${stats?.donation_count || 0} donations · ${stats?.coffee_count || 0} coffees`}
             icon={FiUsers}
-            iconColor="purple"
+            color="purple"
           />
-          <StatCard
+          <StatsCard
             label="Donations"
             value={formatCurrency(stats?.donation_total || 0)}
             sub={`${stats?.donation_count || 0} received`}
             icon={FiHeart}
-            iconColor="rose"
+            color="gold"
           />
-          <StatCard
+          <StatsCard
             label="Coffee Tips"
             value={formatCurrency(stats?.coffee_total || 0)}
             sub={`${stats?.total_cups || 0} cups`}
             icon={FiCoffee}
-            iconColor="amber"
+            color="green"
           />
         </div>
       </section>
 
-      {/* ── Goal progress ── */}
+      {/* Goal Progress */}
       {user?.goal_amount > 0 && (
-        <section style={{ marginBottom: 32 }}>
-          <GoalProgress
-            title={user.goal_title}
-            raised={stats?.total_raised || 0}
-            goal={user.goal_amount}
-            pct={goalPct}
-          />
+        <section className="mb-8">
+          <Card>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-1">
+                  {user.goal_title || "Funding goal"}
+                </p>
+                <p className="text-sm text-muted">
+                  {formatCurrency(stats?.total_raised || 0)} raised of {formatCurrency(user.goal_amount)}
+                </p>
+              </div>
+              <span className="font-heading text-2xl font-bold text-navy-700 dark:text-navy-50">
+                {goalPct}%
+              </span>
+            </div>
+            <ProgressBar value={stats?.total_raised || 0} max={user.goal_amount} size="lg" />
+            {goalPct >= 100 && (
+              <div className="mt-4 px-4 py-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-sm font-medium text-green-700 dark:text-green-300">
+                <BsTrophy className="inline-block mr-1" /> Congratulations! You've reached your goal!
+              </div>
+            )}
+          </Card>
         </section>
       )}
 
-      {/* ── My fundraisers ── */}
-      <section style={{ marginBottom: 32 }}>
-        <div style={S.sectionRow}>
-          <SectionHeading>My fundraisers</SectionHeading>
-          <Btn variant="secondary" size="sm" icon={FiPlus} to="/campaigns/new">
+      {/* My Campaigns */}
+      <section className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-heading text-xl font-bold text-navy-900 dark:text-navy-50">
+            My fundraisers
+          </h2>
+          <Button variant="outline" size="sm" icon={FiPlus} to="/campaigns/new">
             Create new
-          </Btn>
+          </Button>
         </div>
+
         {myCampaigns.length === 0 ? (
-          <EmptyCampaigns />
+          <Card className="text-center py-12">
+            <div className="w-12 h-12 rounded-xl bg-navy-100 dark:bg-navy-800 flex items-center justify-center mx-auto mb-4">
+              <FiHeart className="w-6 h-6 text-navy-400" />
+            </div>
+            <h3 className="text-base font-semibold text-navy-900 dark:text-navy-50 mb-2">
+              No fundraisers yet
+            </h3>
+            <p className="text-sm text-muted mb-6 max-w-xs mx-auto">
+              Start your first fundraiser and share it with your supporters.
+            </p>
+            <Button variant="primary" icon={FiPlus} to="/campaigns/new">
+              Start your first fundraiser
+            </Button>
+          </Card>
         ) : (
-          <div style={S.campaignsGrid}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {myCampaigns.map((c) => (
-              <CampaignCard key={c.id} campaign={c} />
+              <Link key={c._id || c.id} to={`/c/${c.slug}`} className="camp-card block">
+                <div
+                  className="camp-thumb"
+                  style={{
+                    background: "linear-gradient(135deg, #1E3A5F, #3B82F6)",
+                    height: "140px",
+                  }}
+                >
+                  <FaBullseye className="text-3xl text-white/70" />
+                </div>
+                <div className="camp-body">
+                  <div className="camp-name">{c.title}</div>
+                  <div className="progress-bar-wrap mb-3">
+                    <div
+                      className="progress-bar-fill"
+                      style={{
+                        width: `${c.goal_amount > 0 ? Math.min((c.raised / c.goal_amount) * 100, 100) : 0}%`,
+                      }}
+                    />
+                  </div>
+                  <div className="camp-footer">
+                    <span className="camp-raised">
+                      <strong>{formatCurrency(c.raised || 0)}</strong> raised
+                    </span>
+                    <span className="camp-pct">
+                      {c.goal_amount > 0 ? Math.round((c.raised / c.goal_amount) * 100) : 0}%
+                    </span>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         )}
       </section>
 
-      {/* ── Recent transactions ── */}
+      {/* Recent Transactions */}
       <section>
-        <SectionHeading>Recent Transactions</SectionHeading>
-        <Card style={{ padding: 0, overflow: "hidden" }}>
+        <h2 className="font-heading text-xl font-bold text-navy-900 dark:text-navy-50 mb-4">
+          Recent Transactions
+        </h2>
+        <Card hover={false} className="overflow-hidden">
           {transactions.length === 0 ? (
-            <EmptyTransactions />
+            <div className="flex flex-col items-center py-12 text-center">
+              <div className="w-12 h-12 rounded-xl bg-navy-100 dark:bg-navy-800 flex items-center justify-center mb-4">
+                <FiClock className="w-6 h-6 text-navy-400" />
+              </div>
+              <h3 className="text-base font-semibold text-navy-900 dark:text-navy-50 mb-2">
+                No transactions yet
+              </h3>
+              <p className="text-sm text-muted max-w-xs">
+                When someone donates or buys you a coffee, it'll show up here.
+              </p>
+            </div>
           ) : (
             <>
-              <div>
-                {transactions.map((txn, i) => (
-                  <div key={txn.id}>
-                    {i > 0 && <div style={S.divider} />}
-                    <TransactionRow txn={txn} />
+              <div className="divide-y divide-slate-100 dark:divide-navy-700">
+                {transactions.map((txn) => (
+                  <div key={txn._id || txn.id} className="flex items-center gap-4 px-6 py-4">
+                    <div className="w-10 h-10 rounded-full bg-navy-100 dark:bg-navy-800 flex items-center justify-center text-sm font-semibold text-navy-600 dark:text-navy-300 font-heading flex-shrink-0">
+                      {(txn.donor_name || "A")
+                        .split(" ")
+                        .map((w) => w[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-navy-900 dark:text-navy-50 truncate">
+                        {txn.donor_name}
+                      </p>
+                      <p className="text-xs text-muted">
+                        {txn.type === "coffee"
+                          ? `Bought ${txn.cups || 1} coffee${txn.cups > 1 ? "s" : ""}`
+                          : "Made a donation"}{" "}
+                        · {timeAgo(txn.created_at)}
+                      </p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-sm font-bold text-navy-900 dark:text-navy-50">
+                        {formatCurrency(txn.amount)}
+                      </p>
+                      <Badge variant={txn.type === "coffee" ? "amber" : "navy"}>
+                        {txn.type}
+                      </Badge>
+                    </div>
                   </div>
                 ))}
               </div>
 
               {total > 20 && (
-                <div style={S.pagination}>
-                  <span style={S.paginationInfo}>
+                <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 dark:border-navy-700">
+                  <span className="text-xs text-muted">
                     Showing {Math.min(page * 20, total)} of {total}
                   </span>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <Btn
-                      variant="secondary"
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
                       size="sm"
-                      icon={FiChevronLeft}
                       onClick={() => setPage((p) => p - 1)}
                       disabled={page <= 1}
                     >
+                      <FiChevronLeft className="w-4 h-4" />
                       Previous
-                    </Btn>
-                    <Btn
-                      variant="secondary"
+                    </Button>
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => setPage((p) => p + 1)}
                       disabled={page * 20 >= total}
                     >
                       Next
-                      <ChevronRight size={13} strokeWidth={2} />
-                    </Btn>
+                      <FiChevronRight className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
               )}
@@ -505,254 +363,6 @@ export default function Dashboard() {
           )}
         </Card>
       </section>
-
     </div>
   );
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   STYLES
-═══════════════════════════════════════════════════════════════ */
-
-const S = {
-  pageWrap: {
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: "2.5rem 1.5rem",
-    fontFamily: "'DM Sans', sans-serif",
-  },
-
-  /* Header */
-  pageHeader: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    gap: 16,
-    marginBottom: 28,
-  },
-  pageTitle: {
-    fontFamily: "'DM Serif Display', serif",
-    fontSize: 34,
-    color: "var(--color-text-primary)",
-    lineHeight: 1.15,
-    margin: 0,
-  },
-  pageSubtitle: {
-    marginTop: 4,
-    fontSize: 15,
-    color: "var(--color-text-secondary)",
-  },
-  headerActions: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "center",
-    gap: 8,
-  },
-
-  /* Banner */
-  banner: {
-    marginBottom: 32,
-    borderRadius: 12,
-    border: "0.5px solid #BAD9F5",
-    background: "#E6F1FB",
-    padding: "18px 20px",
-  },
-  bannerLabel: {
-    fontSize: 11,
-    fontWeight: 500,
-    letterSpacing: "0.06em",
-    textTransform: "uppercase",
-    color: "#185FA5",
-    marginBottom: 6,
-  },
-  bannerRow: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-  },
-  bannerUrl: {
-    fontFamily: "monospace",
-    fontSize: 13,
-    fontWeight: 500,
-    color: "#0C447C",
-    wordBreak: "break-all",
-  },
-
-  /* Section */
-  sectionHeading: {
-    fontFamily: "'DM Serif Display', serif",
-    fontSize: 22,
-    color: "var(--color-text-primary)",
-    margin: "0 0 16px 0",
-  },
-  sectionRow: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 16,
-  },
-  sectionLabel: {
-    fontSize: 11,
-    fontWeight: 500,
-    letterSpacing: "0.06em",
-    textTransform: "uppercase",
-    color: "var(--color-text-tertiary)",
-    marginBottom: 4,
-  },
-
-  /* Card */
-  card: {
-    background: "var(--color-background-primary)",
-    border: "0.5px solid var(--color-border-tertiary)",
-    borderRadius: 12,
-    padding: "1.25rem 1.5rem",
-  },
-
-  /* Stats */
-  statsGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-    gap: 12,
-  },
-  iconBox: {
-    width: 34,
-    height: 34,
-    borderRadius: 8,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  statValue: {
-    fontFamily: "'DM Serif Display', serif",
-    fontSize: 28,
-    color: "var(--color-text-primary)",
-    lineHeight: 1.1,
-    marginBottom: 2,
-  },
-  statLabel: {
-    fontSize: 13,
-    fontWeight: 500,
-    color: "var(--color-text-secondary)",
-  },
-  statSub: {
-    fontSize: 12,
-    color: "var(--color-text-tertiary)",
-    marginTop: 3,
-  },
-
-  /* Goal */
-  goalPct: {
-    fontFamily: "'DM Serif Display', serif",
-    fontSize: 28,
-    color: "#185FA5",
-    lineHeight: 1,
-  },
-  progressTrack: {
-    height: 6,
-    background: "var(--color-background-secondary)",
-    borderRadius: 100,
-    overflow: "hidden",
-    marginBottom: 10,
-  },
-  progressFill: {
-    height: "100%",
-    background: "#378ADD",
-    borderRadius: 100,
-    transition: "width .5s ease",
-  },
-  goalReached: {
-    marginTop: 10,
-    borderRadius: 8,
-    background: "#EDFAF3",
-    padding: "10px 14px",
-    fontSize: 14,
-    fontWeight: 500,
-    color: "#0F6E56",
-  },
-
-  /* Campaigns */
-  campaignsGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-    gap: 12,
-  },
-
-  /* Transactions */
-  txnRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: 14,
-    padding: "14px 20px",
-  },
-  txnName: {
-    fontSize: 14,
-    fontWeight: 500,
-    color: "var(--color-text-primary)",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  },
-  txnMeta: {
-    fontSize: 12,
-    color: "var(--color-text-secondary)",
-    marginTop: 2,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  },
-  txnAmount: {
-    fontSize: 14,
-    fontWeight: 600,
-    color: "var(--color-text-primary)",
-  },
-  divider: {
-    height: "0.5px",
-    background: "var(--color-border-tertiary)",
-    margin: "0 20px",
-  },
-  pagination: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "12px 20px",
-    borderTop: "0.5px solid var(--color-border-tertiary)",
-  },
-  paginationInfo: {
-    fontSize: 12,
-    color: "var(--color-text-secondary)",
-  },
-
-  /* Empty */
-  emptyState: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "3rem 1.5rem",
-    textAlign: "center",
-  },
-  emptyIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    background: "var(--color-background-secondary)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 14,
-  },
-  emptyTitle: {
-    fontSize: 15,
-    fontWeight: 500,
-    color: "var(--color-text-primary)",
-    marginBottom: 6,
-  },
-  emptyDesc: {
-    fontSize: 14,
-    color: "var(--color-text-secondary)",
-    lineHeight: 1.6,
-    maxWidth: 320,
-  },
-};

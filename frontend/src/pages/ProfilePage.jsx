@@ -6,7 +6,7 @@ import { SkeletonLoader } from "../components/common/SkeletonLoader";
 import { useLoadingState } from "../hooks/useLoadingState";
 import { useResponsive } from "../utils/responsiveUtils";
 import { useToast } from "../hooks/useToast";
-import { FiAlertCircle, FiCheck } from "react-icons/fi";
+import { FiAlertCircle, FiCheck, FiCoffee, FiHeart } from "react-icons/fi";
 
 /* ─── Google Fonts (add to your index.html <head> instead if preferred) ─── */
 const fontLink = document.createElement("link");
@@ -139,7 +139,7 @@ function CoffeeBox({ onBuy }) {
               }
             }}
           >
-            <span style={styles.coffeeEmoji}>☕</span>
+            <FiCoffee size={18} style={{ lineHeight: 1 }} />
             <span
               style={{
                 ...styles.coffeePrice,

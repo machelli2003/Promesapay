@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiSearch, FiChevronDown, FiEye, FiLock, FiTrash2, FiMessageSquare, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiSearch, FiChevronDown, FiEye, FiLock, FiTrash2, FiMessageSquare, FiChevronLeft, FiChevronRight, FiCheck } from "react-icons/fi";
 import { adminAPI } from "../../api/admin";
 import { useToast } from "../../hooks/useToast";
 import AppButton from "../../components/ui/AppButton";
@@ -196,7 +196,7 @@ export default function UserManagement() {
                         <td className="px-6 py-4">
                           {user.email_verified ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">
-                              ✓ Verified
+                            <FiCheck size={10} className="inline mr-0.5" /> Verified
                             </span>
                           ) : (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400">
@@ -207,7 +207,7 @@ export default function UserManagement() {
                         <td className="px-6 py-4">
                           {user.two_factor_enabled ? (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400">
-                              ✓ Enabled
+                            <FiCheck size={10} className="inline mr-0.5" /> Enabled
                             </span>
                           ) : (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300">

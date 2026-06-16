@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getReceipts, resendReceipt, downloadReceiptPDF } from '../../api/receipts';
 import { MessageBox, LoadingSpinner, Button } from '../ui';
+import { FiMail, FiDownload } from 'react-icons/fi';
 
 export default function TransactionHistory() {
   const [receipts, setReceipts] = useState([]);
@@ -110,7 +111,7 @@ export default function TransactionHistory() {
                   title="Resend receipt email"
                   className="rounded bg-sky-100 px-3 py-1.5 text-xs font-medium text-sky-800 hover:bg-sky-200 dark:bg-sky-900/40 dark:text-sky-200"
                 >
-                  📧 Resend
+                  <FiMail size={14} className="inline mr-1" /> Resend
                 </Button>
                 <Button
                   type="button"
@@ -118,7 +119,7 @@ export default function TransactionHistory() {
                   title="Download PDF receipt"
                   className="rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-900 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-200"
                 >
-                  📥 PDF
+                  <FiDownload size={14} className="inline mr-1" /> PDF
                 </Button>
               </div>
             </div>

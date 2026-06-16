@@ -1,75 +1,64 @@
-const steps = [
-  {
-    num: "01",
-    icon: "✍️",
-    title: "Create Your Page",
-    desc: "Sign up, add your photo and bio. Set up in just a few minutes.",
-  },
-  {
-    num: "02",
-    icon: "🔗",
-    title: "Share Your Link",
-    desc: "Get your unique Promesapay link and share it everywhere online.",
-  },
-  {
-    num: "03",
-    icon: "💰",
-    title: "Get Supported",
-    desc: "Receive donations, tips, and recurring support from your community.",
-  },
-];
+import React from "react";
+import { FaBullseye, FaBullhorn, FaMoneyBillWave } from "react-icons/fa";
 
 export default function HowItWorks() {
+  const steps = [
+    {
+      num: "01",
+      icon: FaBullseye,
+      title: "Set Your Goal",
+      text: "Choose between a crowdfunding campaign (equity/rewards) or a personal fundraising drive. Set your target, deadline, and story.",
+    },
+    {
+      num: "02",
+      icon: FaBullhorn,
+      title: "Share Widely",
+      text: "Share your campaign link on WhatsApp, Facebook, or anywhere. Our tools help you reach beyond your inner circle.",
+    },
+    {
+      num: "03",
+      icon: FaMoneyBillWave,
+      title: "Receive Funds",
+      text: "Receive donations via Mobile Money (MTN, Vodafone, AirtelTigo), bank transfer, or card. Withdraw anytime.",
+    },
+  ];
+
   return (
-    <section
-      id="how-it-works"
-      className="border-b border-slate-200 bg-white py-20 dark:border-slate-800 dark:bg-slate-950"
-    >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-16">
-          <span className="text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-sky-400">
-            Get started in 3 steps
-          </span>
-          <h2 className="mb-4 mt-2 text-4xl font-bold text-slate-900 dark:text-slate-50">
-            It's simple to get funded
-          </h2>
-          <p className="max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-            Create your page, share your link, and start receiving support from your community today.
-          </p>
+    <section id="how" className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-navy-700 text-white">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-2">
+          <span className="section-label !text-gold-400">Simple Process</span>
         </div>
+        <h2 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+          From idea to funded<br />in three steps
+        </h2>
+        <p className="text-white/60 max-w-lg text-base leading-relaxed">
+          No complicated forms, no long waits. Create your campaign, share your story, and watch your community rally around you.
+        </p>
 
-        {/* Steps */}
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
-          {steps.map((step, index) => (
-            <div key={step.num} className="relative min-h-[220px] rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-6 shadow-sm transition-all hover:shadow-lg">
-              {/* Connector line (hidden on mobile) */}
-              {index < steps.length - 1 && (
-                <div className="absolute -right-4 top-12 hidden h-px w-8 bg-slate-200 lg:block dark:bg-slate-800" />
-              )}
-
-              {/* Card */}
-              <div className="space-y-4">
-                {/* Number */}
-                <div className="text-sm font-bold text-sky-600 dark:text-sky-400">
+        <div className="grid md:grid-cols-3 gap-0 mt-14">
+          {steps.map((step, i) => {
+            const IconComponent = step.icon;
+            return (
+              <div
+                key={step.num}
+                className={`relative px-8 py-10 ${i < steps.length - 1 ? "border-r border-gold-500/15" : ""}`}
+              >
+                <div className="font-heading text-6xl font-extrabold text-gold-500/15 leading-none mb-5">
                   {step.num}
                 </div>
-
-                {/* Icon */}
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-sky-100 dark:bg-sky-900/30 text-xl">
-                  {step.icon}
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                <span className="text-3xl block mb-4 text-gold-400">
+                  <IconComponent className="text-4xl" />
+                </span>
+                <h3 className="font-heading text-lg font-bold text-white mb-2">
                   {step.title}
                 </h3>
-
-                {/* Description */}
-                <p className="text-slate-600 dark:text-slate-400">{step.desc}</p>
+                <p className="text-white/50 text-sm leading-relaxed">
+                  {step.text}
+                </p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
