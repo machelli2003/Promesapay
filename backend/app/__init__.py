@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from authlib.integrations.flask_client import OAuth
@@ -24,6 +24,8 @@ limiter = Limiter(key_func=get_remote_address, default_limits=["200 per day", "5
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    frontend_dist = os.path.join(project_root, "frontend", "dist")
 
     if test_config is not None:
         app.config.update(test_config)
@@ -148,5 +150,21 @@ def create_app(test_config=None):
     app.register_blueprint(admin_disputes_bp)
     app.register_blueprint(monitoring_bp)
     app.register_blueprint(notifications_bp)
+
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def serve_frontend(path):
+        if path == "api" or path.startswith("api/"):
+            return jsonify({"error": "Not Found"}), 404
+
+        asset_path = os.path.join(frontend_dist, path)
+        if path and os.path.isfile(asset_path):
+            return send_from_directory(frontend_dist, path)
+
+        index_path = os.path.join(frontend_dist, "index.html")
+        if os.path.isfile(index_path):
+            return send_from_directory(frontend_dist, "index.html")
+
+        return jsonify({"error": "Frontend build not found"}), 404
 
     return app

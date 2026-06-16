@@ -22,6 +22,7 @@ EXEMPT_PATHS = [
     "/api/coffee/verify",
     # Server-to-server webhooks
     "/api/webhook",
+    "/api/monitoring/health",
 ]
 
 
