@@ -30,6 +30,7 @@ import CreateCampaign from "./pages/CreateCampaign";
 import WalletPage from "./pages/WalletPage";
 
 const FinancialDashboard = lazy(() => import("./pages/FinancialDashboard"));
+const AdminHome = lazy(() => import("./pages/admin/AdminHome"));
 const AdminFinanceDashboard = lazy(() => import("./pages/admin/AdminFinanceDashboard"));
 const AdminPayoutQueue = lazy(() => import("./pages/admin/AdminPayoutQueue"));
 const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
@@ -97,6 +98,16 @@ function AppRoutes() {
               }
             />
             <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Spinner size="lg" /></div>}>
+                    <AdminHome />
+                  </Suspense>
+                </AdminRoute>
+              }
+            />
             <Route
               path="/admin/finance"
               element={

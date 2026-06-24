@@ -113,10 +113,10 @@ export default function Register() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <InputField label="Full name" name="full_name" value={form.full_name}
-              onChange={set} placeholder="John Doe" required />
+              onChange={set} placeholder="Ben Juda" required />
 
             <InputField label="Username" name="username" value={form.username}
-              onChange={set} placeholder="johndoe" required prefix="@"
+              onChange={set} placeholder="Benjuda" required prefix="@"
               hint={form.username ? `fundme.app/u/${form.username}` : undefined} />
 
             <InputField label="Email" name="email" type="email" value={form.email}

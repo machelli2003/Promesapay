@@ -484,8 +484,8 @@ export default function Navbar() {
                       Financial Center
                     </DropItem>
                     {user?.role === "admin" && (
-                        <DropItem to="/admin/finance" icon={FiDollarSign} onClick={() => setDropOpen(false)}>
-                        Admin Finance
+                      <DropItem to="/admin" icon={FiDollarSign} onClick={() => setDropOpen(false)}>
+                        Admin Center
                       </DropItem>
                     )}
 
