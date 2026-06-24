@@ -138,7 +138,7 @@ export default function SystemMonitoring() {
                   <div className="flex justify-between items-start">
                     <div>
                       <p className="font-bold">
-                        {alert.level === 'critical' ? '🔴' : '🟡'} {alert.message}
+                        <FiAlertTriangle className="inline-block mr-1" size={16} /> {alert.message}
                       </p>
                       <p className="text-sm text-slate-400 mt-1">
                         Metric: {alert.metric} | Value: {alert.value}

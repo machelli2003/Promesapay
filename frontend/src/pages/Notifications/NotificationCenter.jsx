@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiCheck, FiTrash2, FiSettings, FiBell } from "react-icons/fi";
+import { FiCheck, FiTrash2, FiSettings, FiBell, FiDollarSign, FiSend, FiAlertTriangle, FiShield, FiSmartphone, FiLock, FiKey } from "react-icons/fi";
 import notificationsAPI from "../../api/notifications";
 import toast from "react-hot-toast";
 
@@ -20,16 +20,28 @@ const NotificationCenter = () => {
   const LIMIT = 20;
 
   // Notification types for filtering
+  const NOTIFICATION_ICONS = {
+    payment_received: FiDollarSign,
+    payment_sent: FiSend,
+    refund_issued: FiDollarSign,
+    dispute_reported: FiAlertTriangle,
+    dispute_resolved: FiCheck,
+    security_alert: FiShield,
+    login_new_device: FiSmartphone,
+    account_locked: FiLock,
+    password_changed: FiKey,
+  };
+
   const notificationTypes = [
-    { key: "payment_received", label: "💰 Payment Received" },
-    { key: "payment_sent", label: "📤 Payment Sent" },
-    { key: "refund_issued", label: "💵 Refund Issued" },
-    { key: "dispute_reported", label: "⚠️ Dispute Reported" },
-    { key: "dispute_resolved", label: "✅ Dispute Resolved" },
-    { key: "security_alert", label: "🔒 Security Alert" },
-    { key: "login_new_device", label: "📱 New Device Login" },
-    { key: "account_locked", label: "🔐 Account Locked" },
-    { key: "password_changed", label: "🔑 Password Changed" },
+    { key: "payment_received", label: "Payment Received" },
+    { key: "payment_sent", label: "Payment Sent" },
+    { key: "refund_issued", label: "Refund Issued" },
+    { key: "dispute_reported", label: "Dispute Reported" },
+    { key: "dispute_resolved", label: "Dispute Resolved" },
+    { key: "security_alert", label: "Security Alert" },
+    { key: "login_new_device", label: "New Device Login" },
+    { key: "account_locked", label: "Account Locked" },
+    { key: "password_changed", label: "Password Changed" },
   ];
 
   // Fetch notifications
@@ -143,17 +155,8 @@ const NotificationCenter = () => {
   };
 
   const getNotificationIcon = (type) => {
-    const icons = {
-      payment_received: "💰",
-      payment_sent: "📤",
-      refund_issued: "💵",
-      dispute_reported: "⚠️",
-      dispute_resolved: "✅",
-      security_alert: "🔒",
-      login_new_device: "📱",
-      account_locked: "🔐",
-    };
-    return icons[type] || "🔔";
+    const Icon = NOTIFICATION_ICONS[type] || FiBell;
+    return <Icon size={24} className="text-blue-600 dark:text-blue-400" />;
   };
 
   const formatTime = (timestamp) => {
@@ -247,16 +250,16 @@ const NotificationCenter = () => {
                         : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}
                   >
-                    <span>🏷️ {filterType ? "Filtered" : "Filter by Type"}</span>
+                    <span>{filterType ? "Filtered" : "Filter by Type"}</span>
                     {filterType && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setFilterType(null);
                         }}
-                        className="ml-1 hover:opacity-70"
+                        className="ml-1 hover:opacity-70 transition-colors"
                       >
-                        ✕
+                        <FiCheck size={14} />
                       </button>
                     )}
                   </button>
@@ -368,7 +371,7 @@ const NotificationCenter = () => {
                   />
 
                   {/* Notification Icon */}
-                  <div className="text-3xl flex-shrink-0 mt-1">
+                  <div className="flex-shrink-0 mt-1 p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                     {getNotificationIcon(notification.type)}
                   </div>
 

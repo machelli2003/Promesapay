@@ -52,7 +52,7 @@ export default function ProgressBar({ raised = 0, goal = 0, title = "" }) {
       {pct >= 100 && (
         <div className="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800 rounded-lg px-4 py-2.5
                         text-sm font-medium text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
-          🎉 Goal reached — thank you so much!
+          Goal reached — thank you so much!
         </div>
       )}
     </div>

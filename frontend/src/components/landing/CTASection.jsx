@@ -1,56 +1,34 @@
 import { Link } from "react-router-dom";
-import { FiArrowRight, FiCoffee, FiHeart } from "react-icons/fi";
-import AppButton from "../ui/AppButton";
+import { FiCheck } from "react-icons/fi";
 
 export default function CTASection() {
   return (
-    <section className="py-20 bg-slate-50 dark:bg-slate-900">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 dark:border-slate-700">
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-              Ready to start receiving support?
-            </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
-              Join thousands of creators who are already building sustainable income with Promesapay.
-            </p>
+    <section
+      id="cta"
+      className="relative py-24 px-4 sm:px-6 lg:px-8 bg-navy-700 overflow-hidden"
+    >
+      {/* Decorative gradient circle */}
+      <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-gold-500/10 blur-3xl" />
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register" className="group">
-                <AppButton
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  iconRight={FiArrowRight}
-                >
-                  Create Your Page
-                </AppButton>
-              </Link>
-              <Link to="/login">
-                <AppButton
-                  size="lg"
-                  variant="secondary"
-                  className="w-full sm:w-auto"
-                >
-                  Sign In
-                </AppButton>
-              </Link>
-            </div>
-
-            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-slate-500 dark:text-slate-400">
-              <div className="flex items-center gap-2">
-                <FiCoffee className="w-4 h-4" />
-                <span>Free to start</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FiHeart className="w-4 h-4" />
-                <span>No hidden fees</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span>⚡</span>
-                <span>Instant payouts</span>
-              </div>
-            </div>
-          </div>
+      <div className="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+        <div className="max-w-xl">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4">
+            Your community is ready.<br />Are you?
+          </h2>
+          <p className="text-white/60 text-base leading-relaxed">
+            Join thousands of Ghanaians using the power of collective giving to change lives and build futures. No setup fees, ever.
+          </p>
+        </div>
+        <div className="flex flex-col items-start gap-3">
+          <Link
+            to="/register"
+            className="inline-flex px-10 py-4 bg-gold-500 text-navy-950 font-bold text-base rounded-full hover:bg-gold-400 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            Create Your Campaign Free →
+          </Link>
+          <span className="text-xs text-white/40">
+            <FiCheck size={12} className="inline" /> Free to start &nbsp; <FiCheck size={12} className="inline" /> MoMo & Card accepted &nbsp; <FiCheck size={12} className="inline" /> Verified within 24hrs
+          </span>
         </div>
       </div>
     </section>

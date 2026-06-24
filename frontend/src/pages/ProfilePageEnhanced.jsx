@@ -10,6 +10,7 @@
  */
 
 import { useParams, Link } from "react-router-dom";
+import { FiCoffee, FiHeart } from "react-icons/fi";
 import { FiAlertCircle } from "react-icons/fi";
 import { getProfile } from "../api/profile";
 import PaymentModal from "../components/payment/PaymentModal";
@@ -171,13 +172,13 @@ export default function ProfilePageEnhanced() {
           onClick={() => setModal({ type: "coffee", payload: { cups: 1 } })}
           className="bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-lg font-semibold transition"
         >
-          ☕ Buy a Coffee
+          <FiCoffee size={16} className="inline mr-1" /> Buy a Coffee
         </button>
         <button
           onClick={() => setModal({ type: "donation", payload: { amount: 10 } })}
           className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition"
         >
-          ❤️ Make a Donation
+          <FiHeart size={16} className="inline mr-1" /> Make a Donation
         </button>
       </div>
 

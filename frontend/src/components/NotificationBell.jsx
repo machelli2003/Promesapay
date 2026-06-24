@@ -61,7 +61,7 @@ const NotificationBell = () => {
         )
       );
       fetchUnreadCount();
-      toast.success("Marked as read", { icon: "✓", duration: 2000 });
+      toast.success("Marked as read", { duration: 2000 });
     } catch (error) {
       console.error("Error marking notification as read:", error);
       toast.error("Failed to mark notification as read");
@@ -75,7 +75,7 @@ const NotificationBell = () => {
         prev.filter((notif) => notif._id !== notificationId)
       );
       fetchUnreadCount();
-      toast.success("Notification deleted", { icon: "🗑️", duration: 2000 });
+      toast.success("Notification deleted", { duration: 2000 });
     } catch (error) {
       console.error("Error deleting notification:", error);
       toast.error("Failed to delete notification");
@@ -270,7 +270,7 @@ const NotificationBell = () => {
               className="text-center block text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors mt-2"
               onClick={() => setShowDropdown(false)}
             >
-              Preferences ⚙️
+              Preferences
             </Link>
           </div>
         </div>

@@ -150,8 +150,8 @@ export default function CreateCampaign() {
                 onChange={set}
                 className="input w-full"
               >
-                <option value="donation">💝 Donations</option>
-                <option value="coffee">☕ Buy Me A Coffee</option>
+                <option value="donation">Donations</option>
+                <option value="coffee">Buy Me A Coffee</option>
               </select>
               <p className="field-hint">
                 {form.payment_type === "donation"
@@ -240,7 +240,7 @@ export default function CreateCampaign() {
               </p>
               <p>
                 <span className="text-slate-500">Payment method:</span>{" "}
-                {form.payment_type === "donation" ? "💝 Donations" : "☕ Coffee"}
+                {form.payment_type === "donation" ? "Donations" : "Coffee"}
               </p>
               <p className="text-slate-600 dark:text-slate-300 line-clamp-4">
                 {form.story || "—"}

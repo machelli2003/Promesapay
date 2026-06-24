@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiSettings, FiSave, FiClock, FiMail, FiSmartphone } from "react-icons/fi";
+import { FiSettings, FiSave, FiClock, FiMail, FiSmartphone, FiDollarSign, FiUpload, FiCreditCard, FiAlertTriangle, FiCheckCircle, FiShield, FiSmartphone as FiMobile, FiLock, FiKey, FiBell, FiVolume2 } from "react-icons/fi";
 import notificationsAPI from "../../api/notifications";
 import toast from "react-hot-toast";
 
@@ -114,15 +114,15 @@ const NotificationPreferences = () => {
   }
 
   const notificationTypes = [
-    { key: "payment_received", label: "Payment Received", icon: "💰" },
-    { key: "payment_sent", label: "Payment Sent", icon: "📤" },
-    { key: "refund_issued", label: "Refund Issued", icon: "💵" },
-    { key: "dispute_reported", label: "Dispute Reported", icon: "⚠️" },
-    { key: "dispute_resolved", label: "Dispute Resolved", icon: "✅" },
-    { key: "security_alert", label: "Security Alert", icon: "🔒" },
-    { key: "login_new_device", label: "New Device Login", icon: "📱" },
-    { key: "account_locked", label: "Account Locked", icon: "🔐" },
-    { key: "password_changed", label: "Password Changed", icon: "🔑" },
+    { key: "payment_received", label: "Payment Received", icon: FiDollarSign },
+    { key: "payment_sent", label: "Payment Sent", icon: FiUpload },
+    { key: "refund_issued", label: "Refund Issued", icon: FiCreditCard },
+    { key: "dispute_reported", label: "Dispute Reported", icon: FiAlertTriangle },
+    { key: "dispute_resolved", label: "Dispute Resolved", icon: FiCheckCircle },
+    { key: "security_alert", label: "Security Alert", icon: FiShield },
+    { key: "login_new_device", label: "New Device Login", icon: FiMobile },
+    { key: "account_locked", label: "Account Locked", icon: FiLock },
+    { key: "password_changed", label: "Password Changed", icon: FiKey },
   ];
 
   return (
@@ -158,9 +158,9 @@ const NotificationPreferences = () => {
         {/* Tabs */}
         <div className="flex gap-2 mb-8 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
           {[
-            { id: "channels", label: "Communication Channels", icon: "📢" },
-            { id: "types", label: "Notification Types", icon: "🔔" },
-            { id: "delivery", label: "Delivery Settings", icon: "⚙️" },
+            { id: "channels", label: "Communication Channels", icon: FiVolume2 },
+            { id: "types", label: "Notification Types", icon: FiBell },
+            { id: "delivery", label: "Delivery Settings", icon: FiSettings },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -171,7 +171,7 @@ const NotificationPreferences = () => {
                   : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
               } rounded-t-lg`}
             >
-              <span>{tab.icon}</span>
+              <tab.icon />
               {tab.label}
             </button>
           ))}
@@ -282,7 +282,7 @@ const NotificationPreferences = () => {
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl">{type.icon}</span>
+                        <type.icon className="text-2xl" />
                         <h3 className="font-semibold text-gray-900 dark:text-white">
                           {type.label}
                         </h3>

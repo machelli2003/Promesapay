@@ -97,10 +97,10 @@ export default function TwoFactorSetup() {
               How it works:
             </h3>
             <ul className="text-xs text-blue-800 space-y-1">
-              <li>✓ Download an authenticator app (Google Authenticator, Authy)</li>
-              <li>✓ Scan the QR code we provide</li>
-              <li>✓ Enter the 6-digit code to verify</li>
-              <li>✓ Save your backup codes in a safe place</li>
+              <li><FiCheck size={10} className="inline mr-1" />Download an authenticator app (Google Authenticator, Authy)</li>
+              <li><FiCheck size={10} className="inline mr-1" />Scan the QR code we provide</li>
+              <li><FiCheck size={10} className="inline mr-1" />Enter the 6-digit code to verify</li>
+              <li><FiCheck size={10} className="inline mr-1" />Save your backup codes in a safe place</li>
             </ul>
           </div>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiX, FiCopy, FiAlertCircle, FiLock, FiMail, FiCalendar, FiDollarSign } from "react-icons/fi";
+import { FiX, FiCopy, FiAlertCircle, FiLock, FiMail, FiCalendar, FiDollarSign, FiCheck } from "react-icons/fi";
 import { adminAPI } from "../../api/admin";
 import { useToast } from "../../hooks/useToast";
 import AppButton from "../../components/ui/AppButton";
@@ -90,7 +90,7 @@ export default function UserDetailModal({ user, onClose, onStatusChanged }) {
             <p className="text-sm text-slate-600 dark:text-slate-400">@{user.username}</p>
           </div>
           <button onClick={onClose} className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-            <X className="h-6 w-6" />
+            <FiX className="h-6 w-6" />
           </button>
         </div>
 
@@ -158,7 +158,7 @@ export default function UserDetailModal({ user, onClose, onStatusChanged }) {
                     </button>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                    {user.email_verified ? "✓ Verified" : "Pending verification"}
+{user.email_verified ? <><FiCheck size={10} className="inline mr-0.5" /> Verified</> : "Pending verification"}
                   </p>
                 </div>
                 <div>
@@ -184,7 +184,7 @@ export default function UserDetailModal({ user, onClose, onStatusChanged }) {
                   <div className="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4">
                     <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">Two-Factor Auth</p>
                     <p className="text-2xl font-bold text-slate-900 dark:text-white">
-                      {user.security.two_factor_enabled ? "✓ Enabled" : "Disabled"}
+{user.security.two_factor_enabled ? <><FiCheck size={10} className="inline mr-0.5" /> Enabled</> : "Disabled"}
                     </p>
                   </div>
                   <div className="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4">
@@ -310,7 +310,7 @@ export default function UserDetailModal({ user, onClose, onStatusChanged }) {
                       onClick={handleSuspendUser}
                       loading={loading}
                       className="w-full bg-red-600 hover:bg-red-700"
-                      iconLeft={Lock}
+                      iconLeft={FiLock}
                     >
                       Suspend User
                     </AppButton>
@@ -333,7 +333,7 @@ export default function UserDetailModal({ user, onClose, onStatusChanged }) {
                   onClick={handleResetPassword}
                   loading={loading}
                   className="w-full bg-orange-600 hover:bg-orange-700"
-                  iconLeft={Mail}
+                  iconLeft={FiMail}
                 >
                   Send Password Reset Email
                 </AppButton>

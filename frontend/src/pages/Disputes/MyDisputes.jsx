@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiLoader, FiAlertCircle, FiEye, FiAlertTriangle, FiCheckCircle } from 'react-icons/fi';
+import { FiLoader, FiAlertCircle, FiEye, FiAlertTriangle, FiCheckCircle, FiX } from 'react-icons/fi';
 import { disputesAPI } from '../../api/disputes';
 import { useToast } from '../../hooks/useToast';
 
@@ -212,7 +212,7 @@ export default function MyDisputes() {
                 onClick={() => setSelectedDispute(null)}
                 className="text-slate-400 hover:text-white"
               >
-                ✕
+                <FiX size={18} />
               </button>
             </div>
 

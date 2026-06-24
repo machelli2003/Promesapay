@@ -7,7 +7,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { EnhancedErrorBoundary } from "./components/common/EnhancedErrorBoundary";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
-import Spinner from "./components/common/Spinner";
+import Spinner from "./components/ui/Spinner";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -64,7 +64,7 @@ function AdminRoute({ children }) {
 function AppRoutes() {
   return (
     <EnhancedErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50">
+      <div className="min-h-screen flex flex-col bg-cream dark:bg-navy-950 text-navy-900 dark:text-navy-50">
         <Navbar />
         <main className="flex-1">
           <Routes>
