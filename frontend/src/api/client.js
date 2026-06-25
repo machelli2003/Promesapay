@@ -10,9 +10,33 @@ const api = axios.create({
 
 // Request interceptor
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const token = localStorage.getItem("token");
-    const csrfToken = localStorage.getItem("csrf_token");
+    let csrfToken = localStorage.getItem("csrf_token");
+
+    // If this is a mutating request and we don't have a CSRF token,
+    // fetch it from the backend (uses the session cookie) and store it.
+    const mutating = ["post", "put", "patch", "delete"].includes(
+      (config.method || "").toLowerCase()
+    );
+    if (mutating && !csrfToken) {
+      try {
+        const res = await fetch(`${API_BASE}/auth/csrf-token`, {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.csrf_token) {
+            localStorage.setItem("csrf_token", data.csrf_token);
+            csrfToken = data.csrf_token;
+            console.debug("Fetched CSRF token from server");
+          }
+        }
+      } catch (err) {
+        console.debug("Failed to refresh CSRF token:", err);
+      }
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
