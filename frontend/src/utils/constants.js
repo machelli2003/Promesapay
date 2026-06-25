@@ -1,5 +1,13 @@
-const defaultOrigin =
-  typeof window !== "undefined" ? window.location.origin : "https://promesa-pay.onrender.com";
+const defaultOrigin = (() => {
+  if (typeof window === "undefined") {
+    return "https://promesapay.onrender.com";
+  }
+  const host = window.location.host;
+  if (host.includes("localhost") || host.includes("127.0.0.1")) {
+    return window.location.origin;
+  }
+  return "https://promesapay.onrender.com";
+})();
 
 export const API_ORIGIN = import.meta.env.VITE_API_URL?.replace(/\/$/, "") || defaultOrigin;
 export const API_BASE = API_ORIGIN ? `${API_ORIGIN}/api` : "/api";
