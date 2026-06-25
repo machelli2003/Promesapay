@@ -111,24 +111,6 @@ api.interceptors.response.use(
     const errorMessage = data?.error || data?.message || "An error occurred";
     const errorCode = data?.error_code || "UNKNOWN_ERROR";
 
-    // Handle network errors
-    if (code === "ECONNABORTED") {
-      console.error("Request timeout");
-      toast.error("Request timeout. Please try again.");
-      return Promise.reject(new Error("Request timeout"));
-    }
-
-    if (!response) {
-      console.error("Network error:", message);
-      toast.error("Network error. Please check your connection.");
-      return Promise.reject(error);
-    }
-
-    // Handle API errors
-    const { status, data } = response;
-    const errorMessage = data?.error || data?.message || "An error occurred";
-    const errorCode = data?.error_code || "UNKNOWN_ERROR";
-
     // Log errors
     console.error(`API Error [${status}] ${errorCode}:`, errorMessage);
 
