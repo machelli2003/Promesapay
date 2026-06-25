@@ -40,5 +40,15 @@ def validate_csrf_token():
             return
 
         header_token = request.headers.get(CSRF_HEADER)
-        if not header_token or header_token != session.get(CSRF_SESSION_KEY):
+        session_token = session.get(CSRF_SESSION_KEY)
+        if not header_token or header_token != session_token:
+            from loguru import logger
+            logger.warning(
+                "CSRF validation failed",
+                path=request.path,
+                method=request.method,
+                header_token=header_token,
+                session_token=session_token,
+                session_keys=list(session.keys()),
+            )
             raise AuthorizationError("Invalid or missing CSRF token")
