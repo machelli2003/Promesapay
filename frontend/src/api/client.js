@@ -44,8 +44,10 @@ api.interceptors.request.use(
       config.headers["X-CSRF-Token"] = csrfToken;
     }
     console.debug("CSRF token attached", { csrfToken: !!csrfToken, mutating, url: config.url });
-    // Add request ID for tracking
-    config.headers["X-Request-ID"] = `${Date.now()}-${Math.random()}`;
+    // Add request ID for tracking only on mutating requests to avoid preflight on safe GETs
+    if (mutating) {
+      config.headers["X-Request-ID"] = `${Date.now()}-${Math.random()}`;
+    }
     return config;
   },
   (error) => {
