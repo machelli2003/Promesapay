@@ -3,6 +3,7 @@ import { FiLoader, FiAlertCircle, FiCheckCircle, FiX, FiChevronLeft, FiChevronRi
 import { adminAPI } from '../../api/admin';
 import { disputesAPI } from '../../api/disputes';
 import { useToast } from '../../hooks/useToast';
+import { formatCurrency } from '../../utils/formatters';
 import AppButton from '../../components/ui/AppButton';
 
 const STATUS_CONFIG = {
@@ -128,7 +129,7 @@ export default function DisputeResolution() {
       return;
     }
 
-    if (!window.confirm(`Issue refund of $${amount.toFixed(2)}?`)) {
+    if (!window.confirm(`Issue refund of ${formatCurrency(amount)}?`)) {
       return;
     }
 
@@ -177,7 +178,7 @@ export default function DisputeResolution() {
             </div>
             <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
               <p className="text-sm text-slate-400">Refunded</p>
-              <p className="text-2xl font-bold text-green-400 mt-1">${(stats.total_refunded_amount || 0).toFixed(2)}</p>
+              <p className="text-2xl font-bold text-green-400 mt-1">{formatCurrency(stats.total_refunded_amount || 0)}</p>
             </div>
           </div>
         )}
@@ -251,7 +252,7 @@ export default function DisputeResolution() {
                         </div>
                         <div>
                           <p className="text-slate-500">Amount</p>
-                          <p className="font-medium">${(dispute.transaction_amount || 0).toFixed(2)}</p>
+                          <p className="font-medium">{formatCurrency(dispute.transaction_amount || 0)}</p>
                         </div>
                         <div>
                           <p className="text-slate-500">Date</p>
@@ -369,7 +370,7 @@ export default function DisputeResolution() {
                 </div>
                 <div>
                   <p className="text-sm text-slate-400 mb-1">Amount</p>
-                  <p className="font-bold text-lg">${(selectedDispute.transaction?.amount || 0).toFixed(2)}</p>
+                  <p className="font-bold text-lg">{formatCurrency(selectedDispute.transaction?.amount || 0)}</p>
                 </div>
                 <div>
                   <p className="text-sm text-slate-400 mb-1">Transaction Date</p>
@@ -406,7 +407,7 @@ export default function DisputeResolution() {
                     <CheckCircle className="text-green-400 flex-shrink-0" size={20} />
                     <div>
                       <p className="font-bold text-green-400">Refund Issued</p>
-                      <p className="text-sm text-slate-300">Amount: ${(selectedDispute.refund?.amount || 0).toFixed(2)}</p>
+                      <p className="text-sm text-slate-300">Amount: {formatCurrency(selectedDispute.refund?.amount || 0)}</p>
                       <p className="text-xs text-slate-400">Date: {new Date(selectedDispute.refund?.date).toLocaleString()}</p>
                     </div>
                   </div>

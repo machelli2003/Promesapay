@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 COLLECTION_BY_TYPE = {
     "donation": donations_col,
     "coffee": coffee_col,
+    # Support legacy/external "coffee" type while allowing internal code
+    # to refer to "doll". Both map to the same collection.
+    "doll": coffee_col,
 }
 
 
@@ -62,6 +65,11 @@ def settle_successful_transaction(
 
     Returns dict with fee breakdown and whether settlement was newly applied.
     """
+    # Normalize aliases: allow callers to use "doll" internally but
+    # persist and report using the canonical "coffee" transaction type.
+    if transaction_type == "doll":
+        transaction_type = "coffee"
+
     if transaction_type not in COLLECTION_BY_TYPE:
         raise ValueError(f"Invalid transaction_type: {transaction_type}")
 

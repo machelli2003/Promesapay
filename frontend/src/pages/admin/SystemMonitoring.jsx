@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FiLoader, FiAlertCircle, FiCheckCircle, FiAlertTriangle, FiTrendingUp, FiUsers, FiActivity, FiZap } from 'react-icons/fi';
 import { monitoringAPI } from '../../api/monitoring';
 import { useToast } from '../../hooks/useToast';
+import { formatCurrency } from '../../utils/formatters';
 
 const STATUS_COLORS = {
   healthy: 'bg-green-500/20 text-green-300 border-green-500/20',
@@ -259,12 +260,12 @@ export default function SystemMonitoring() {
                   <span className="font-bold text-green-400">{systemStats.transactions?.donations?.completed}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Coffee (Total)</span>
+                  <span className="text-slate-400">Dolls (Total)</span>
                   <span className="font-bold">{systemStats.transactions?.coffee?.total}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Revenue</span>
-                  <span className="font-bold text-green-400">${(systemStats.revenue?.total || 0).toFixed(2)}</span>
+                  <span className="font-bold text-green-400">{formatCurrency(systemStats.revenue?.total || 0)}</span>
                 </div>
               </div>
             </div>
@@ -315,7 +316,7 @@ export default function SystemMonitoring() {
                   <div key={idx}>
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-sm">{day._id}</span>
-                      <span className="text-sm font-bold">${(day.amount || 0).toFixed(2)}</span>
+                      <span className="text-sm font-bold">{formatCurrency(day.amount || 0)}</span>
                     </div>
                     <div className="w-full bg-slate-700 rounded-full h-1">
                       <div

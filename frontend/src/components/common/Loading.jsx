@@ -1,4 +1,4 @@
-import { FiCoffee } from "react-icons/fi";
+// Loading spinner uses a teddy emoji now
 
 export default function Loading({ size = "md", text = "Loading..." }) {
   const sizes = {
@@ -18,7 +18,7 @@ export default function Loading({ size = "md", text = "Loading..." }) {
   return (
     <div className="flex flex-col items-center justify-center p-8">
       <div className={`${sizes[size]} rounded-full bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center animate-pulse`}>
-        <FiCoffee className={`${iconSizes[size]} text-sky-600 dark:text-sky-400 animate-spin`} />
+        <span className={`${iconSizes[size]} text-sky-600 dark:text-sky-400 animate-spin`} style={{ fontSize: '1.25rem' }}>🧸</span>
       </div>
       {text && (
         <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">{text}</p>

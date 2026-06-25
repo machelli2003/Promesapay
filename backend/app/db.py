@@ -15,6 +15,9 @@ db = client.get_database("fundme")
 users_col = db["users"]
 donations_col = db["donations"]
 coffee_col = db["coffee"]
+# Backwards-compatible alias: internal code may refer to "doll", but
+# the persistent collection name and external APIs remain "coffee".
+doll_col = coffee_col
 campaigns_col = db["campaigns"]
 campaign_updates_col = db["campaign_updates"]
 comments_col = db["comments"]

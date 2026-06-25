@@ -10,14 +10,14 @@
  */
 
 import { useParams, Link } from "react-router-dom";
-import { FiCoffee, FiHeart } from "react-icons/fi";
-import { FiAlertCircle } from "react-icons/fi";
+import { FiHeart, FiAlertCircle } from "react-icons/fi";
 import { getProfile } from "../api/profile";
 import PaymentModal from "../components/payment/PaymentModal";
 import { SkeletonLoader } from "../components/common/SkeletonLoader";
 import { useLoadingState } from "../hooks/useLoadingState";
 import { useResponsive } from "../utils/responsiveUtils";
 import { useToast } from "../hooks/useToast";
+import { formatCurrency } from "../utils/formatters";
 import { useState } from "react";
 
 /**
@@ -131,13 +131,13 @@ export default function ProfilePageEnhanced() {
           <div>
             <p className="text-sm text-slate-600 dark:text-slate-400">Raised</p>
             <p className="text-2xl font-bold text-slate-900 dark:text-white">
-              ${profile.total_raised || 0}
+              {formatCurrency(profile.total_raised || 0)}
             </p>
           </div>
           <div>
             <p className="text-sm text-slate-600 dark:text-slate-400">This Month</p>
             <p className="text-2xl font-bold text-slate-900 dark:text-white">
-              ${profile.monthly_amount || 0}
+              {formatCurrency(profile.monthly_amount || 0)}
             </p>
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function ProfilePageEnhanced() {
           onClick={() => setModal({ type: "coffee", payload: { cups: 1 } })}
           className="bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-lg font-semibold transition"
         >
-          <FiCoffee size={16} className="inline mr-1" /> Buy a Coffee
+          <span className="inline mr-1">🧸</span> Get me a doll
         </button>
         <button
           onClick={() => setModal({ type: "donation", payload: { amount: 10 } })}

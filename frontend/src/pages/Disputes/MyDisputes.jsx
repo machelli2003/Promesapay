@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiLoader, FiAlertCircle, FiEye, FiAlertTriangle, FiCheckCircle, FiX } from 'react-icons/fi';
 import { disputesAPI } from '../../api/disputes';
 import { useToast } from '../../hooks/useToast';
+import { formatCurrency } from '../../utils/formatters';
 
 const STATUS_CONFIG = {
   open: { color: 'bg-red-500/20 text-red-300', label: 'Open', icon: AlertTriangle },
@@ -124,7 +125,7 @@ export default function MyDisputes() {
                         </div>
                         <div>
                           <p className="text-slate-500">Amount</p>
-                          <p className="font-medium">${(dispute.transaction_amount || 0).toFixed(2)}</p>
+                          <p className="font-medium">{formatCurrency(dispute.transaction_amount || 0)}</p>
                         </div>
                         <div>
                           <p className="text-slate-500">Date</p>
@@ -133,7 +134,7 @@ export default function MyDisputes() {
                         {dispute.refund_amount > 0 && (
                           <div>
                             <p className="text-slate-500">Refund</p>
-                            <p className="font-medium text-green-400">${(dispute.refund_amount).toFixed(2)}</p>
+                            <p className="font-medium text-green-400">{formatCurrency(dispute.refund_amount || 0)}</p>
                           </div>
                         )}
                       </div>

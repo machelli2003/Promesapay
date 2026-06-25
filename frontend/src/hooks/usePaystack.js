@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { initiateDonation } from "../api/donations";
 import { initiateCoffee } from "../api/coffee";
+import { DOLL_PRICE } from "../utils/constants";
 import { useToast } from "./useToast";
 import { savePendingPayment } from "../utils/paymentStorage";
 
@@ -43,7 +44,7 @@ export function usePaystack() {
         amount: payload.amount,
         recipientUsername: recipient?.username || "",
         campaignSlug: campaignSlug || "",
-        cups: type === "coffee" && payload.amount ? Math.round(payload.amount / 5) : undefined,
+        cups: type === "coffee" && payload.amount ? Math.round(payload.amount / DOLL_PRICE) : undefined,
       });
 
       // Full redirect — Paystack returns to /payment/verify?reference=...

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  FiCoffee,
+  
   FiHeart,
   FiUsers,
   FiTrendingUp,
@@ -166,7 +166,7 @@ export default function Dashboard() {
           <StatsCard
             label="Supporters"
             value={stats?.total_supporters || 0}
-            sub={`${stats?.donation_count || 0} donations · ${stats?.coffee_count || 0} coffees`}
+            sub={`${stats?.donation_count || 0} donations · ${stats?.coffee_count || 0} dolls`}
             icon={FiUsers}
             color="purple"
           />
@@ -178,10 +178,10 @@ export default function Dashboard() {
             color="gold"
           />
           <StatsCard
-            label="Coffee Tips"
+            label="Doll Tips"
             value={formatCurrency(stats?.coffee_total || 0)}
             sub={`${stats?.total_cups || 0} cups`}
-            icon={FiCoffee}
+            icon={() => <span className="text-xl">🧸</span>}
             color="green"
           />
         </div>
@@ -293,7 +293,7 @@ export default function Dashboard() {
                 No transactions yet
               </h3>
               <p className="text-sm text-muted max-w-xs">
-                When someone donates or buys you a coffee, it'll show up here.
+                When someone donates or gets you a doll, it'll show up here.
               </p>
             </div>
           ) : (
@@ -315,8 +315,8 @@ export default function Dashboard() {
                       </p>
                       <p className="text-xs text-muted">
                         {txn.type === "coffee"
-                          ? `Bought ${txn.cups || 1} coffee${txn.cups > 1 ? "s" : ""}`
-                          : "Made a donation"}{" "}
+                          ? `Bought ${txn.cups || 1} doll${txn.cups > 1 ? "s" : ""}`
+                          : "Made a donation"} {" "}
                         · {timeAgo(txn.created_at)}
                       </p>
                     </div>
@@ -325,7 +325,7 @@ export default function Dashboard() {
                         {formatCurrency(txn.amount)}
                       </p>
                       <Badge variant={txn.type === "coffee" ? "amber" : "navy"}>
-                        {txn.type}
+                        {txn.type === "coffee" ? "Doll" : "Donation"}
                       </Badge>
                     </div>
                   </div>

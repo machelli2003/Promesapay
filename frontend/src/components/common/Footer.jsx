@@ -26,7 +26,7 @@ export default function Footer() {
                 { to: "/campaigns/new", label: "Start a Campaign" },
                 { to: "/campaigns", label: "Discover Campaigns" },
                 { to: "/funding", label: "Crowdfunding" },
-                { to: "/buy-coffee", label: "Buy a Coffee" },
+                { to: "/buy-coffee", label: "Get me a doll" },
               ].map((link) => (
                 <li key={link.to}>
                   <Link

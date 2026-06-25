@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { FiX, FiCreditCard, FiCoffee, FiHeart, FiLock, FiAlertCircle } from "react-icons/fi";
+import { FiX, FiCreditCard, FiHeart, FiLock, FiAlertCircle } from "react-icons/fi";
 import { usePaystack } from "../../hooks/usePaystack";
 import { useToast } from "../../hooks/useToast";
 import { formatCurrency } from "../../utils/formatters";
-import { COFFEE_PRICE } from "../../utils/constants";
+import { DOLL_PRICE } from "../../utils/constants";
 
 export default function PaymentModal({ type, payload, recipient, campaignSlug, onClose, onSuccess }) {
   const { pay, loading } = usePaystack();
@@ -33,7 +33,7 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
       recipient,
       campaignSlug,
       onSuccess: () => {
-        success(isCoffee ? "Coffee sent!" : "Donation successful!");
+        success(isCoffee ? "Doll sent!" : "Donation successful!");
         onSuccess();
       },
     });
@@ -271,14 +271,14 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
             <div style={S.headerContent}>
               <div style={S.iconBox}>
                 {isCoffee ? (
-                  <FiCoffee size={16} color={isCoffee ? "#b45309" : "#be185d"} />
-                ) : (
-                  <FiHeart size={16} color={isCoffee ? "#b45309" : "#be185d"} />
-                )}
+                    <span style={{ fontSize: 16 }}>🧸</span>
+                  ) : (
+                    <FiHeart size={16} color={isCoffee ? "#b45309" : "#be185d"} />
+                  )}
               </div>
               <div style={S.headerText}>
                 <h2 style={S.headerTitle}>
-                  {isCoffee ? "Send Coffee" : "Make Donation"}
+                  {isCoffee ? "Send Doll" : "Make Donation"}
                 </h2>
                 <p style={S.headerSubtitle}>to @{recipient.username}</p>
               </div>

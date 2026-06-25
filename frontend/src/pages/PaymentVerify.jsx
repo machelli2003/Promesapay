@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { FiCheckCircle, FiXCircle, FiLoader, FiCoffee, FiHeart, FiHome, FiExternalLink } from "react-icons/fi";
+import { FiCheckCircle, FiXCircle, FiLoader, FiHeart, FiHome, FiExternalLink } from "react-icons/fi";
 import { verifyPaymentByReference } from "../api/payments";
 import {
   loadPendingPayment,
@@ -9,7 +9,7 @@ import {
 } from "../utils/paymentStorage";
 import { formatCurrency } from "../utils/formatters";
 import AppButton from "../components/ui/AppButton";
-import { COFFEE_PRICE } from "../utils/constants";
+import { DOLL_PRICE } from "../utils/constants";
 
 export default function PaymentVerify() {
   const [searchParams] = useSearchParams();
@@ -78,7 +78,7 @@ export default function PaymentVerify() {
 
   const cups =
     pending?.cups ||
-    (amount && isCoffee ? Math.max(1, Math.round(amount / COFFEE_PRICE)) : 1);
+    (amount && isCoffee ? Math.max(1, Math.round(amount / DOLL_PRICE)) : 1);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-slate-50 dark:bg-slate-900">
@@ -111,7 +111,7 @@ export default function PaymentVerify() {
                 }`}
               >
                 {isCoffee ? (
-                  <FiCoffee className="h-7 w-7 text-amber-600" />
+                  <span className="h-7 w-7 text-amber-600 text-center">🧸</span>
                 ) : (
                   <FiHeart className="h-7 w-7 text-sky-600" />
                 )}
@@ -123,7 +123,7 @@ export default function PaymentVerify() {
               <h1 className="text-xl font-bold text-slate-900 dark:text-white">
                 {isCoffee ? (
                   <>
-                    Coffee sent! <FiCoffee className="inline-block ml-1" size={24} />
+                    Doll sent! <span className="inline-block ml-1" style={{ fontSize: 24 }}>🧸</span>
                   </>
                 ) : (
                   <>
@@ -133,7 +133,7 @@ export default function PaymentVerify() {
               </h1>
               <p className="text-sm text-slate-500 dark:text-slate-400">
                 {isCoffee && recipientUsername
-                  ? `You sent ${cups} coffee${cups > 1 ? "s" : ""} to @${recipientUsername}`
+                  ? `You sent ${cups} doll${cups > 1 ? "s" : ""} to @${recipientUsername}`
                   : amount != null
                     ? `Your ${isCoffee ? "payment" : "donation"} of ${formatCurrency(amount, "GHS")} was received`
                     : "Your payment was successful"}

@@ -1,12 +1,12 @@
-import { FiCoffee, FiArrowLeft, FiArrowRight, FiCheckCircle, FiUsers } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiUsers } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import AppButton from "../components/ui/AppButton";
 import { useResponsive } from "../utils/responsiveUtils";
 
 const coffeeTiers = [
-  { cups: 1, price: "GH₵5", label: "A quick coffee", popular: false },
-  { cups: 3, price: "GH₵15", label: "Coffee break", popular: true },
-  { cups: 5, price: "GH₵25", label: "Afternoon treat", popular: false },
+  { cups: 1, price: "GH₵5", label: "A small doll", popular: false },
+  { cups: 3, price: "GH₵15", label: "Doll set", popular: true },
+  { cups: 5, price: "GH₵25", label: "Collector's bundle", popular: false },
 ];
 
 export default function BuyCoffee() {
@@ -28,11 +28,11 @@ export default function BuyCoffee() {
       <div className={isMobile ? "px-4 py-8" : "max-w-6xl mx-auto px-6 py-16"}>
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm font-medium px-4 py-2 rounded-full mb-4 sm:mb-6">
-            <FiCoffee className="h-4 w-4" />
-            Buy Me a Coffee
+            <span className="text-sm">🧸</span>
+            Get me a doll
           </div>
           <h1 className={`${isMobile ? "text-2xl" : "text-4xl md:text-5xl"} font-bold text-slate-900 dark:text-white mb-4 sm:mb-6`}>
-            Show your appreciation with a coffee
+            Show your appreciation with a doll
           </h1>
           <p className={`${isMobile ? "text-base" : "text-xl"} text-slate-600 dark:text-slate-400`}>
             A simple way to support creators. Quick, secure, and makes their day better.
@@ -61,11 +61,11 @@ export default function BuyCoffee() {
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <div className="bg-amber-100 dark:bg-amber-900/30 p-4 rounded-xl">
-                    <FiCoffee className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+                    <span className="text-2xl">🧸</span>
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-                  {tier.cups} {tier.cups === 1 ? 'Cup' : 'Cups'}
+                  {tier.cups} {tier.cups === 1 ? 'Doll' : 'Dolls'}
                 </h3>
                 <p className="text-3xl font-bold text-sky-600 dark:text-sky-400 mb-2">
                   {tier.price}
@@ -78,7 +78,7 @@ export default function BuyCoffee() {
                     className={`w-full py-3 px-4 sm:py-2 sm:px-3 ${tier.popular ? 'bg-sky-600 hover:bg-sky-700' : ''}`}
                     variant={tier.popular ? 'primary' : 'secondary'}
                   >
-                    Buy {tier.cups} Coffee{tier.cups > 1 ? 's' : ''}
+                    Get {tier.cups} Doll{tier.cups > 1 ? 's' : ''}
                   </AppButton>
                 </Link>
               </div>
@@ -93,8 +93,8 @@ export default function BuyCoffee() {
           </h2>
           <div className="space-y-6">
             {[
-              { icon: FiCoffee, title: "Choose a creator", desc: "Find someone whose work you appreciate" },
-              { icon: FiUsers, title: "Select coffee amount", desc: "Pick how many cups you'd like to buy" },
+              { icon: FiUsers, title: "Choose a creator", desc: "Find someone whose work you appreciate" },
+              { icon: FiUsers, title: "Select doll amount", desc: "Pick how many dolls you'd like to get" },
               { icon: FiCheckCircle, title: "Make their day", desc: "They'll receive your support instantly" }
             ].map((step, index) => (
               <div key={index} className="flex items-start gap-4">
@@ -121,7 +121,7 @@ export default function BuyCoffee() {
           <div className={`grid gap-6 sm:gap-8 text-center ${isMobile ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-3"}`}>
             <div>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">100K+</p>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Coffees bought</p>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Dolls bought</p>
             </div>
             <div>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">GH₵500K+</p>

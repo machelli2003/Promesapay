@@ -1,4 +1,4 @@
-import { FiCheckCircle, FiCoffee, FiHeart, FiHome, FiExternalLink } from "react-icons/fi";
+import { FiCheckCircle, FiHeart, FiHome, FiExternalLink } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../utils/formatters";
 import AppButton from "../ui/AppButton";
@@ -21,7 +21,7 @@ export default function PaymentSuccess({ type, amount, cups, recipientUsername, 
             isCoffee ? "bg-amber-50 dark:bg-amber-900/20" : "bg-sky-50 dark:bg-sky-900/20"
           }`}>
             {isCoffee
-              ? <FiCoffee className="h-7 w-7 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
+              ? <span className="text-2xl">🧸</span>
               : <FiHeart className="h-7 w-7 text-sky-600 dark:text-sky-400" strokeWidth={1.75} />
             }
           </div>
@@ -35,11 +35,11 @@ export default function PaymentSuccess({ type, amount, cups, recipientUsername, 
           {/* Title */}
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">
-              {isCoffee ? "Coffee sent!" : "Thank you!"}
+              {isCoffee ? "Doll sent!" : "Thank you!"}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               {isCoffee
-                ? `You sent ${cups} coffee${cups > 1 ? "s" : ""} to @${recipientUsername}`
+                ? `You sent ${cups} doll${cups > 1 ? "s" : ""} to @${recipientUsername}`
                 : `Your donation of ${formatCurrency(amount)} was received`
               }
             </p>

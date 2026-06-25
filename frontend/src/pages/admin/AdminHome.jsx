@@ -63,6 +63,32 @@ export default function AdminHome() {
         </header>
 
         <div className="theme-card mb-6" style={{ padding: "1.5rem" }}>
+          <h2 className="text-xl font-semibold mb-3">What an admin can see</h2>
+          <p className="theme-muted mb-4">
+            Yes — admins have a dedicated admin area with access to finance, payouts, users, disputes, and monitoring.
+          </p>
+          <div className="space-y-4 mb-6">
+            <div>
+              <p className="font-semibold mb-1"><code>GET /admin/finance</code> → <strong>AdminFinanceDashboard.jsx</strong></p>
+              <p className="theme-muted text-sm">Platform revenue analytics, transaction and earnings reports, export CSV/PDF reports, Paystack splits configuration.</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1"><code>GET /admin/payouts</code> → <strong>AdminPayoutQueue.jsx</strong></p>
+              <p className="theme-muted text-sm">Payout queue, creator withdrawal requests, payout status updates, payout detail view and actions.</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1"><code>GET /admin/users</code> → <strong>UserManagement.jsx</strong></p>
+              <p className="theme-muted text-sm">User list, search and status filters, view details, suspend/activate users, reset passwords.</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1"><code>GET /admin/disputes</code> → <strong>DisputeResolution.jsx</strong></p>
+              <p className="theme-muted text-sm">Admin dispute handling, dispute details, and resolution actions.</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1"><code>GET /admin/monitoring</code> → <strong>SystemMonitoring.jsx</strong></p>
+              <p className="theme-muted text-sm">System health status, alerts, CPU/memory/disk/uptime metrics, user and transaction insights.</p>
+            </div>
+          </div>
           <h2 className="text-xl font-semibold mb-3">Quick admin actions</h2>
           <div
             style={{

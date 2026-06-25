@@ -1,6 +1,5 @@
-import { FiCoffee } from "react-icons/fi";
 import { useState } from "react";
-import { COFFEE_OPTIONS, COFFEE_PRICE } from "../../utils/constants";
+import { DOLL_OPTIONS, DOLL_PRICE } from "../../utils/constants";
 import { formatCurrency } from "../../utils/formatters";
 import AppButton from "../ui/AppButton";
 
@@ -9,7 +8,7 @@ export default function CoffeeBox({ onBuy }) {
   const [name, setName]         = useState("");
   const [message, setMessage]   = useState("");
 
-  const total   = selected * COFFEE_PRICE;
+  const total   = selected * DOLL_PRICE;
   const isValid = name.trim();
 
   return (
@@ -17,22 +16,22 @@ export default function CoffeeBox({ onBuy }) {
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
-          <FiCoffee className="h-4 w-4 text-amber-500" strokeWidth={1.75} />
+          <span className="text-lg">🧸</span>
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">Buy me a coffee</h3>
-          <p className="text-xs text-slate-400 dark:text-slate-500">{formatCurrency(COFFEE_PRICE)} per coffee</p>
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">Get me a doll</h3>
+          <p className="text-xs text-slate-400 dark:text-slate-500">{formatCurrency(DOLL_PRICE)} per doll</p>
         </div>
       </div>
 
       {/* Coffee selector */}
       <div className="space-y-2">
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">How many coffees?</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">How many dolls?</p>
         <div className="flex items-center gap-3">
-          <FiCoffee className="h-8 w-8 text-amber-500" />
+          <span className="text-2xl">🧸</span>
           <span className="text-slate-300 dark:text-slate-600">×</span>
           <div className="flex gap-2">
-            {COFFEE_OPTIONS.map((n) => (
+            {DOLL_OPTIONS.map((n) => (
               <button
                 key={n}
                 onClick={() => setSelected(n)}
@@ -48,7 +47,7 @@ export default function CoffeeBox({ onBuy }) {
           </div>
           <div className="ml-auto text-right">
             <p className="text-lg font-bold text-slate-900 dark:text-slate-50">{formatCurrency(total)}</p>
-            <p className="text-xs text-slate-400 dark:text-slate-500">{selected} coffee{selected > 1 ? "s" : ""}</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">{selected} doll{selected > 1 ? "s" : ""}</p>
           </div>
         </div>
       </div>
@@ -83,10 +82,10 @@ export default function CoffeeBox({ onBuy }) {
         onClick={() => isValid && onBuy({ cups: selected, amount: total, donor_name: name, message })}
         disabled={!isValid}
         size="lg"
-        icon={FiCoffee}
+        icon={() => <span className="text-lg">🧸</span>}
         className="w-full bg-amber-500 hover:bg-amber-600 border-amber-500"
       >
-        Send {selected} coffee{selected > 1 ? "s" : ""} · {formatCurrency(total)}
+        Send {selected} doll{selected > 1 ? "s" : ""} · {formatCurrency(total)}
       </AppButton>
     </div>
   );

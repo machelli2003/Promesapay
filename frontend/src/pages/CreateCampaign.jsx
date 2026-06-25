@@ -151,12 +151,12 @@ export default function CreateCampaign() {
                 className="input w-full"
               >
                 <option value="donation">Donations</option>
-                <option value="coffee">Buy Me A Coffee</option>
+                <option value="coffee">Get me a doll</option>
               </select>
               <p className="field-hint">
                 {form.payment_type === "donation"
                   ? "Supporters can contribute any amount toward your goal"
-                  : "Supporters can send coffee tiers ($3/$6/$9) or custom amounts"}
+                  : "Supporters can send doll tiers (GH₵3/GH₵6/GH₵9) or custom amounts"}
               </p>
             </div>
             <InputField
@@ -240,7 +240,7 @@ export default function CreateCampaign() {
               </p>
               <p>
                 <span className="text-slate-500">Payment method:</span>{" "}
-                {form.payment_type === "donation" ? "Donations" : "Coffee"}
+                {form.payment_type === "donation" ? "Donations" : "Doll"}
               </p>
               <p className="text-slate-600 dark:text-slate-300 line-clamp-4">
                 {form.story || "—"}

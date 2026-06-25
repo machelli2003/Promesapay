@@ -6,7 +6,8 @@ import { SkeletonLoader } from "../components/common/SkeletonLoader";
 import { useLoadingState } from "../hooks/useLoadingState";
 import { useResponsive } from "../utils/responsiveUtils";
 import { useToast } from "../hooks/useToast";
-import { FiAlertCircle, FiCheck, FiCoffee, FiHeart } from "react-icons/fi";
+import { formatCurrency } from "../utils/formatters";
+import { FiAlertCircle, FiCheck, FiHeart } from "react-icons/fi";
 
 /* ─── Google Fonts (add to your index.html <head> instead if preferred) ─── */
 const fontLink = document.createElement("link");
@@ -59,7 +60,7 @@ function ProfileCard({ user }) {
           <span style={styles.statLbl}>supporters</span>
         </div>
         <div style={styles.stat}>
-          <span style={styles.statVal}>${user.total_raised?.toLocaleString() ?? "0"}</span>
+          <span style={styles.statVal}>{formatCurrency(user.total_raised ?? 0)}</span>
           <span style={styles.statLbl}>total raised</span>
         </div>
         {user.monthly_supporters != null && (
@@ -82,20 +83,20 @@ function ProgressBar({ raised = 0, goal = 0, title }) {
         <div style={{ ...styles.progressFill, width: `${pct}%` }} />
       </div>
       <div style={styles.progressMeta}>
-        <span style={styles.progressRaised}>${raised.toLocaleString()} raised</span>
+        <span style={styles.progressRaised}>{formatCurrency(raised)} raised</span>
         <span style={styles.progressPct}>{pct}%</span>
       </div>
       <div style={{ marginTop: 4 }}>
-        <span style={styles.progressGoal}>of ${goal.toLocaleString()} goal</span>
+        <span style={styles.progressGoal}>of {formatCurrency(goal)} goal</span>
       </div>
     </div>
   );
 }
 
 const COFFEE_TIERS = [
-  { label: "$3", price: 3 },
-  { label: "$6", price: 6 },
-  { label: "$9", price: 9 },
+  { label: "GH₵3", price: 3 },
+  { label: "GH₵6", price: 6 },
+  { label: "GH₵9", price: 9 },
   { label: "Custom", price: 0 },
 ];
 
@@ -115,7 +116,7 @@ function CoffeeBox({ onBuy }) {
 
   return (
     <div style={styles.card}>
-      <div style={styles.sectionLabel}>Buy a coffee</div>
+      <div style={styles.sectionLabel}>Get me a doll</div>
       <div style={styles.coffeeGrid}>
         {COFFEE_TIERS.map((t, i) => (
           <button
@@ -139,7 +140,7 @@ function CoffeeBox({ onBuy }) {
               }
             }}
           >
-            <FiCoffee size={18} style={{ lineHeight: 1 }} />
+            <span style={{ fontSize: 18, lineHeight: 1, marginRight: 6 }}>🧸</span>
             <span
               style={{
                 ...styles.coffeePrice,
@@ -190,9 +191,9 @@ function CoffeeBox({ onBuy }) {
       >
         {isCustom
           ? finalAmount
-            ? `Buy coffee → $${finalAmount}`
+            ? `Get me a doll → ${formatCurrency(finalAmount)}`
             : "Enter amount"
-          : `Buy coffee → ${COFFEE_TIERS[selected].label}`}
+          : `Get me a doll → ${COFFEE_TIERS[selected].label}`}
       </button>
     </div>
   );
@@ -268,7 +269,7 @@ function DonateBox({ onDonate }) {
           e.currentTarget.style.background = "#185FA5";
         }}
       >
-        {finalAmount ? `Donate $${finalAmount}` : "Donate"}
+        {finalAmount ? `Donate ${formatCurrency(finalAmount)}` : "Donate"}
       </button>
     </div>
   );
@@ -322,7 +323,7 @@ function SupportersList({ supporters = [] }) {
                 {s.message && <div style={styles.supMsg}>"{s.message}"</div>}
               </div>
               <div style={styles.supRight}>
-                <div style={styles.supAmount}>${s.amount?.toLocaleString()}</div>
+                <div style={styles.supAmount}>{formatCurrency(s.amount ?? 0)}</div>
                 <div style={styles.supTime}>{timeAgo(s.created_at)}</div>
               </div>
             </div>

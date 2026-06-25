@@ -1,4 +1,4 @@
-import { FiCoffee, FiHeart, FiDownload, FiChevronLeft,
+import { FiHeart, FiDownload, FiChevronLeft,
          FiChevronRight, FiArrowUpDown } from "react-icons/fi";
 import { formatCurrency, formatDate } from "../../utils/formatters";
 import Avatar from "../ui/Avatar";
@@ -29,10 +29,10 @@ export default function TransactionTable({
   if (!transactions.length) {
     return (
       <div className="card">
-        <EmptyState
+          <EmptyState
           icon={FiArrowUpDown}
           title="No transactions yet"
-          description="Donations and coffee tips will appear here once you start receiving support."
+          description="Donations and doll tips will appear here once you start receiving support."
         />
       </div>
     );
@@ -87,7 +87,7 @@ export default function TransactionTable({
                 <td className="px-5 py-3.5">
                   <span className={txn.type === "coffee" ? "badge-amber" : "badge-sky"}>
                     {txn.type === "coffee"
-                      ? <><FiCoffee className="h-3 w-3" /> Coffee</>
+                      ? <><span className="h-3 w-3 inline-block">🧸</span> Doll</>
                       : <><FiHeart className="h-3 w-3" /> Donation</>
                     }
                   </span>
@@ -127,7 +127,7 @@ export default function TransactionTable({
             <div className="text-right shrink-0">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{formatCurrency(txn.amount)}</p>
               <span className={txn.type === "coffee" ? "badge-amber" : "badge-sky"}>
-                {txn.type}
+                {txn.type === "coffee" ? "Doll" : "Donation"}
               </span>
             </div>
           </div>

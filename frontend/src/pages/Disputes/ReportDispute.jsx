@@ -4,6 +4,7 @@ import { FiArrowLeft, FiAlertCircle, FiCheckCircle, FiLoader } from 'react-icons
 import { disputesAPI } from '../../api/disputes';
 import { transactionsAPI } from '../../api/transactions';
 import { useToast } from '../../hooks/useToast';
+import { formatCurrency } from '../../utils/formatters';
 import AppButton from '../../components/ui/AppButton';
 
 const DISPUTE_TYPES = [
@@ -178,7 +179,7 @@ export default function ReportDispute() {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-medium">
-                          {txn.type === 'donation' ? 'Donation' : 'Coffee'} - ${(txn.amount || 0).toFixed(2)}
+                          {txn.type === 'donation' ? 'Donation' : 'Doll'} - ${(txn.amount || 0).toFixed(2)}
                         </p>
                         <p className="text-sm text-slate-400 mt-1">
                           {txn.description || 'No description'}

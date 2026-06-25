@@ -1,4 +1,4 @@
-import { FiHeart, FiCoffee, FiMessageSquare } from "react-icons/fi";
+import { FiHeart, FiMessageSquare } from "react-icons/fi";
 import { formatCurrency, formatDate } from "../../utils/formatters";
 import Avatar from "../ui/Avatar";
 import EmptyState from "../ui/EmptyState";
@@ -39,13 +39,13 @@ export default function SupportersList({ supporters = [] }) {
 
               <div className="flex items-center gap-1.5 mt-0.5">
                 {s.type === "coffee" ? (
-                  <FiCoffee className="h-3 w-3 text-amber-500 shrink-0" strokeWidth={2} />
+                  <span className="text-sm">🧸</span>
                 ) : (
                   <FiHeart className="h-3 w-3 text-rose-400 shrink-0" strokeWidth={2} />
                 )}
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {s.type === "coffee"
-                    ? `Sent ${s.cups} coffee${s.cups > 1 ? "s" : ""} · ${formatCurrency(s.amount)}`
+                    ? `Sent ${s.cups} doll${s.cups > 1 ? "s" : ""} · ${formatCurrency(s.amount)}`
                     : `Donated ${formatCurrency(s.amount)}`
                   }
                 </p>

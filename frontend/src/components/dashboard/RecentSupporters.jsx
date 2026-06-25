@@ -1,4 +1,4 @@
-import { FiHeart, FiCoffee, FiGift } from "react-icons/fi";
+import { FiHeart, FiGift } from "react-icons/fi";
 import { formatCurrency, formatDate, getInitials } from "../../utils/formatters";
 
 export default function RecentSupporters({ transactions = [] }) {
@@ -34,12 +34,12 @@ export default function RecentSupporters({ transactions = [] }) {
               <p className="font-semibold text-sm text-slate-900 dark:text-slate-100 truncate">{txn.donor_name}</p>
               <div className="flex items-center gap-1 mt-0.5">
                 {txn.type === "coffee"
-                  ? <FiCoffee className="h-3 w-3 text-amber-600 dark:text-amber-400 shrink-0" />
+                  ? <span className="text-sm">🧸</span>
                   : <FiHeart className="h-3 w-3 text-rose-400 shrink-0" />
                 }
                 <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                   {txn.type === "coffee"
-                    ? `Bought ${txn.cups} coffee${txn.cups > 1 ? "s" : ""}`
+                    ? `Bought ${txn.cups} doll${txn.cups > 1 ? "s" : ""}`
                     : "Made a donation"
                   }
                 </p>

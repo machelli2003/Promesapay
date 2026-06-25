@@ -1,6 +1,5 @@
 import {
   FiHeart,
-  FiCoffee,
   FiBarChart2,
   FiShare2,
   FiShield,
@@ -21,7 +20,7 @@ const features = [
   {
     icon: FiHeart,
     title: "Flexible Support",
-    desc: "Accept donations, coffee tips, or set up recurring support from your community.",
+    desc: "Accept donations, doll tips, or set up recurring support from your community.",
   },
   {
     icon: FiBarChart2,
@@ -34,7 +33,7 @@ const features = [
     desc: "Bank-level security with Paystack. Instant payouts to your account.",
   },
   {
-    icon: FiCoffee,
+    icon: (props) => <span {...props}>🧸</span>,
     title: "Community Powered",
     desc: "Build genuine relationships with supporters who love your work.",
   },

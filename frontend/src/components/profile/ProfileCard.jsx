@@ -1,4 +1,4 @@
-import { FiCoffee, FiHeart, FiShare2, FiExternalLink, FiCalendar } from "react-icons/fi";
+import { FiHeart, FiShare2, FiExternalLink, FiCalendar } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import AppButton from "../ui/AppButton";
 import Avatar from "../ui/Avatar";
@@ -88,9 +88,9 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
             <AppButton
               variant="secondary"
               className="w-full"
-              icon={FiCoffee}
+              icon={() => <span className="text-xl">🧸</span>}
             >
-              Buy Coffee
+              Get me a doll
             </AppButton>
           </Link>
           <Link to={`/donate/${user.username}`} className="flex-1">
