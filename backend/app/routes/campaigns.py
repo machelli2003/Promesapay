@@ -170,8 +170,12 @@ def my_campaigns():
 @jwt_required()
 def create_campaign():
     user_id = get_jwt_identity()
-    data = request.get_json(silent=True) if request.is_json else {}
-    if data is None:
+    if request.is_json:
+        data = request.get_json(silent=True) or {}
+    elif request.form:
+        # Support multipart/form-data submissions (FormData)
+        data = {k: request.form.get(k) for k in request.form.keys()}
+    else:
         data = {}
 
     title = (data.get("title") or "").strip()
