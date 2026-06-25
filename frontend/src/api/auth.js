@@ -12,6 +12,7 @@ export const refreshCsrfToken = async () => {
   const res = await getCsrfToken();
   if (res.data?.csrf_token) {
     localStorage.setItem("csrf_token", res.data.csrf_token);
+    console.debug("refreshCsrfToken: stored csrf_token", res.data.csrf_token?.slice(0, 10));
   }
   return res.data?.csrf_token;
 };

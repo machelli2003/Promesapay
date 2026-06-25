@@ -13,11 +13,11 @@ services:
       - key: SESSION_COOKIE_SECURE
         value: true
       - key: FRONTEND_URL
-        value: https://promesapay.onrender.com
+        value: https://promesa-pay.onrender.com
       - key: BACKEND_URL
         value: https://promesapay.onrender.com
       - key: CORS_ORIGINS
-        value: https://promesapay.onrender.com
+        value: https://promesa-pay.onrender.com
       - key: GOOGLE_CALLBACK_URL
         value: https://promesapay.onrender.com/api/auth/google/callback
       - key: MONGO_URI
