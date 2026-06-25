@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getMe, getCsrfToken } from "../api/auth";
+import { getMe } from "../api/auth";
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -25,11 +25,7 @@ export default function AuthCallback() {
       }
 
       localStorage.setItem("token", tokenFromUrl);
-      getCsrfToken()
-        .then((res) => {
-          localStorage.setItem("csrf_token", res.data.csrf_token);
-          return getMe();
-        })
+      getMe()
         .then((userRes) => {
           login(tokenFromUrl, userRes.data.user);
           navigate("/dashboard");

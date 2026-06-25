@@ -232,14 +232,4 @@ class TestEmailVerification:
         assert "email" in data
 
 
-class TestCsrfToken:
-    """Test CSRF token endpoints."""
 
-    def test_get_csrf_token(self, client):
-        """Test getting CSRF token."""
-        response = client.get("/api/csrf-token")
-        
-        assert response.status_code == 200
-        data = response.get_json()
-        assert "csrf_token" in data
-        assert len(data["csrf_token"]) > 0

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { getMe, refreshCsrfToken } from "../api/auth";
+import { getMe } from "../api/auth";
 
 const AuthContext = createContext(null);
 
@@ -27,7 +27,6 @@ export function AuthProvider({ children }) {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
-    refreshCsrfToken().catch(() => {});
   };
 
   const logout = () => {

@@ -11,7 +11,6 @@ from ..utils.auth_helpers import hash_password, check_password, serialize_doc
 from ..utils.validators import is_valid_email, is_valid_username, is_valid_password
 from ..utils.auth import require_full_token
 from ..errors import ValidationError, AuthenticationError, NotFoundError, ConflictError
-from ..csrf import get_csrf_token
 from ..services.email import email_service
 from ..security.rate_limits import auth_login_limit, auth_register_limit, recovery_limit
 from ..security.fraud_detection import (
@@ -172,9 +171,7 @@ def change_password():
     return jsonify({"message": "Password updated successfully"}), 200
 
 
-@auth_bp.route("/csrf-token", methods=["GET"])
-def csrf_token():
-    return jsonify({"csrf_token": get_csrf_token()}), 200
+# CSRF token endpoint removed
 
 
 @auth_bp.route("/get-oauth-token", methods=["POST"])

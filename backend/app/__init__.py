@@ -13,7 +13,6 @@ from loguru import logger
 from urllib.parse import urlparse
 from .config import settings
 from .errors import register_error_handlers
-from .csrf import get_csrf_token, validate_csrf_token
 
 # Redis client for caching
 redis_client = None
@@ -50,7 +49,7 @@ def create_app(test_config=None):
     app.config.setdefault("SECRET_KEY", settings.SECRET_KEY)
     app.config.setdefault("JWT_SECRET_KEY", settings.JWT_SECRET_KEY)
     app.config.setdefault("JWT_ACCESS_TOKEN_EXPIRES", settings.JWT_ACCESS_TOKEN_EXPIRES)
-    app.config.setdefault("CORS_HEADERS", "Content-Type,Authorization,X-CSRF-Token,X-Request-ID")
+    app.config.setdefault("CORS_HEADERS", "Content-Type,Authorization,X-Request-ID")
     app.config.setdefault("PROPAGATE_EXCEPTIONS", True)
     app.config["RATELIMIT_STORAGE_URI"] = settings.RATELIMIT_STORAGE_URL
     app.config["RATELIMIT_ENABLED"] = not app.config.get("TESTING", False)
@@ -71,13 +70,7 @@ def create_app(test_config=None):
     # Required for OAuth state/session
     app.secret_key = app.config["SECRET_KEY"]
 
-    @app.before_request
-    def set_csrf_token():
-        get_csrf_token()
-
-    @app.before_request
-    def enforce_csrf():
-        validate_csrf_token()
+    # CSRF protection removed: tokens and enforcement are no longer used
 
     app.config["SESSION_TYPE"] = "redis" if redis_available else "filesystem"
     app.config["SESSION_REDIS"] = redis_client if redis_available else None
@@ -90,7 +83,7 @@ def create_app(test_config=None):
             r"/api/*": {
                 "origins": settings.CORS_ORIGINS.split(',') if settings.CORS_ORIGINS else [str(settings.FRONTEND_URL)],
                 "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-                "allow_headers": ["Content-Type", "Authorization", "X-CSRF-Token", "X-Request-ID"],
+                "allow_headers": ["Content-Type", "Authorization", "X-Request-ID"],
             }
         },
         supports_credentials=True,

@@ -1,19 +1,6 @@
 import pytest
 from flask import json
 
-def test_csrf_token_endpoint(client):
-    response = client.get("/api/auth/csrf-token", follow_redirects=True)
-    assert response.status_code == 200
-    data = json.loads(response.data)
-    assert "csrf_token" in data
-    assert isinstance(data["csrf_token"], str)
-
-def test_get_oauth_token_without_session(client):
-    response = client.post("/api/auth/get-oauth-token")
-    assert response.status_code == 403  # CSRF required for POST
-    data = json.loads(response.data)
-    assert "error" in data
-
 def test_register_user(client):
     data = {
         "username": "testuser",

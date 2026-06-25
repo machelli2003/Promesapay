@@ -1,5 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
-import { refreshCsrfToken } from "./api/auth";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -207,9 +206,7 @@ function AppRoutes() {
 }
 
 export default function App() {
-  useEffect(() => {
-    refreshCsrfToken().catch(() => {});
-  }, []);
+  // CSRF removed; no initialization required
 
   return (
     <ThemeProvider>
