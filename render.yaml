@@ -15,13 +15,13 @@ services:
       - key: FRONTEND_URL
         value: https://promesa-pay.onrender.com
       - key: BACKEND_URL
-        value: https://promesapay.onrender.com
+        value: https://promesa-pay.onrender.com
       - key: VITE_API_URL
         value: https://promesa-pay.onrender.com
       - key: CORS_ORIGINS
         value: https://promesa-pay.onrender.com
       - key: GOOGLE_CALLBACK_URL
-        value: https://promesapay.onrender.com/api/auth/google/callback
+        value: https://promesa-pay.onrender.com/api/auth/google/callback
       - key: MONGO_URI
         sync: false
       - key: SECRET_KEY
