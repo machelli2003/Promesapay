@@ -1,5 +1,5 @@
 import secrets
-from flask import request, session
+from flask import request, session, current_app
 from .errors import AuthorizationError
 
 CSRF_HEADER = "X-CSRF-Token"
@@ -41,14 +41,19 @@ def validate_csrf_token():
 
         header_token = request.headers.get(CSRF_HEADER)
         session_token = session.get(CSRF_SESSION_KEY)
+        session_cookie = request.cookies.get(current_app.session_cookie_name)
         if not header_token or header_token != session_token:
             from loguru import logger
             logger.warning(
                 "CSRF validation failed",
                 path=request.path,
                 method=request.method,
+                origin=request.headers.get("Origin"),
                 header_token=header_token,
                 session_token=session_token,
+                session_cookie=bool(session_cookie),
+                session_cookie_name=current_app.session_cookie_name,
+                request_cookie_keys=list(request.cookies.keys()),
                 session_keys=list(session.keys()),
             )
             raise AuthorizationError("Invalid or missing CSRF token")

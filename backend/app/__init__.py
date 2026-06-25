@@ -8,6 +8,7 @@ from flask_talisman import Talisman
 from flask_session import Session
 import redis
 import os
+import sys
 from loguru import logger
 from urllib.parse import urlparse
 from .config import settings
@@ -33,6 +34,11 @@ def create_app(test_config=None):
     # Configure structured logging
     os.makedirs("logs", exist_ok=True)
     logger.remove()
+    logger.add(
+        sys.stderr,
+        level="INFO",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} | {message}"
+    )
     logger.add(
         "logs/app.log",
         rotation="10 MB",
