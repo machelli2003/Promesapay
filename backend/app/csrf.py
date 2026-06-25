@@ -41,7 +41,8 @@ def validate_csrf_token():
 
         header_token = request.headers.get(CSRF_HEADER)
         session_token = session.get(CSRF_SESSION_KEY)
-        session_cookie = request.cookies.get(current_app.session_cookie_name)
+        session_cookie_name = current_app.config.get("SESSION_COOKIE_NAME", "session")
+        session_cookie = request.cookies.get(session_cookie_name)
         if not header_token or header_token != session_token:
             from loguru import logger
             logger.warning(
@@ -52,7 +53,7 @@ def validate_csrf_token():
                 header_token=header_token,
                 session_token=session_token,
                 session_cookie=bool(session_cookie),
-                session_cookie_name=current_app.session_cookie_name,
+                session_cookie_name=session_cookie_name,
                 request_cookie_keys=list(request.cookies.keys()),
                 session_keys=list(session.keys()),
             )
