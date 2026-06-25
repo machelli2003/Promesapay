@@ -38,13 +38,13 @@ export default function SupportersList({ supporters = [] }) {
               </div>
 
               <div className="flex items-center gap-1.5 mt-0.5">
-                {s.type === "coffee" ? (
+                {s.type === "doll" ? (
                   <span className="text-sm">🧸</span>
                 ) : (
                   <FiHeart className="h-3 w-3 text-rose-400 shrink-0" strokeWidth={2} />
                 )}
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {s.type === "coffee"
+                  {s.type === "doll"
                     ? `Sent ${s.cups} doll${s.cups > 1 ? "s" : ""} · ${formatCurrency(s.amount)}`
                     : `Donated ${formatCurrency(s.amount)}`
                   }

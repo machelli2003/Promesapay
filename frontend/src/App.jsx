@@ -21,7 +21,7 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfile from "./pages/EditProfile";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
-import BuyCoffee from "./pages/BuyCoffee";
+import BuyDoll from "./pages/BuyDoll";
 import PaymentVerify from "./pages/PaymentVerify";
 import Funding from "./pages/Funding";
 import BrowseCampaigns from "./pages/BrowseCampaigns";
@@ -69,7 +69,7 @@ function AppRoutes() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/buy-coffee" element={<BuyCoffee />} />
+            <Route path="/buy-doll" element={<BuyDoll />} />
             <Route path="/funding" element={<Funding />} />
             <Route path="/campaigns" element={<BrowseCampaigns />} />
             <Route path="/c/:slug" element={<CampaignPage />} />

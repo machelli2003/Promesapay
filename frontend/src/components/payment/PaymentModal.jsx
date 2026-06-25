@@ -13,7 +13,7 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
-  const isCoffee = type === "coffee";
+  const isDoll = type === "doll";
   const amount = payload.amount || 0;
 
   const validate = () => {
@@ -33,7 +33,7 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
       recipient,
       campaignSlug,
       onSuccess: () => {
-        success(isCoffee ? "Doll sent!" : "Donation successful!");
+        success(isDoll ? "Doll sent!" : "Donation successful!");
         onSuccess();
       },
     });
@@ -96,7 +96,7 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: isCoffee ? "rgba(180, 83, 9, 0.1)" : "rgba(190, 24, 93, 0.1)"
+      backgroundColor: isDoll ? "rgba(180, 83, 9, 0.1)" : "rgba(190, 24, 93, 0.1)"
     },
     headerText: {
       display: "flex",
@@ -239,12 +239,12 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
       justifyContent: "center",
       gap: "8px",
       transition: "all 0.2s",
-      backgroundColor: isCoffee ? "#b45309" : "#be185d",
-      borderColor: isCoffee ? "#b45309" : "#be185d",
+      backgroundColor: isDoll ? "#b45309" : "#be185d",
+      borderColor: isDoll ? "#b45309" : "#be185d",
       color: "#ffffff",
       ":hover": {
-        backgroundColor: isCoffee ? "#92400e" : "#9d174d",
-        borderColor: isCoffee ? "#92400e" : "#9d174d"
+        backgroundColor: isDoll ? "#92400e" : "#9d174d",
+        borderColor: isDoll ? "#92400e" : "#9d174d"
       },
       ":disabled": {
         opacity: 0.6,
@@ -270,15 +270,15 @@ export default function PaymentModal({ type, payload, recipient, campaignSlug, o
           <div style={S.header}>
             <div style={S.headerContent}>
               <div style={S.iconBox}>
-                {isCoffee ? (
+                {isDoll ? (
                     <span style={{ fontSize: 16 }}>🧸</span>
                   ) : (
-                    <FiHeart size={16} color={isCoffee ? "#b45309" : "#be185d"} />
+                    <FiHeart size={16} color={isDoll ? "#b45309" : "#be185d"} />
                   )}
               </div>
               <div style={S.headerText}>
                 <h2 style={S.headerTitle}>
-                  {isCoffee ? "Send Doll" : "Make Donation"}
+                  {isDoll ? "Send Doll" : "Make Donation"}
                 </h2>
                 <p style={S.headerSubtitle}>to @{recipient.username}</p>
               </div>

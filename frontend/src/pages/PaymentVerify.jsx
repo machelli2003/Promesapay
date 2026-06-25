@@ -27,7 +27,7 @@ export default function PaymentVerify() {
 
   const paymentType =
     inferPaymentType(reference) || pending?.type || "donation";
-  const isCoffee = paymentType === "coffee";
+  const isDoll = paymentType === "doll";
 
   const amount =
     pending?.amount ??
@@ -78,13 +78,13 @@ export default function PaymentVerify() {
 
   const cups =
     pending?.cups ||
-    (amount && isCoffee ? Math.max(1, Math.round(amount / DOLL_PRICE)) : 1);
+    (amount && isDoll ? Math.max(1, Math.round(amount / DOLL_PRICE)) : 1);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-slate-50 dark:bg-slate-900">
       <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div
-          className={`h-1.5 w-full ${isCoffee ? "bg-amber-400" : "bg-sky-500"}`}
+          className={`h-1.5 w-full ${isDoll ? "bg-amber-400" : "bg-sky-500"}`}
         />
 
         <div className="px-6 py-10 text-center space-y-5">
@@ -107,10 +107,10 @@ export default function PaymentVerify() {
             <>
               <div
                 className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center ${
-                  isCoffee ? "bg-amber-50" : "bg-sky-50"
+                  isDoll ? "bg-amber-50" : "bg-sky-50"
                 }`}
               >
-                {isCoffee ? (
+                {isDoll ? (
                   <span className="h-7 w-7 text-amber-600 text-center">🧸</span>
                 ) : (
                   <FiHeart className="h-7 w-7 text-sky-600" />
@@ -121,7 +121,7 @@ export default function PaymentVerify() {
                 <span className="text-xs font-medium text-green-600">Payment confirmed</span>
               </div>
               <h1 className="text-xl font-bold text-slate-900 dark:text-white">
-                {isCoffee ? (
+                {isDoll ? (
                   <>
                     Doll sent! <span className="inline-block ml-1" style={{ fontSize: 24 }}>🧸</span>
                   </>
@@ -132,10 +132,10 @@ export default function PaymentVerify() {
                 )}
               </h1>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                {isCoffee && recipientUsername
+                {isDoll && recipientUsername
                   ? `You sent ${cups} doll${cups > 1 ? "s" : ""} to @${recipientUsername}`
                   : amount != null
-                    ? `Your ${isCoffee ? "payment" : "donation"} of ${formatCurrency(amount, "GHS")} was received`
+                    ? `Your ${isDoll ? "payment" : "donation"} of ${formatCurrency(amount, "GHS")} was received`
                     : "Your payment was successful"}
               </p>
               <p className="text-xs text-slate-400">

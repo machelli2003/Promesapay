@@ -36,7 +36,7 @@ export default function RefundManager() {
         
         const all = [
           ...(donationsRes.data?.donations || []).map(d => ({ ...d, type: 'donation' })),
-          ...(coffeesRes.data?.coffees || []).map(c => ({ ...c, type: 'coffee' }))
+          ...(coffeesRes.data?.coffees || []).map(c => ({ ...c, type: 'doll' }))
         ];
         
         // Filter only successful transactions within 30 days
@@ -128,7 +128,7 @@ export default function RefundManager() {
               <option value="">Select a transaction to refund</option>
               {transactions.map((tx) => (
                 <option key={`${tx._id}:${tx.type}`} value={`${tx._id}:${tx.type}`}>
-                  {tx.type === 'coffee' ? 'DOLL' : tx.type.toUpperCase()} - GH₵{tx.amount.toFixed(2)} ({new Date(tx.created_at).toLocaleDateString()})
+                  {tx.type === 'doll' ? 'DOLL' : tx.type.toUpperCase()} - GH₵{tx.amount.toFixed(2)} ({new Date(tx.created_at).toLocaleDateString()})
                 </option>
               ))}
             </select>
@@ -170,7 +170,7 @@ export default function RefundManager() {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <p className="theme-heading font-semibold">
-                      GH₵{refund.refund_amount.toFixed(2)} - {refund.transaction_type === 'coffee' ? 'DOLL' : refund.transaction_type.toUpperCase()}
+                      GH₵{refund.refund_amount.toFixed(2)} - {refund.transaction_type === 'doll' ? 'DOLL' : refund.transaction_type.toUpperCase()}
                     </p>
                     <p className="theme-muted text-sm">
                       {new Date(refund.created_at).toLocaleDateString()} • {refund.reason}

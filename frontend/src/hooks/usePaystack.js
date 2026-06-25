@@ -44,7 +44,7 @@ export function usePaystack() {
         amount: payload.amount,
         recipientUsername: recipient?.username || "",
         campaignSlug: campaignSlug || "",
-        cups: type === "coffee" && payload.amount ? Math.round(payload.amount / DOLL_PRICE) : undefined,
+        cups: type === "doll" && payload.amount ? Math.round(payload.amount / DOLL_PRICE) : undefined,
       });
 
       // Full redirect — Paystack returns to /payment/verify?reference=...

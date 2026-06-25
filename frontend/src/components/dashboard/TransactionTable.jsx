@@ -85,8 +85,8 @@ export default function TransactionTable({
                 </td>
                 {/* Type */}
                 <td className="px-5 py-3.5">
-                  <span className={txn.type === "coffee" ? "badge-amber" : "badge-sky"}>
-                    {txn.type === "coffee"
+                  <span className={txn.type === "doll" ? "badge-amber" : "badge-sky"}>
+                    {txn.type === "doll"
                       ? <><span className="h-3 w-3 inline-block">🧸</span> Doll</>
                       : <><FiHeart className="h-3 w-3" /> Donation</>
                     }
@@ -126,8 +126,8 @@ export default function TransactionTable({
             </div>
             <div className="text-right shrink-0">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{formatCurrency(txn.amount)}</p>
-              <span className={txn.type === "coffee" ? "badge-amber" : "badge-sky"}>
-                {txn.type === "coffee" ? "Doll" : "Donation"}
+              <span className={txn.type === "doll" ? "badge-amber" : "badge-sky"}>
+                {txn.type === "doll" ? "Doll" : "Donation"}
               </span>
             </div>
           </div>

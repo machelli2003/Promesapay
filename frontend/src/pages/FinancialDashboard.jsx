@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { FiDollarSign, FiCreditCard, FiFileText, FiRefreshCw } from 'react-icons/fi';
+import { FiCreditCard, FiFileText, FiRefreshCw } from 'react-icons/fi';
+import CediSign from '../components/common/CediSign';
 import { useResponsive } from '../utils/responsiveUtils';
 import { PaymentMethodsManager, WithdrawalManager, TransactionHistory, RefundManager } from '../components/financial';
 
@@ -8,7 +9,7 @@ export default function FinancialDashboard() {
   const { isMobile } = useResponsive();
 
   const tabs = [
-    { id: 'overview', label: 'Withdrawals & Payouts', icon: FiDollarSign },
+    { id: 'overview', label: 'Withdrawals & Payouts', icon: CediSign },
     { id: 'payment-methods', label: 'Payment Methods', icon: FiCreditCard },
     { id: 'history', label: 'Transaction History', icon: FiFileText },
     { id: 'refunds', label: 'Refunds', icon: FiRefreshCw },

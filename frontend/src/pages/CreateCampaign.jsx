@@ -151,7 +151,7 @@ export default function CreateCampaign() {
                 className="input w-full"
               >
                 <option value="donation">Donations</option>
-                <option value="coffee">Get me a doll</option>
+                <option value="doll">Get me a doll</option>
               </select>
               <p className="field-hint">
                 {form.payment_type === "donation"

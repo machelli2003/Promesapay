@@ -3,7 +3,7 @@ import { verifyCoffee } from "./coffee";
 import { inferPaymentType } from "../utils/paymentStorage";
 
 /**
- * Verify a Paystack payment by reference (donation or coffee).
+ * Verify a Paystack payment by reference (donation or doll).
  */
 export async function verifyPaymentByReference(reference) {
   const type = inferPaymentType(reference);
@@ -11,7 +11,7 @@ export async function verifyPaymentByReference(reference) {
   if (type === "donation") {
     return verifyDonation(reference);
   }
-  if (type === "coffee") {
+  if (type === "doll") {
     return verifyCoffee(reference);
   }
 

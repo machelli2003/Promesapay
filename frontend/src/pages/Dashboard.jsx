@@ -13,7 +13,6 @@ import {
   FiPlus,
   FiChevronLeft,
   FiChevronRight,
-  FiDollarSign,
 } from "react-icons/fi";
 import { BsTrophy } from "react-icons/bs";
 import { FaBullseye } from "react-icons/fa";
@@ -314,7 +313,7 @@ export default function Dashboard() {
                         {txn.donor_name}
                       </p>
                       <p className="text-xs text-muted">
-                        {txn.type === "coffee"
+                        {txn.type === "doll"
                           ? `Bought ${txn.cups || 1} doll${txn.cups > 1 ? "s" : ""}`
                           : "Made a donation"} {" "}
                         · {timeAgo(txn.created_at)}
@@ -324,8 +323,8 @@ export default function Dashboard() {
                       <p className="text-sm font-bold text-navy-900 dark:text-navy-50">
                         {formatCurrency(txn.amount)}
                       </p>
-                      <Badge variant={txn.type === "coffee" ? "amber" : "navy"}>
-                        {txn.type === "coffee" ? "Doll" : "Donation"}
+                      <Badge variant={txn.type === "doll" ? "amber" : "navy"}>
+                        {txn.type === "doll" ? "Doll" : "Donation"}
                       </Badge>
                     </div>
                   </div>

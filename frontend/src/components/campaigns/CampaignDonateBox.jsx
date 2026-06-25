@@ -1,9 +1,9 @@
 import DonateBox from "../profile/DonateBox";
-import CoffeeBox from "../profile/CoffeeBox";
+import DollBox from "../profile/DollBox";
 
 export default function CampaignDonateBox({ paymentType = "donation", onDonate }) {
-  if (paymentType === "coffee") {
-    return <CoffeeBox onBuy={onDonate} />;
+  if (paymentType === "doll") {
+    return <DollBox onBuy={onDonate} />;
   }
   return <DonateBox onDonate={onDonate} />;
 }

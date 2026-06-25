@@ -157,7 +157,7 @@ export default function ProfilePageEnhanced() {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-slate-600 dark:text-slate-400">
-              ${profile.total_raised} raised
+              {formatCurrency(profile.total_raised)} raised
             </span>
             <span className="font-semibold text-slate-900 dark:text-white">
               {Math.min(Math.round((profile.total_raised / profile.goal_amount) * 100), 100)}%
@@ -166,10 +166,10 @@ export default function ProfilePageEnhanced() {
         </div>
       )}
 
-      {/* Coffee & Donation Buttons - Full Width on Mobile */}
+      {/* Doll & Donation Buttons - Full Width on Mobile */}
       <div className={`grid gap-4 ${isMobile ? "grid-cols-1" : "grid-cols-2"}`}>
         <button
-          onClick={() => setModal({ type: "coffee", payload: { cups: 1 } })}
+          onClick={() => setModal({ type: "doll", payload: { cups: 1 } })}
           className="bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-lg font-semibold transition"
         >
           <span className="inline mr-1">🧸</span> Get me a doll

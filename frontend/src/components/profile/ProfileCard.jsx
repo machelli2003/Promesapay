@@ -84,7 +84,7 @@ export default function ProfileCard({ user, isOwnProfile = false }) {
 
         {/* Action Buttons */}
         <div className="flex gap-3">
-          <Link to={`/coffee/${user.username}`} className="flex-1">
+          <Link to={`/doll/${user.username}`} className="flex-1">
             <AppButton
               variant="secondary"
               className="w-full"

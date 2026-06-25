@@ -179,7 +179,7 @@ export default function ReportDispute() {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-medium">
-                          {txn.type === 'donation' ? 'Donation' : 'Doll'} - ${(txn.amount || 0).toFixed(2)}
+                          {txn.type === 'donation' ? 'Donation' : 'Doll'} - {formatCurrency(txn.amount || 0)}
                         </p>
                         <p className="text-sm text-slate-400 mt-1">
                           {txn.description || 'No description'}
@@ -217,7 +217,7 @@ export default function ReportDispute() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium">
-                    ${(selectedTransaction?.amount || 0).toFixed(2)}
+                    {formatCurrency(selectedTransaction?.amount || 0)}
                   </p>
                   <p className="text-sm text-slate-400">
                     {new Date(selectedTransaction?.created_at).toLocaleDateString()}

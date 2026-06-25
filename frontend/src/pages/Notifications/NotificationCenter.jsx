@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FiCheck, FiTrash2, FiSettings, FiBell, FiDollarSign, FiSend, FiAlertTriangle, FiShield, FiSmartphone, FiLock, FiKey } from "react-icons/fi";
+import { FiCheck, FiTrash2, FiSettings, FiBell, FiSend, FiAlertTriangle, FiShield, FiSmartphone, FiLock, FiKey } from "react-icons/fi";
+import CediSign from "../../components/common/CediSign";
 import notificationsAPI from "../../api/notifications";
 import toast from "react-hot-toast";
 
@@ -21,9 +22,9 @@ const NotificationCenter = () => {
 
   // Notification types for filtering
   const NOTIFICATION_ICONS = {
-    payment_received: FiDollarSign,
+    payment_received: CediSign,
     payment_sent: FiSend,
-    refund_issued: FiDollarSign,
+    refund_issued: CediSign,
     dispute_reported: FiAlertTriangle,
     dispute_resolved: FiCheck,
     security_alert: FiShield,

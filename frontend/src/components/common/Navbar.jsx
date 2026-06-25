@@ -10,9 +10,9 @@ import {
   FiX,
   FiSearch,
   FiPlus,
-  FiDollarSign,
   FiShield,
 } from "react-icons/fi";
+import CediSign from "./CediSign";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { useState, useRef, useEffect } from "react";
@@ -196,7 +196,7 @@ export default function Navbar() {
                               onClick={() => setDropOpen(false)}
                               className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
                             >
-                              <FiDollarSign className="w-4 h-4" />
+                              <CediSign className="w-4 h-4" />
                               Finance Dashboard
                             </Link>
                             <Link
@@ -263,7 +263,7 @@ export default function Navbar() {
                               onClick={() => setDropOpen(false)}
                               className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
                             >
-                              <FiDollarSign className="w-4 h-4" />
+                              <CediSign className="w-4 h-4" />
                               Financial Center
                             </Link>
                             {user?.role === "admin" && (
@@ -388,7 +388,7 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-sm text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800 rounded-xl transition-colors"
                     >
-                      <FiDollarSign className="w-4 h-4" />
+                              <CediSign className="w-4 h-4" />
                       Finance
                     </Link>
                     <Link
@@ -466,7 +466,7 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-sm text-muted hover:text-navy-700 dark:hover:text-navy-200 hover:bg-navy-50 dark:hover:bg-navy-800 rounded-xl transition-colors"
                     >
-                      <FiDollarSign className="w-4 h-4" />
+                      <CediSign className="w-4 h-4" />
                       Financial Center
                     </Link>
                     <button

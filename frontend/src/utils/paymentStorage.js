@@ -21,7 +21,7 @@ export function clearPendingPayment() {
 /** Infer payment type from Paystack reference prefix. */
 export function inferPaymentType(reference) {
   if (!reference) return null;
-  if (reference.startsWith("cof_")) return "coffee";
+  if (reference.startsWith("dol_")) return "doll";
   if (reference.startsWith("don_")) return "donation";
   return null;
 }

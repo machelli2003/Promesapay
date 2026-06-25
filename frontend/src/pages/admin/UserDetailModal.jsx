@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiX, FiCopy, FiAlertCircle, FiLock, FiMail, FiCalendar, FiDollarSign, FiCheck } from "react-icons/fi";
+import { FiX, FiCopy, FiAlertCircle, FiLock, FiMail, FiCalendar, FiCheck } from "react-icons/fi";
 import { adminAPI } from "../../api/admin";
 import { useToast } from "../../hooks/useToast";
 import AppButton from "../../components/ui/AppButton";

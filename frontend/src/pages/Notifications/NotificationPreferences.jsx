@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FiSettings, FiSave, FiClock, FiMail, FiSmartphone, FiDollarSign, FiUpload, FiCreditCard, FiAlertTriangle, FiCheckCircle, FiShield, FiSmartphone as FiMobile, FiLock, FiKey, FiBell, FiVolume2 } from "react-icons/fi";
+import { FiSettings, FiSave, FiClock, FiMail, FiSmartphone, FiUpload, FiCreditCard, FiAlertTriangle, FiCheckCircle, FiShield, FiSmartphone as FiMobile, FiLock, FiKey, FiBell, FiVolume2 } from "react-icons/fi";
+import CediSign from "../../components/common/CediSign";
 import notificationsAPI from "../../api/notifications";
 import toast from "react-hot-toast";
 
@@ -114,9 +115,9 @@ const NotificationPreferences = () => {
   }
 
   const notificationTypes = [
-    { key: "payment_received", label: "Payment Received", icon: FiDollarSign },
+    { key: "payment_received", label: "Payment Received", icon: CediSign },
     { key: "payment_sent", label: "Payment Sent", icon: FiUpload },
-    { key: "refund_issued", label: "Refund Issued", icon: FiCreditCard },
+    { key: "refund_issued", label: "Refund Issued", icon: CediSign },
     { key: "dispute_reported", label: "Dispute Reported", icon: FiAlertTriangle },
     { key: "dispute_resolved", label: "Dispute Resolved", icon: FiCheckCircle },
     { key: "security_alert", label: "Security Alert", icon: FiShield },

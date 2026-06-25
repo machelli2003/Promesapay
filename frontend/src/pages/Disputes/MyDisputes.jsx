@@ -237,7 +237,7 @@ export default function MyDisputes() {
               {/* Amount */}
               <div>
                 <p className="text-sm text-slate-400 mb-1">Transaction Amount</p>
-                <p className="font-medium">${(selectedDispute.transaction_amount || 0).toFixed(2)}</p>
+                <p className="font-medium">{formatCurrency(selectedDispute.transaction_amount || 0)}</p>
               </div>
 
               {/* Reason */}
@@ -262,9 +262,9 @@ export default function MyDisputes() {
 
               {/* Refund Info */}
               {selectedDispute.refund_amount > 0 && (
-                <div className="bg-green-500/10 border border-green-500/20 rounded p-3">
+                  <div className="bg-green-500/10 border border-green-500/20 rounded p-3">
                   <p className="text-sm text-slate-400 mb-1">Refund Issued</p>
-                  <p className="font-bold text-green-400">${(selectedDispute.refund_amount).toFixed(2)}</p>
+                  <p className="font-bold text-green-400">{formatCurrency(selectedDispute.refund_amount || 0)}</p>
                 </div>
               )}
 

@@ -33,12 +33,12 @@ export default function RecentSupporters({ transactions = [] }) {
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm text-slate-900 dark:text-slate-100 truncate">{txn.donor_name}</p>
               <div className="flex items-center gap-1 mt-0.5">
-                {txn.type === "coffee"
+                {txn.type === "doll"
                   ? <span className="text-sm">🧸</span>
                   : <FiHeart className="h-3 w-3 text-rose-400 shrink-0" />
                 }
                 <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                  {txn.type === "coffee"
+                  {txn.type === "doll"
                     ? `Bought ${txn.cups} doll${txn.cups > 1 ? "s" : ""}`
                     : "Made a donation"
                   }

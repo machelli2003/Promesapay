@@ -100,7 +100,7 @@ const COFFEE_TIERS = [
   { label: "Custom", price: 0 },
 ];
 
-function CoffeeBox({ onBuy }) {
+function DollBox({ onBuy }) {
   const [selected, setSelected] = useState(0);
   const [customAmount, setCustomAmount] = useState("");
   const [note, setNote] = useState("");
@@ -111,7 +111,7 @@ function CoffeeBox({ onBuy }) {
 
   const handleBuy = () => {
     if (!canSubmit) return;
-    onBuy({ amount: finalAmount, note, type: "coffee" });
+    onBuy({ amount: finalAmount, note, type: "doll" });
   };
 
   return (
@@ -157,7 +157,7 @@ function CoffeeBox({ onBuy }) {
         <input
           type="number"
           min="1"
-          placeholder="Amount in dollars"
+          placeholder="Amount in cedis"
           value={customAmount}
           onChange={(e) => setCustomAmount(e.target.value)}
           style={{ ...styles.donateCustom, marginBottom: 12 }}
@@ -242,7 +242,7 @@ function DonateBox({ onDonate }) {
               }
             }}
           >
-            ${amt}
+            {formatCurrency(amt)}
           </button>
         ))}
       </div>
@@ -441,7 +441,7 @@ export default function ProfilePage() {
         />
       )}
 
-      <CoffeeBox onBuy={(payload) => setModal({ type: "coffee", payload })} isMobile={isMobile} />
+      <DollBox onBuy={(payload) => setModal({ type: "doll", payload })} isMobile={isMobile} />
 
       <DonateBox onDonate={(payload) => setModal({ type: "donation", payload })} isMobile={isMobile} />
 
@@ -565,7 +565,7 @@ const styles = {
   },
   progressGoal: { fontSize: 13, color: "var(--color-text-secondary)" },
 
-  /* Coffee */
+  /* Doll */
   coffeeGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(60px, 1fr))", gap: 8, marginBottom: 12 },
   coffeeBtn: {
     background: "var(--color-background-secondary)",
