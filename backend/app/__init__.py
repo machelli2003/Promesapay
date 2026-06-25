@@ -44,7 +44,7 @@ def create_app(test_config=None):
     app.config.setdefault("SECRET_KEY", settings.SECRET_KEY)
     app.config.setdefault("JWT_SECRET_KEY", settings.JWT_SECRET_KEY)
     app.config.setdefault("JWT_ACCESS_TOKEN_EXPIRES", settings.JWT_ACCESS_TOKEN_EXPIRES)
-    app.config.setdefault("CORS_HEADERS", "Content-Type")
+    app.config.setdefault("CORS_HEADERS", "Content-Type,Authorization,X-CSRF-Token,X-Request-ID")
     app.config.setdefault("PROPAGATE_EXCEPTIONS", True)
     app.config["RATELIMIT_STORAGE_URI"] = settings.RATELIMIT_STORAGE_URL
     app.config["RATELIMIT_ENABLED"] = not app.config.get("TESTING", False)
@@ -75,7 +75,17 @@ def create_app(test_config=None):
     app.config["SESSION_PERMANENT"] = True
     app.config["PERMANENT_SESSION_LIFETIME"] = 86400  # 1 day
 
-    CORS(app, resources={r"/api/*": {"origins": settings.CORS_ORIGINS.split(',') if settings.CORS_ORIGINS else [str(settings.FRONTEND_URL)]}}, supports_credentials=True)
+    CORS(
+        app,
+        resources={
+            r"/api/*": {
+                "origins": settings.CORS_ORIGINS.split(',') if settings.CORS_ORIGINS else [str(settings.FRONTEND_URL)],
+                "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+                "allow_headers": ["Content-Type", "Authorization", "X-CSRF-Token", "X-Request-ID"],
+            }
+        },
+        supports_credentials=True,
+    )
     limiter.init_app(app)
     jwt.init_app(app)
     oauth.init_app(app)
@@ -150,6 +160,9 @@ def create_app(test_config=None):
     app.register_blueprint(admin_disputes_bp)
     app.register_blueprint(monitoring_bp)
     app.register_blueprint(notifications_bp)
+
+    from .cors_fallback import cors_fallback_bp
+    app.register_blueprint(cors_fallback_bp)
 
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
