@@ -57,6 +57,7 @@ def create_app(test_config=None):
     app.config["SESSION_COOKIE_SECURE"] = settings.SESSION_COOKIE_SECURE
     app.config["SESSION_COOKIE_HTTPONLY"] = settings.SESSION_COOKIE_HTTPONLY
     app.config["SESSION_COOKIE_SAMESITE"] = settings.SESSION_COOKIE_SAMESITE
+    app.config["SESSION_COOKIE_DOMAIN"] = settings.SESSION_COOKIE_DOMAIN
 
     frontend_url = str(settings.FRONTEND_URL)
     secure_cookie = urlparse(frontend_url).scheme == "https"
@@ -64,6 +65,8 @@ def create_app(test_config=None):
     app.config["SESSION_COOKIE_HTTPONLY"] = True
     app.config["SESSION_COOKIE_SAMESITE"] = "None" if secure_cookie else "Lax"
     app.config["SESSION_COOKIE_SECURE"] = secure_cookie
+    if settings.SESSION_COOKIE_DOMAIN:
+        app.config["SESSION_COOKIE_DOMAIN"] = settings.SESSION_COOKIE_DOMAIN
 
     # Required for OAuth state/session
     app.secret_key = app.config["SECRET_KEY"]

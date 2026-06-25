@@ -49,6 +49,7 @@ class Settings(BaseSettings):
     SESSION_COOKIE_SECURE: bool = Field(False)
     SESSION_COOKIE_HTTPONLY: bool = Field(True)
     SESSION_COOKIE_SAMESITE: str = Field('Lax')
+    SESSION_COOKIE_DOMAIN: str | None = Field(None)
 
     # Rate Limiting
     RATELIMIT_STORAGE_URL: str = Field('memory://')
