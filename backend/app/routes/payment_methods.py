@@ -152,8 +152,14 @@ def update_payment_method(user_id, method_id):
                 )
             update_fields["is_default"] = is_default
         
+        # If account_info is being updated, reset approval status to pending
         if "account_info" in data:
             update_fields["account_info"] = data.get("account_info")
+            # Reset approval status if payment method was previously approved
+            if method.get("approval_status") == "approved":
+                update_fields["approval_status"] = "pending"
+                update_fields["approved_by"] = None
+                update_fields["approved_at"] = None
         
         update_fields["updated_at"] = datetime.utcnow()
         

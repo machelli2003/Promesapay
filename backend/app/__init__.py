@@ -122,6 +122,7 @@ def create_app(test_config=None):
     from .routes.receipts import bp as receipts_bp
     from .routes.admin_finance import bp as admin_finance_bp
     from .routes.admin_payouts import bp as admin_payouts_bp
+    from .routes.admin_payments import bp as admin_payments_bp
     from .routes.auth_security import security_bp
     from .routes.admin import admin_bp
     from .routes.disputes import disputes_bp, admin_disputes_bp
@@ -157,6 +158,7 @@ def create_app(test_config=None):
     app.register_blueprint(receipts_bp)
     app.register_blueprint(admin_finance_bp)
     app.register_blueprint(admin_payouts_bp)
+    app.register_blueprint(admin_payments_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(disputes_bp)
     app.register_blueprint(admin_disputes_bp)

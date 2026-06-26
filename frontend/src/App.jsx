@@ -31,6 +31,7 @@ import WalletPage from "./pages/WalletPage";
 const FinancialDashboard = lazy(() => import("./pages/FinancialDashboard"));
 const AdminHome = lazy(() => import("./pages/admin/AdminHome"));
 const AdminFinanceDashboard = lazy(() => import("./pages/admin/AdminFinanceDashboard"));
+const AdminPaymentManagement = lazy(() => import("./pages/admin/AdminPaymentManagement"));
 const AdminPayoutQueue = lazy(() => import("./pages/admin/AdminPayoutQueue"));
 const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
 const ReportDispute = lazy(() => import("./pages/Disputes/ReportDispute"));
@@ -113,6 +114,16 @@ function AppRoutes() {
                 <AdminRoute>
                   <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Spinner size="lg" /></div>}>
                     <AdminFinanceDashboard />
+                  </Suspense>
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/payments"
+              element={
+                <AdminRoute>
+                  <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Spinner size="lg" /></div>}>
+                    <AdminPaymentManagement />
                   </Suspense>
                 </AdminRoute>
               }

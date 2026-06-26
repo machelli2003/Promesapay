@@ -82,7 +82,7 @@ export default function Register() {
           name="full_name"
           value={form.full_name}
           onChange={set}
-          placeholder="John Doe"
+          placeholder="Paul Walker"
           required
           error={errors.full_name}
         />
@@ -92,7 +92,7 @@ export default function Register() {
           name="username"
           value={form.username}
           onChange={set}
-          placeholder="johndoe"
+          placeholder="paulwalker"
           required
           hint={form.username ? `promesapay.com/u/${form.username}` : undefined}
           error={errors.username}
