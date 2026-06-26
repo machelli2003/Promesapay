@@ -64,6 +64,7 @@ export default function Navbar() {
   const userNavLinks = [
     { to: "/campaigns", label: "Discover" },
     { to: "/dashboard", label: "Dashboard" },
+    { to: "/wallet", label: "Wallet" },
     { to: "/campaigns/new", label: "Start Campaign" },
   ];
 
@@ -265,6 +266,14 @@ export default function Navbar() {
                             >
                               <CediSign className="w-4 h-4" />
                               Financial Center
+                            </Link>
+                            <Link
+                              to="/wallet"
+                              onClick={() => setDropOpen(false)}
+                              className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted hover:text-navy-900 dark:hover:text-navy-50 hover:bg-navy-50 dark:hover:bg-navy-700/50 transition-colors"
+                            >
+                              <CediSign className="w-4 h-4" />
+                              Wallet & Withdrawals
                             </Link>
                             {user?.role === "admin" && (
                               <Link
