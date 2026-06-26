@@ -94,12 +94,12 @@ export default function Footer() {
           <p className="text-xs text-white/35">
             &copy; {new Date().getFullYear()} Promesapay. All rights reserved.
           </p>
-          <div className="flex items-center gap-5">
+          {/* <div className="flex items-center gap-5">
             <span className="text-xs text-white/35 cursor-pointer hover:text-gold-500 transition-colors">English</span>
             <span className="text-xs text-white/35 cursor-pointer hover:text-gold-500 transition-colors">Twi</span>
             <span className="text-xs text-white/35 cursor-pointer hover:text-gold-500 transition-colors">Hausa</span>
             <span className="text-xs text-white/35 cursor-pointer hover:text-gold-500 transition-colors">Ewe</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
