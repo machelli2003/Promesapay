@@ -34,7 +34,7 @@ export default function DualMode() {
           </ul>
           <Link
             to="/funding"
-            className="inline-flex px-8 py-3.5 border-2 border-gold-500 text-gold-500 font-semibold text-sm rounded-full hover:bg-gold-500 hover:text-navy-950 transition-all duration-200"
+            className="inline-flex justify-center px-8 py-3.5 border-2 border-gold-500 text-gold-500 font-semibold text-sm rounded-full hover:bg-gold-500 hover:text-navy-950 transition-all duration-200 w-full sm:w-auto"
           >
             Start Crowdfunding →
           </Link>
@@ -71,7 +71,7 @@ export default function DualMode() {
           </ul>
           <Link
             to="/register"
-            className="inline-flex px-8 py-3.5 border-2 border-gold-500 text-gold-500 font-semibold text-sm rounded-full hover:bg-gold-500 hover:text-navy-950 transition-all duration-200"
+            className="inline-flex justify-center px-8 py-3.5 border-2 border-gold-500 text-gold-500 font-semibold text-sm rounded-full hover:bg-gold-500 hover:text-navy-950 transition-all duration-200 w-full sm:w-auto"
           >
             Start Fundraising →
           </Link>

@@ -8,7 +8,7 @@ export default function CTASection() {
       className="relative py-24 px-4 sm:px-6 lg:px-8 bg-navy-700 overflow-hidden"
     >
       {/* Decorative gradient circle */}
-      <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-gold-500/10 blur-3xl" />
+      <div className="absolute -right-12 sm:-right-24 -top-12 sm:-top-24 w-48 sm:w-72 lg:w-96 h-48 sm:h-72 lg:h-96 rounded-full bg-gold-500/10 blur-3xl" />
 
       <div className="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="max-w-xl">
@@ -22,12 +22,14 @@ export default function CTASection() {
         <div className="flex flex-col items-start gap-3">
           <Link
             to="/register"
-            className="inline-flex px-10 py-4 bg-gold-500 text-navy-950 font-bold text-base rounded-full hover:bg-gold-400 transition-all duration-200 hover:-translate-y-0.5"
+            className="inline-flex justify-center px-8 sm:px-10 py-4 bg-gold-500 text-navy-950 font-bold text-base rounded-full hover:bg-gold-400 transition-all duration-200 hover:-translate-y-0.5 w-full sm:w-auto"
           >
             Create Your Campaign Free →
           </Link>
-          <span className="text-xs text-white/40">
-            <FiCheck size={12} className="inline" /> Free to start &nbsp; <FiCheck size={12} className="inline" /> MoMo & Card accepted &nbsp; <FiCheck size={12} className="inline" /> Verified within 24hrs
+          <span className="text-xs text-white/40 flex flex-wrap gap-x-3 gap-y-1">
+            <span><FiCheck size={12} className="inline" /> Free to start</span>
+            <span><FiCheck size={12} className="inline" /> MoMo & Card accepted</span>
+            <span><FiCheck size={12} className="inline" /> Verified within 24hrs</span>
           </span>
         </div>
       </div>

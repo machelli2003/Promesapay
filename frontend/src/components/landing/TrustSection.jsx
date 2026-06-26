@@ -17,7 +17,7 @@ export default function TrustSection() {
           Built with trust<br />at the core
         </h2>
 
-        <div className="flex flex-wrap justify-center gap-12 sm:gap-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 sm:gap-12">
           {items.map((item) => {
             const IconComponent = item.icon;
             return (

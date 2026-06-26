@@ -63,7 +63,7 @@ export default function CampaignShowcase() {
         </div>
 
         {/* Tabs */}
-        <div className="tabs-pill mb-10">
+        <div className="tabs-pill mb-10 max-w-full overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab}

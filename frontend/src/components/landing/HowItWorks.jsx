@@ -36,13 +36,13 @@ export default function HowItWorks() {
           No complicated forms, no long waits. Create your campaign, share your story, and watch your community rally around you.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-0 mt-14">
+        <div className="grid md:grid-cols-3 gap-8 md:gap-0 mt-14">
           {steps.map((step, i) => {
             const IconComponent = step.icon;
             return (
               <div
                 key={step.num}
-                className={`relative px-8 py-10 ${i < steps.length - 1 ? "border-r border-gold-500/15" : ""}`}
+                className={`relative px-4 sm:px-8 py-8 sm:py-10 ${i < steps.length - 1 ? "border-b md:border-b-0 md:border-r border-gold-500/15 pb-10 md:pb-8" : ""}`}
               >
                 <div className="font-heading text-6xl font-extrabold text-gold-500/15 leading-none mb-5">
                   {step.num}

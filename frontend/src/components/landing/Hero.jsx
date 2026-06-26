@@ -11,7 +11,7 @@ export default function Hero() {
     >
       {/* Kente pattern background */}
       <div
-        className="absolute right-[-80px] top-[-80px] w-[650px] h-[650px] opacity-[0.06] rounded-full"
+        className="absolute right-[-40px] sm:right-[-60px] lg:right-[-80px] top-[-40px] sm:top-[-60px] lg:top-[-80px] w-[320px] sm:w-[480px] lg:w-[650px] h-[320px] sm:h-[480px] lg:h-[650px] opacity-[0.06] rounded-full"
         style={{
           backgroundImage: `
             repeating-linear-gradient(45deg, #F97316 0, #F97316 2px, transparent 2px, transparent 20px),
@@ -44,7 +44,7 @@ export default function Hero() {
                 />
               </span>{" "}
               Creators.{" "}
-              <em className="not-italic text-gold-500 text-5xl">Fund with trust.</em>
+              <em className="not-italic text-gold-500 text-4xl sm:text-5xl lg:text-6xl">Fund with trust.</em>
             </h1>
 
             {/* Subtitle */}
@@ -59,21 +59,21 @@ export default function Hero() {
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-navy-700 text-gold-500 font-semibold text-base rounded-full hover:bg-navy-600 transition-all duration-200 hover:-translate-y-0.5 shadow-glow"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 bg-navy-700 text-gold-500 font-semibold text-sm sm:text-base rounded-full hover:bg-navy-600 transition-all duration-200 hover:-translate-y-0.5 shadow-glow w-full sm:w-auto"
               >
                  Start a Campaign
                 <FiArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to="/campaigns"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-transparent text-navy-700 dark:text-navy-200 font-medium text-base rounded-full border-2 border-navy-700/20 dark:border-navy-300/30 hover:border-navy-700 transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 bg-transparent text-navy-700 dark:text-navy-200 font-medium text-sm sm:text-base rounded-full border-2 border-navy-700/20 dark:border-navy-300/30 hover:border-navy-700 transition-all duration-200 w-full sm:w-auto"
               >
                 Set Up Creator Dash
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="flex  gap-20 mt-12 pt-8 border-t border-gold-500/20">
+            <div className="flex flex-wrap gap-6 sm:gap-12 lg:gap-20 mt-12 pt-8 border-t border-gold-500/20">
               <div className="flex flex-col gap-1">
                 <span className="font-heading text-2xl font-extrabold text-navy-700 dark:text-navy-50 tracking-tight">
                   GH₵4.2M+
@@ -108,7 +108,6 @@ export default function Hero() {
               <div className="card-meta"><span className="card-amount">GH₵34,000 raised</span><span>68%</span></div>
             </div>
 
-            {/* Card 2 */}
             <div className="campaign-card card-2">
               <div className="card-img" style={{ background: "linear-gradient(135deg, #7C2D12, #F97316)" }}>
                 <FaBookOpen className="text-4xl text-white/80" />
@@ -119,7 +118,6 @@ export default function Hero() {
               <div className="card-meta"><span className="card-amount">GH₵41,000 raised</span><span>82%</span></div>
             </div>
 
-            {/* Card 3 */}
             <div className="campaign-card card-3">
               <div className="card-img" style={{ background: "linear-gradient(135deg, #1E3A5F, #1D4ED8)" }}>
                 <FaPills className="text-4xl text-white/80" />
@@ -130,7 +128,6 @@ export default function Hero() {
               <div className="card-meta"><span className="card-amount">GH₵18,800 raised</span><span>94%</span></div>
             </div>
 
-            {/* Floating badge */}
             <div className="floating-badge z-10" style={{ position: "absolute", bottom: "60px", left: "-30px" }}>
               <BsStars className="inline-block mr-1" /> <strong>GH₵1,200</strong> raised in the last hour
             </div>
@@ -138,7 +135,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Card stack styles (scoped) */}
       <style>{`
         .campaign-card {
           position: absolute;
