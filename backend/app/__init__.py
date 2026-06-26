@@ -118,10 +118,12 @@ def create_app(test_config=None):
     from .routes.campaigns import campaigns_bp
     from .routes.payouts import bp as payouts_bp
     from .routes.payment_methods import bp as payment_methods_bp
+    from .routes.withdrawals import bp as withdrawals_bp
     from .routes.refunds import bp as refunds_bp
     from .routes.receipts import bp as receipts_bp
     from .routes.admin_finance import bp as admin_finance_bp
     from .routes.admin_payouts import bp as admin_payouts_bp
+    from .routes.admin_payments import bp as admin_payments_bp
     from .routes.auth_security import security_bp
     from .routes.admin import admin_bp
     from .routes.disputes import disputes_bp, admin_disputes_bp
@@ -153,10 +155,12 @@ def create_app(test_config=None):
     app.register_blueprint(campaigns_bp, url_prefix="/api/campaigns")
     app.register_blueprint(payouts_bp)
     app.register_blueprint(payment_methods_bp)
+    app.register_blueprint(withdrawals_bp)
     app.register_blueprint(refunds_bp)
     app.register_blueprint(receipts_bp)
     app.register_blueprint(admin_finance_bp)
     app.register_blueprint(admin_payouts_bp)
+    app.register_blueprint(admin_payments_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(disputes_bp)
     app.register_blueprint(admin_disputes_bp)

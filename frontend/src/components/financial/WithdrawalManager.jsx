@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
-import { getPayouts, initiatePayouts, cancelPayout, getPayoutStats } from '../../api/payouts';
+import { getWalletBalance, getFinancialSummary, requestWithdrawal, getWithdrawals, cancelWithdrawal } from '../../api/wallet';
 import { getPaymentMethods } from '../../api/paymentMethods';
 import { MessageBox, LoadingSpinner, Button } from '../ui';
 
 const STATUS_CLASS = {
   pending: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200',
-  processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200',
+  approved: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200',
   completed: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200',
-  failed: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200',
+  rejected: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200',
   cancelled: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
 };
 
 export default function WithdrawalManager() {
-  const [payouts, setPayouts] = useState([]);
-  const [stats, setStats] = useState(null);
+  const [withdrawals, setWithdrawals] = useState([]);
+  const [summary, setSummary] = useState(null);
   const [methods, setMethods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -22,7 +22,7 @@ export default function WithdrawalManager() {
   const [formData, setFormData] = useState({
     amount: '',
     payment_method_id: '',
-    notes: '',
+    reason: '',
   });
 
   useEffect(() => {
@@ -32,14 +32,14 @@ export default function WithdrawalManager() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [payoutsRes, statsRes, methodsRes] = await Promise.all([
-        getPayouts(),
-        getPayoutStats(),
+      const [summaryRes, withdrawalsRes, methodsRes] = await Promise.all([
+        getFinancialSummary(),
+        getWithdrawals(),
         getPaymentMethods(),
       ]);
 
-      setPayouts(payoutsRes.data?.payouts || []);
-      setStats(statsRes.data);
+      setSummary(summaryRes.data);
+      setWithdrawals(withdrawalsRes.data?.withdrawals || []);
       setMethods(methodsRes.data || []);
       setError('');
     } catch (err) {
@@ -50,7 +50,7 @@ export default function WithdrawalManager() {
     }
   };
 
-  const handleInitiatePayout = async (e) => {
+  const handleRequestWithdrawal = async (e) => {
     e.preventDefault();
     try {
       setError('');
@@ -65,32 +65,50 @@ export default function WithdrawalManager() {
         return;
       }
 
-      if (stats && parseFloat(formData.amount) > stats.wallet_balance) {
+      if (summary && parseFloat(formData.amount) > summary.wallet_balance) {
         setError('Insufficient wallet balance');
         return;
       }
 
-      await initiatePayouts(formData);
-      setSuccess('Withdrawal request submitted successfully');
-      setFormData({ amount: '', payment_method_id: '', notes: '' });
+      const selectedMethod = methods.find(m => m._id === formData.payment_method_id);
+      if (!selectedMethod) {
+        setError('Payment method not found');
+        return;
+      }
+
+      if (selectedMethod.approval_status !== 'approved') {
+        setError(`Payment method must be approved first. Status: ${selectedMethod.approval_status}`);
+        return;
+      }
+
+      await requestWithdrawal({
+        amount: parseFloat(formData.amount),
+        payment_method_id: formData.payment_method_id,
+        reason: formData.reason,
+      });
+      setSuccess('Withdrawal request submitted successfully! Admin will review and process it shortly.');
+      setFormData({ amount: '', payment_method_id: '', reason: '' });
       setShowForm(false);
       await loadData();
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to initiate withdrawal');
+      setError(err.response?.data?.error || 'Failed to request withdrawal');
     }
   };
 
-  const handleCancelPayout = async (payoutId) => {
-    if (window.confirm('Cancel this payout request?')) {
+  const handleCancelWithdrawal = async (withdrawalId) => {
+    if (window.confirm('Cancel this withdrawal request?')) {
       try {
-        await cancelPayout(payoutId);
-        setSuccess('Payout cancelled');
+        await cancelWithdrawal(withdrawalId);
+        setSuccess('Withdrawal cancelled');
         await loadData();
       } catch (err) {
-        setError(err.response?.data?.error || 'Failed to cancel payout');
+        setError(err.response?.data?.error || 'Failed to cancel withdrawal');
       }
     }
   };
+
+  // Get only approved payment methods
+  const approvedMethods = methods.filter(m => m.approval_status === 'approved');
 
   if (loading) return <LoadingSpinner />;
 
@@ -99,62 +117,73 @@ export default function WithdrawalManager() {
       <div className="mb-6">
         <h2 className="theme-heading mb-4 text-xl font-semibold">Withdrawals</h2>
 
-        {stats && (
+        {summary && (
           <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="theme-card">
               <p className="theme-muted mb-2 text-sm">Wallet Balance</p>
               <p className="text-2xl font-bold text-sky-600 dark:text-sky-400">
-                GH₵{(stats.wallet_balance ?? 0).toFixed(2)}
+                GH₵{(summary.wallet_balance ?? 0).toFixed(2)}
               </p>
             </div>
             <div className="theme-card">
-              <p className="theme-muted mb-2 text-sm">Total Earned</p>
+              <p className="theme-muted mb-2 text-sm">Available to Withdraw</p>
               <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                GH₵{(stats.total_earned ?? 0).toFixed(2)}
+                GH₵{(summary.available_for_withdrawal ?? 0).toFixed(2)}
               </p>
             </div>
             <div className="theme-card">
               <p className="theme-muted mb-2 text-sm">Total Withdrawn</p>
               <p className="text-2xl font-bold text-violet-600 dark:text-violet-400">
-                GH₵{(stats.total_withdrawn ?? 0).toFixed(2)}
+                GH₵{(summary.total_withdrawn ?? 0).toFixed(2)}
               </p>
             </div>
             <div className="theme-card">
-              <p className="theme-muted mb-2 text-sm">Pending Payouts</p>
+              <p className="theme-muted mb-2 text-sm">Pending Withdrawals</p>
               <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                {stats.pending_payouts}
+                {summary.pending_withdrawals?.count ?? 0}
               </p>
             </div>
           </div>
         )}
 
-        <Button
-          type="button"
-          onClick={() => setShowForm(!showForm)}
-          className="rounded-md bg-sky-600 px-6 py-3 text-sm font-medium text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600"
-        >
-          {showForm ? 'Cancel' : 'Request Withdrawal'}
-        </Button>
+        {approvedMethods.length === 0 && (
+          <div className="mb-4 rounded-md bg-amber-50 p-4 dark:bg-amber-900/20">
+            <p className="text-sm text-amber-800 dark:text-amber-200">
+              ⓘ You need to add and get an approved payment method before you can withdraw funds. Please add a payment method and wait for admin approval.
+            </p>
+          </div>
+        )}
+
+        {approvedMethods.length > 0 && (
+          <Button
+            type="button"
+            onClick={() => setShowForm(!showForm)}
+            className="rounded-md bg-sky-600 px-6 py-3 text-sm font-medium text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600"
+          >
+            {showForm ? 'Cancel' : 'Request Withdrawal'}
+          </Button>
+        )}
       </div>
 
       {error && <MessageBox type="error" message={error} />}
       {success && <MessageBox type="success" message={success} />}
 
-      {showForm && (
-        <form onSubmit={handleInitiatePayout} className="theme-form">
+      {showForm && approvedMethods.length > 0 && (
+        <form onSubmit={handleRequestWithdrawal} className="theme-form">
           <div className="mb-4">
             <label className="theme-label">Amount (GH₵)</label>
             <input
               type="number"
               step="0.01"
-              placeholder="0.00"
+              min="50"
+              placeholder="Minimum: 50"
               value={formData.amount}
               onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
               className="theme-input"
             />
-            {stats && (
+            {summary && (
               <p className="theme-muted mt-2 text-xs">
-                Available: GH₵{stats.wallet_balance.toFixed(2)}
+                Available: GH₵{summary.available_for_withdrawal.toFixed(2)}
               </p>
             )}
           </div>
@@ -167,20 +196,20 @@ export default function WithdrawalManager() {
               className="theme-input"
             >
               <option value="">Select a payment method</option>
-              {methods.map((method) => (
+              {approvedMethods.map((method) => (
                 <option key={method._id} value={method._id}>
-                  {method.method_type.replace('_', ' ')} - {method.is_default ? '(Default)' : ''}
+                  {method.method_type.replace('_', ' ')} {method.is_default ? '(Default)' : ''}
                 </option>
               ))}
             </select>
           </div>
 
           <div className="mb-4">
-            <label className="theme-label">Notes (Optional)</label>
+            <label className="theme-label">Reason (Optional)</label>
             <textarea
-              placeholder="Any additional notes..."
-              value={formData.notes}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              placeholder="Any reason for this withdrawal..."
+              value={formData.reason}
+              onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
               className="theme-input min-h-[80px]"
             />
           </div>
@@ -195,44 +224,56 @@ export default function WithdrawalManager() {
       )}
 
       <div className="mt-6">
-        <h3 className="theme-heading mb-4 text-lg font-semibold">Payout History</h3>
+        <h3 className="theme-heading mb-4 text-lg font-semibold">Withdrawal History</h3>
 
-        {payouts.length === 0 ? (
-          <p className="theme-card-muted py-8">No payouts yet</p>
+        {withdrawals.length === 0 ? (
+          <p className="theme-card-muted py-8">No withdrawal requests yet</p>
         ) : (
           <div className="grid gap-3">
-            {payouts.map((payout) => (
+            {withdrawals.map((withdrawal) => (
               <div
-                key={payout._id}
-                className="theme-card flex flex-wrap items-center justify-between gap-3"
+                key={withdrawal._id}
+                className="theme-card flex flex-col gap-3"
               >
-                <div>
-                  <p className="theme-heading font-semibold">
-                    GH₵{payout.amount.toFixed(2)}
-                  </p>
-                  <p className="theme-muted text-sm">
-                    {payout.payment_method_type.replace('_', ' ')} •{' '}
-                    {new Date(payout.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="theme-heading font-semibold">
+                      GH₵{withdrawal.amount.toFixed(2)}
+                    </p>
+                    <p className="theme-muted text-sm">
+                      {new Date(withdrawal.created_at).toLocaleDateString()} • {new Date(withdrawal.created_at).toLocaleTimeString()}
+                    </p>
+                  </div>
                   <span
                     className={`rounded px-3 py-1 text-xs font-semibold capitalize ${
-                      STATUS_CLASS[payout.status] || STATUS_CLASS.cancelled
+                      STATUS_CLASS[withdrawal.status] || STATUS_CLASS.cancelled
                     }`}
                   >
-                    {payout.status}
+                    {withdrawal.status}
                   </span>
-                  {payout.status === 'pending' && (
-                    <Button
-                      type="button"
-                      onClick={() => handleCancelPayout(payout._id)}
-                      className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 dark:bg-red-950/50 dark:text-red-300 dark:hover:bg-red-900/50"
-                    >
-                      Cancel
-                    </Button>
-                  )}
                 </div>
+
+                {withdrawal.reason && (
+                  <p className="theme-muted text-sm">
+                    <strong>Reason:</strong> {withdrawal.reason}
+                  </p>
+                )}
+
+                {withdrawal.status === 'rejected' && withdrawal.rejection_reason && (
+                  <p className="rounded bg-red-100 p-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-200">
+                    <strong>Rejection reason:</strong> {withdrawal.rejection_reason}
+                  </p>
+                )}
+
+                {withdrawal.status === 'pending' && (
+                  <Button
+                    type="button"
+                    onClick={() => handleCancelWithdrawal(withdrawal._id)}
+                    className="self-start rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 dark:bg-red-950/50 dark:text-red-300 dark:hover:bg-red-900/50"
+                  >
+                    Cancel Request
+                  </Button>
+                )}
               </div>
             ))}
           </div>

@@ -23,6 +23,8 @@ campaign_updates_col = db["campaign_updates"]
 comments_col = db["comments"]
 payouts_col = db["payouts"]
 payment_methods_col = db["payment_methods"]
+withdrawals_col = db["withdrawals"]
+transactions_col = db["transactions"]
 refunds_col = db["refunds"]
 receipts_col = db["receipts"]
 platform_revenue_col = db["platform_revenue"]
@@ -85,6 +87,18 @@ try:
     # Payment methods indexes
     payment_methods_col.create_index([("user_id", 1), ("is_default", 1)])
     payment_methods_col.create_index([("user_id", 1), ("method_type", 1)])
+    payment_methods_col.create_index([("approval_status", 1), ("created_at", -1)])
+    payment_methods_col.create_index([("user_id", 1), ("approval_status", 1)])
+    
+    # Withdrawals indexes
+    withdrawals_col.create_index([("user_id", 1), ("status", 1), ("created_at", -1)])
+    withdrawals_col.create_index([("status", 1), ("created_at", -1)])
+    withdrawals_col.create_index([("user_id", 1), ("created_at", -1)])
+    
+    # Transactions indexes
+    transactions_col.create_index([("user_id", 1), ("created_at", -1)])
+    transactions_col.create_index([("transaction_type", 1), ("created_at", -1)])
+    transactions_col.create_index([("reference_id", 1)])
     
     # Refunds indexes
     refunds_col.create_index([("user_id", 1), ("status", 1), ("created_at", -1)])

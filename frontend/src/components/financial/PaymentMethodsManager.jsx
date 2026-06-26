@@ -59,7 +59,7 @@ export default function PaymentMethodsManager() {
       }
       
       await addPaymentMethod(formData);
-      setSuccess('Payment method added successfully');
+      setSuccess('Payment method added successfully! It will be reviewed by admin before approval.');
       setFormData({
         method_type: 'bank_transfer',
         provider: 'paystack',
@@ -275,10 +275,32 @@ export default function PaymentMethodsManager() {
                   {method.method_type.replace('_', ' ')}
                 </p>
                 <p className="theme-muted text-sm">{renderAccountInfo(method)}</p>
-                {method.is_default && (
-                  <span className="mt-2 inline-block rounded bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-800 dark:bg-sky-900/40 dark:text-sky-200">
-                    Default
-                  </span>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {method.is_default && (
+                    <span className="inline-block rounded bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-800 dark:bg-sky-900/40 dark:text-sky-200">
+                      Default
+                    </span>
+                  )}
+                  {method.approval_status === 'pending' && (
+                    <span className="inline-block rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200">
+                      ⏳ Pending Approval
+                    </span>
+                  )}
+                  {method.approval_status === 'approved' && (
+                    <span className="inline-block rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/40 dark:text-green-200">
+                      ✓ Approved
+                    </span>
+                  )}
+                  {method.approval_status === 'rejected' && (
+                    <span className="inline-block rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/40 dark:text-red-200">
+                      ✗ Rejected
+                    </span>
+                  )}
+                </div>
+                {method.approval_status === 'rejected' && method.rejection_reason && (
+                  <p className="mt-2 text-xs text-red-600 dark:text-red-400">
+                    Reason: {method.rejection_reason}
+                  </p>
                 )}
               </div>
               <div className="flex gap-2">
