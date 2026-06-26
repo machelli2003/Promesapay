@@ -23,6 +23,7 @@ export default function BrowseCampaigns() {
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("newest");
   const [page, setPage] = useState(1);
+  const [showFilters, setShowFilters] = useState(false);
 
   const { isLoading, error, data, retry } = useLoadingState(
     async () => {
@@ -76,8 +77,8 @@ export default function BrowseCampaigns() {
         )}
       </div>
 
-      <form onSubmit={handleSearch} className="card card-body mb-6 space-y-4">
-        <div className={`flex flex-col gap-3 ${isMobile ? '' : 'md:flex-row'}`}>
+      <form onSubmit={handleSearch} className="card card-body mb-6 space-y-3">
+        <div className="flex gap-2">
           <div className="relative flex-1">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
@@ -87,31 +88,42 @@ export default function BrowseCampaigns() {
               className="input pl-10 w-full"
             />
           </div>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className={`input ${isMobile ? 'w-full' : 'md:w-44'}`}
-          >
-            <option value="">All categories</option>
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className={`input ${isMobile ? 'w-full' : 'md:w-44'}`}
-          >
-            <option value="newest">Newest</option>
-            <option value="raised">Most raised</option>
-            <option value="almost_funded">Almost funded</option>
-          </select>
-          <AppButton type="submit" icon={FiSearch} className={isMobile ? 'w-full' : ''}>
+          <AppButton
+            type="button"
+            variant="secondary"
+            icon={FiSliders}
+            onClick={() => setShowFilters((v) => !v)}
+            aria-label="Toggle filters"
+          />
+          <AppButton type="submit" icon={FiSearch}>
             Search
           </AppButton>
         </div>
+        {showFilters && (
+          <div className={`flex flex-col gap-3 pt-2 border-t border-slate-200 dark:border-slate-700 ${isMobile ? '' : 'md:flex-row'}`}>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className={`input ${isMobile ? 'w-full' : 'md:w-44'}`}
+            >
+              <option value="">All categories</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className={`input ${isMobile ? 'w-full' : 'md:w-44'}`}
+            >
+              <option value="newest">Newest</option>
+              <option value="raised">Most raised</option>
+              <option value="almost_funded">Almost funded</option>
+            </select>
+          </div>
+        )}
       </form>
 
       {isLoading ? (
