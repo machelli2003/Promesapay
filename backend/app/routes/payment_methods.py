@@ -3,6 +3,7 @@ from bson import ObjectId
 from datetime import datetime
 from ..db import payment_methods_col, users_col
 from ..utils.auth import require_auth
+from ..utils.auth_helpers import serialize_doc
 from ..models.payment_method import create_payment_method_doc
 import logging
 
@@ -21,11 +22,7 @@ def get_payment_methods(user_id):
             .sort("created_at", -1)
         )
         
-        # Convert ObjectId to string
-        for method in methods:
-            method["_id"] = str(method["_id"])
-            method["user_id"] = str(method["user_id"])
-        
+        methods = [serialize_doc(method) for method in methods]
         return jsonify(methods)
     except Exception as e:
         logger.error(f"Error fetching payment methods: {e}")
@@ -116,10 +113,7 @@ def get_payment_method(user_id, method_id):
         if not method:
             return jsonify({"error": "Payment method not found"}), 404
         
-        method["_id"] = str(method["_id"])
-        method["user_id"] = str(method["user_id"])
-        
-        return jsonify(method)
+        return jsonify(serialize_doc(method))
     except Exception as e:
         logger.error(f"Error fetching payment method: {e}")
         return jsonify({"error": "Failed to fetch payment method"}), 500
@@ -169,12 +163,9 @@ def update_payment_method(user_id, method_id):
         )
         
         updated = payment_methods_col.find_one({"_id": ObjectId(method_id)})
-        updated["_id"] = str(updated["_id"])
-        updated["user_id"] = str(updated["user_id"])
-        
         return jsonify({
             "message": "Payment method updated successfully",
-            "method": updated
+            "method": serialize_doc(updated)
         })
     except Exception as e:
         logger.error(f"Error updating payment method: {e}")
