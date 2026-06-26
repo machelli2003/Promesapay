@@ -44,13 +44,13 @@ export default function Hero() {
                 />
               </span>{" "}
               Creators.{" "}
-              <em className="not-italic text-gold-500 text-5xl">Pay it forward.</em>
+              <em className="not-italic text-gold-500 text-5xl">Fund with trust.</em>
             </h1>
 
             {/* Subtitle */}
            
             <p className="text-base sm:text-lg text-muted leading-relaxed max-w-lg mb-8">
-             or set up your Creator Dash and let your fans, followers, and customers support your work directly. All payments via MTN MoMo, Vodafone Cash & AirtelTigo Money.
+             Promesa Pay connects creators to supporters with safe, fast and instant payouts.
             </p>
 
             
